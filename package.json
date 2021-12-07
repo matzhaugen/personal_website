@@ -20,5 +20,14 @@
     "prettier-plugin-svelte": "^2.4.0",
     "svelte": "^3.44.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@mapbox/rehype-prism": "^0.8.0",
+    "front-matter": "^4.0.2",
+    "glob": "^7.2.0",
+    "marked": "^4.0.6",
+    "rehype": "^12.0.0",
+    "remark": "^14.0.2",
+    "remark-html": "^15.0.1"
+  }
 }
