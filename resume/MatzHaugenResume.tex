@@ -1,0 +1,238 @@
+% LaTeX Curriculum Vitae Template
+%
+% Copyright (C) 2004-2009 Jason Blevins <jrblevin@sdf.lonestar.org>
+% http://jblevins.org/projects/cv-template/
+%
+% You may use use this document as a template to create your own CV
+% and you may redistribute the source code freely. No attribution is
+% required in any resulting documents. I do ask that you please leave
+% this notice and the above URL in the source code if you choose to
+% redistribute this file.
+
+\documentclass[letterpaper, 12pt]{article}
+
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, norsk]{babel}
+\usepackage[margin=0.9in, bottom=0.8in]{geometry}
+
+% Comment the following lines to use the default Computer Modern font
+% instead of the Palatino font provided by the mathpazo package.
+% Remove the 'osf' bit if you don't like the old style figures.
+\usepackage[T1]{fontenc}
+\usepackage[sc,osf]{mathpazo}
+
+% Set your name here
+\def\name{Matz Andreas Haugen}
+
+% Replace this with a link to your CV if you like, or set it empty
+% (as in \def\footerlink{}) to remove the link in the footer:
+%\def\footerlink{http://jblevins.org/projects/cv-template/}
+
+% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {economics, statistics, mathematics},
+  pdftitle = {\name: Curriculum Vitae},
+  pdfsubject = {Curriculum Vitae},
+  pdfpagemode = UseNone
+}
+
+% Customize page headers
+\pagestyle{myheadings}
+\markright{\name}
+\thispagestyle{empty}
+
+% Custom section fonts
+\usepackage{sectsty}
+\sectionfont{\rmfamily\mdseries\Large}
+\subsectionfont{\rmfamily\mdseries\itshape\large}
+\usepackage[normalem]{ulem}
+
+\sectionfont{\ulemheading{\uuline}}
+
+% Other possible font commands include:
+% \ttfamily for teletype,
+% \sffamily for sans serif,
+% \bfseries for bold,
+% \scshape for small caps,
+% \normalsize, \large, \Large, \LARGE sizes.
+
+% Don't indent paragraphs.
+\setlength\parindent{0em}
+
+% Make lists without bullets
+\renewenvironment{itemize}{
+  \begin{list}{}{
+    \setlength{\leftmargin}{1.5em}
+  }
+}{
+  \end{list}
+}
+
+\begin{document}
+
+% Place name at left
+{\huge \name}
+
+% Alternatively, print name centered and bold:
+%\centerline{\huge \bf \name}
+
+\vspace{0.25in}
+
+% \begin{minipage}{0.45\linewidth}
+%   %\href{}
+%   Enerhauggata 1, \\
+%   0651 Oslo, \\
+%   Norway
+% \end{minipage}
+\begin{minipage}{0.45\linewidth}
+  \begin{tabular}{ll}
+    Phone: & (+1) (650) 283-1634 \\
+    Email: & \href{mailto:matzhaugen@gmail.com}{\tt matzhaugen@gmail.com} \\
+    Homepage: & \href{http://www.matzhaugen.com/}{\tt http://www.matzhaugen.com/} \\
+  \end{tabular}
+\end{minipage}
+
+\section*{Education}
+
+\begin{itemize}
+
+  \item 2011-2016: PhD, Stanford University. \\
+   Advisors: Bala Rajaratnam and Paul Switzer \\Dept. of Statistics and Dept. of Environmental Earth Systems Science
+   
+
+  \item 2011-2015: M.Sc. in Statistics, Stanford University.
+
+  \item 2010-2011: Master of Adv. Study (Merit), Physics, Cambridge University.
+
+  \item 2008-2010: M.Sc. Energy Resources Engineering (GPA: 3.8/4), Stanford University.
+
+  \item 2005-2008: B.Sc. Physics (GPA: 3.8/4), McGill University.
+\end{itemize}
+
+\section*{Work Experience}
+
+\begin{itemize}
+  \item \textbf{Quantitative Consultant: Mar 2021-Current, Vise Inc, Remote, Oslo, Norway. }
+  \begin{enumerate}
+       \item[--] Chief architect for the core portfolio optimizer which manages all the $\sim$1500 Vise accounts in a tax-aware manner currently with \$ 500 million assets under management, optimizing daily.
+       \item[--] Migrated all accounts over from previous generation mixed-integer portfolio optimizer to the next generation convex relaxation with added integer heuristics reducing optimization time from minutes to $\sim$1s/account while aligning with new investment strategy and increasing explainability.
+   \end{enumerate}
+  
+  \item \textbf{Senior Machine Learning Engineer: Jan 2020-Feb 2021, Cognite AS, Oslo, Norway. }
+  \begin{enumerate}
+       \item[--] Building a platform to create, schedule and deploy Python code securely in the cloud with tools like Kubernetes and PubSub, enabling data scientists to automate analysis with tailored compute power and cadence.
+   \end{enumerate}
+  \item \textbf{Senior Data Scientist: Feb 2018-Oct 2019, Orbital Insight, Palo Alto, California. }
+  \begin{enumerate}
+       \item[--] Built out the company's ability to use alternative geolocation data to infer economic indicators by handling massive amounts of raw data (>100Tb) by using tools like Spark clusters, AWS S3 data storage and PostgreSQL.
+   \end{enumerate}
+  \newpage
+  \item \textbf{Post-doctoral research scholar: 2016-2018, University of Chicago, Chicago, Illinois.}
+  \begin{enumerate}
+       \item[--] Characterized extreme temperature events to an unprecedented level using novel statistical methodology and massive amounts of data leading to two publications in top-tier journals. 
+   \end{enumerate}
+  \item \textbf{Data Scientist: Summer 2015, Tesla Motors, Palo Alto, California.}
+  \begin{enumerate}
+       \item[--] Built out the platform for automating the Air-Conditioning and HVAC system by expanding the machine learning algorithm and predicting when people will drive leading to increased drive comfort.
+   \end{enumerate}
+  \item \textbf{Geophysicist: Summer 2009/2010, Statoil, Norway.}
+  \item \textbf{President: Stanford Chapter of International Association
+          for Mathematical Geoscience 09/10.}
+\end{itemize}
+
+
+
+\section*{Papers, preprints and other research output}
+\begin{itemize}
+  \item{Matz A. Haugen, Michael L. Stein, and Elisabeth J. Moyer, Ryan L. Sriver, Future Climate Emulations Using Quantile Regressions on Large Ensembles, \emph{Advances in Statistical Climatology, Meteorology and Oceanography (ASCMO)}, 2019}
+  \item{Matz A. Haugen, Michael L. Stein, and Elisabeth J. Moyer, Ryan L. Sriver, Estimating Changes in Temperature Distributions in a Large Ensemble of Climate Simulations Using Quantile Regression, \emph{Journal of Climate}, 2018}
+  \item N. S. Diffenbaugh D. Singh J. S. Mankin D. E. Horton D. L. Swain, Danielle Touma, A. Charland, Y. Liua, M. Haugen, M. Tsiang, and B. Rajaratnama, Quantifying the influence of global warming on unprecedented extreme climate events, \emph{Proceedings of the National Academy of Sciences}, 2017
+\item M. Haugen, B. Rajaratnam, P. Switzer. Extracting Common Time
+  Trends from Concurrent Time Series: Maximum Autocorrelation Factors
+  with Application to Tree Ring Time Series Data. \emph{http://arxiv.org/abs/1502.01073}, 2015.
+\item D.L Swain, M. Tsiang, M. Haugen, D. Singh, A. Charland, B. Rajaratnam, and N.S. Diffenbaugh.
+The extraordinary California drought of 2013-2014: character, context, and the role of climate
+change. \emph{Bulletin of the American Meteorological Society}- BAMS,
+95(9):S3--S7, 2014.
+\item D. Singh, D.E. Horton, M. Tsiang, M. Haugen, M. Ashfaq, A. Charland, N.C. Johnson, R. Mei, D. Rastogi,  B. Rajaratnam, and N.S. Diffenbaugh. Severe precipitation in northern India in june
+2013: causes, historical context, and changes in probability. \emph{Bulletin of the American Meteorological
+Society}- BAMS, 95(9):S58--S61, 2014.
+\item Haugen, M. Characterizing 2-dimensional electron gases in semiconductors \emph{Physics Master's Thesis} 2011
+\item Haugen, M. Exploring Direct Sampling and Iterative Spatial
+Resampling in History Matching, \emph{Energy Resources Master's Thesis}
+\end{itemize}
+
+\section*{Research interests $\&$ specializations}
+\begin{itemize}
+\item Machine Learning, Statistics, Convex Optimization, Data Science, Geoscience, Graphical Models, Data
+Mining.
+\end{itemize}
+\section*{Research Experience}
+
+\begin{itemize}
+  \item \textbf{Statistics of Extreme Events:}
+    \subitem Analyze geo-spatiotemporal data to characterize extreme events, e.g. heat-waves, tornadoes, heavy rainfall, including mapping the distributional shifts of the observables. 
+  \item \textbf{PhD Thesis topic:}
+    \subitem Extracting time trends from concurrent
+                time series non-parametrically and developing
+                mathematical models under which signal-to-noise ratio
+                is optimized.
+        \item \textbf{Geo-statistical Analysis:}
+    \subitem Co-authored two papers on climate dynamics cited
+                in approximately 100 media outlets by providing statistical
+                analysis, hypothesis testing, and uncertainty propagation.
+  \item \textbf{Ultra-High dimensional regression:}
+          \subitem Developed a package in the open source
+          library of R implementing correlation screening for variables
+          in an high-dimensional setting where the number of
+          predictors grows unboundedly while the number of
+          observations stay fixed, as an alternative to the LASSO
+          algorithm.
+        \item \textbf{Physics Master's thesis (Cambridge University):}
+    \subitem Exploring scattering mechanisms in induced
+                2-dimensional electron gases by probing multiple chips
+                at low-temperatures to measure electron density and
+                Quantum Hall effects.
+
+\end{itemize}
+
+\nopagebreak
+
+
+
+\section*{Teaching}
+  \begin{itemize}
+    \item{Teaching Assistant: 2015, 2016 Winter, EESS 360/STATS 360: Advanced Statistical Methods for Earth System Analysis}
+  \item   Instructor: Summer 2008, Nesbru Senior High School ($12^{th}$ grade mathematics).
+  \end{itemize}
+
+ \section*{Programming Skills}
+  \begin{itemize}
+    \item{Kubernetes, Python, Rust, Google/Azure Cloud serverless offerings, SQL, Postgres, R, Matlab, CSS, JavaScript}
+  \end{itemize}
+  
+  
+\section*{Honors \& Awards}
+\begin{itemize}
+  \item{The William Whiteford Fellowship in Earth Sciences, Stanford University }
+  \item{The Edmund Wattis Littlefield Fellowship in Earth Sciences, Stanford University}
+  \item{Engineers in the Arts, Music scholarship, Stanford University}
+  \item{Science Award from Centre International De Valbonne as best graduating science student, France: 2004}
+\end{itemize}
+ 
+\bigskip
+
+% Footer
+\begin{center}
+  \begin{footnotesize}
+    Last updated: \today \\
+    % \href{\footerlink}{\texttt{\footerlink}}
+  \end{footnotesize}
+\end{center}
+
+\end{document}

@@ -5,7 +5,7 @@
   <a href="/links">Links</a>
   <a href="/software">Software</a> 
   <!-- <a href="/blog">Blog</a>  -->
-  <a href="/cv.pdf" download="haugen">CV
+  <a href="/MatzHaugenResume.pdf" download="MatzHaugenResume">CV
 	</a>
 </nav>
 <slot></slot>

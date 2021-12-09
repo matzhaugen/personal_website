@@ -1,0 +1,199 @@
+% LaTeX Curriculum Vitae Template
+%
+% Copyright (C) 2004-2009 Jason Blevins <jrblevin@sdf.lonestar.org>
+% http://jblevins.org/projects/cv-template/
+%
+% You may use use this document as a template to create your own CV
+% and you may redistribute the source code freely. No attribution is
+% required in any resulting documents. I do ask that you please leave
+% this notice and the above URL in the source code if you choose to
+% redistribute this file.
+
+\documentclass[letterpaper]{article}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+
+% Comment the following lines to use the default Computer Modern font
+% instead of the Palatino font provided by the mathpazo package.
+% Remove the 'osf' bit if you don't like the old style figures.
+\usepackage[T1]{fontenc}
+\usepackage[sc,osf]{mathpazo}
+
+% Set your name here
+\def\name{Matz Andreas Haugen}
+
+% Replace this with a link to your CV if you like, or set it empty
+% (as in \def\footerlink{}) to remove the link in the footer:
+%\def\footerlink{http://jblevins.org/projects/cv-template/}
+
+% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {economics, statistics, mathematics},
+  pdftitle = {\name: Curriculum Vitae},
+  pdfsubject = {Curriculum Vitae},
+  pdfpagemode = UseNone
+}
+
+\geometry{
+  body={6.5in, 8.5in},
+  left=1.0in,
+  top=1.25in
+}
+
+% Customize page headers
+\pagestyle{myheadings}
+\markright{\name}
+\thispagestyle{empty}
+
+% Custom section fonts
+\usepackage{sectsty}
+\sectionfont{\rmfamily\mdseries\Large}
+\subsectionfont{\rmfamily\mdseries\itshape\large}
+
+% Other possible font commands include:
+% \ttfamily for teletype,
+% \sffamily for sans serif,
+% \bfseries for bold,
+% \scshape for small caps,
+% \normalsize, \large, \Large, \LARGE sizes.
+
+% Don't indent paragraphs.
+\setlength\parindent{0em}
+
+% Make lists without bullets
+\renewenvironment{itemize}{
+  \begin{list}{}{
+    \setlength{\leftmargin}{1.5em}
+  }
+}{
+  \end{list}
+}
+
+\begin{document}
+
+% Place name at left
+{\huge \name}
+
+% Alternatively, print name centered and bold:
+%\centerline{\huge \bf \name}
+
+\vspace{0.25in}
+
+\begin{minipage}{0.45\linewidth}
+  %\href{}
+  {473 Via Ortega, Room 140} \\
+  94305 Stanford, \\
+  CA,USA
+\end{minipage}
+\begin{minipage}{0.45\linewidth}
+  \begin{tabular}{ll}
+    Phone: & (+1) (650) 283-1634 \\
+    % Fax: &  (919) 962-5678 \\
+    Email: & \href{mailto:mahaugen@stanford.edu}{\tt mahaugen@stanford.edu} \\
+    % Homepage: & \href{http://www.stat-or.unc.edu/}{\tt http://www.stat-or.unc.edu/} \\
+  \end{tabular}
+\end{minipage}
+
+
+\section*{Education}
+
+\begin{itemize}
+
+  \item 2011-2016 (expected): PhD,Dept. of Environmental Earth Systems Science, Stanford University, Advisors:
+    B. Rajaratnam and P. Switzer (Dept. of Statistics and Dept. of Environmental Earth Systems Science)
+
+  \item 2011-2015 (expected): M.Sc. in Statisics, Stanford University.
+
+  \item 2010-2011: Master of Adv. Study (Merit), Physics, Cambridge University.
+
+  \item 2008-2010: M.Sc. Energy Resources Engineering (GPA: 3.8/4), Stanford University.
+
+  \item 2005-2008: B.Sc. Physics (GPA: 3.8/4), McGill University.
+ 
+\end{itemize}
+
+
+\section*{Research Experience}
+
+\begin{itemize}
+	\item PhD Thesis topic:
+		\subitem Extracting time trends from concurrent
+                time series non-parametrically and exploring
+                mathematical models under which signal-to-noise ratio
+                is optimized. The code is exclusively written in R,
+                 $\scriptstyle\mathtt{\sim}$$10k$ lines.
+              \item Statistical Analysis with professor Noah
+                Diffenbaugh:
+		\subitem Co-authored two papers on climate dynamics cited
+                in approximately 100 media outlets by providing statistical
+                analysis and hypothesis testing.
+	\item Physics Master's thesis (Cambridge):
+		\subitem Exploring scattering mechanisms in induced
+                2-dimensional electron gases.
+    \item Stanford Center for Reservoir Forecasting: Geostatistics (2008-2010):
+		\subitem Working on inverse problems using stochastic algorithms (M.S Thesis).
+
+    \item Statoil Hydro, Geophysics (Summer intern 2007, -09, -10):
+		\subitem Develop pressure- and shear wave modelling software (in Matlab)
+		\subitem Supply geophysical analysis to prospective hydrocarbon fields
+
+\end{itemize}
+
+
+\section*{Work Experience}
+
+
+\begin{itemize}
+  	\item President: Stanford Chapter of International Association for Mathematical Geoscience 09/10.
+	\item   Teacher: Summer 2008, Nesbru Senior High School ($12^{th}$ grade math).
+		\item Traffic Consultant: Summer 2006, SAS Ground Services.
+		\item Private: October, 2004--August, 2005, The Norwegian Airforce.
+		\item Factory Worker: Summer 2004 and May 2006, Main Dairy Products Distribution Factory, TINE BA.
+
+\end{itemize}
+
+\nopagebreak
+
+\section*{Papers}
+\begin{itemize}
+\item D.L Swain, M. Tsiang, M. Haugen, D. Singh, A. Charland, B. Rajaratnam, and N.S. Diffenbaugh.
+The extraordinary california drought of 2013-2014: character, context, and the role of climate
+change. \emph{Bulletin of the American Meteorological Society}- BAMS,
+95(9):S3--S7, 2014.
+\item D. Singh, D.E. Horton, M. Tsiang, M. Haugen, M. Ashfaq, A. Charland, N.C. Johnson, R. Mei, D. Rastogi,  B. Rajaratnam, and N.S. Diffenbaugh. Severe precipitation in northern India in june
+2013: causes, historical context, and changes in probability. \emph{Bulletin of the American Meteorological
+Society}- BAMS, 95(9):S58--S61, 2014.
+\end{itemize}
+\section*{Awards}
+
+\begin{itemize}
+	\item{The Edmund Wattis Littlefield Fellowship in Earth Sciences, Stanford University}
+
+	\item{Engineers in the Arts, Music scholarship, Stanford University}
+
+	\item{Science Award from Centre International De Valbonne as best graduating science student, France: 2004}
+
+\end {itemize}
+
+% \section*{Interests and Hobbies}
+% 	\begin{itemize}
+% 		\item{Rowing: McGill, Novice 2007 and Fitzwilliam College, Cambridge, 2010.}
+% 		\item{Music: Stanford Jazz Orchestra (Saxophone). President and co-founder: The Jazz Consortium, a Stanford
+%     student group.}
+% \item Biking and hiking.
+% 	\end{itemize}
+% \bigskip
+
+% Footer
+\begin{center}
+  \begin{footnotesize}
+    Last updated: \today \\
+    % \href{\footerlink}{\texttt{\footerlink}}
+  \end{footnotesize}
+\end{center}
+
+\end{document}
