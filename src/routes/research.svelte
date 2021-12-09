@@ -1,10 +1,11 @@
 <h1> Research </h1>
 
+<p>
 I did my PhD with <a href="https://profiles.stanford.edu/paul-switzer">P. Switzer</a> and <a href="https://statistics.ucdavis.edu/people/bala-rajaratnam">B. Rajaratnam</a>.
 
-A list of my papers are available at <a href="https://scholar.google.no/citations?user=nghoxIwAAAAJ&hl=en&oi=ao">Google Scholar</a>.
-
-This includes
+A list of my papers are available at <a href="https://scholar.google.no/citations?user=nghoxIwAAAAJ&hl=en&oi=ao">Google Scholar</a>, and miscellaneous code is available at my <a href="github.com/matzhaugen/">Github page</a>.
+</p>
+A few projects:
 <ul>
 <li>
 <p>

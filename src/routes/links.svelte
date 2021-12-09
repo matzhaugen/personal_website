@@ -1,6 +1,12 @@
 <h1> Links </h1>
 
-<h2> Electromagnetic radiation and human health</h2>
+<h2>Statistics</h2>
+<ul>
+	<li>
+		<a href="https://www.argmin.net/">Argmin: Blog by Ben Recht</a>
+	</li>
+</ul>
+<!-- <h2> Electromagnetic radiation and human health</h2>
 
 <ul>
 	<li>
@@ -58,3 +64,4 @@ Oncology</i> (2020)</a>
 	<li><a href="https://electromagneticlife.substack.com/p/5g-are-there-biological-impacts">5G: Are there biological effects? </a></li>
 </ul>
 
+ -->
