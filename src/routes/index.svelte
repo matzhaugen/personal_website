@@ -2,8 +2,6 @@
 <h1> About Me </h1>
 
 <p>
-I have developed algorithms for extraction of one or more signals embedded in multivariate time series. The concept of signal-to-noise is defined and optimized over a certain class of models. In this vein, I work closely within and around the domain known as linear dimensionality reduction, which includes methods like Principal Component Analysis and Multivariate Statistical Analysis. 
+I have developed algorithms for the extraction of signals embedded in potentially incomplete multivariate time series and predicting extreme climate events through non-parametric statistical techniques. 
 </p>
-<p>
-I have also developed methods for extracting signals for incomplete multivariate time series, for example time series with different sampling intervals or missing data, a common feature of real life data sets. Here, I infer the missing data points while extracting a smooth underlying signal. This outperforms traditional algorithms for data imputation because we take advantage of the underlying time structure.
-</p>
+<h3>Key words: </h3> <i>Principal Component Analysis, Linear Dimensionality Reduction, Quantile Regression, Optimization, Covariance/Graph Estimation, Machine Learning, Hypothesis Testing.</i>
