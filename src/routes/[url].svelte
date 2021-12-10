@@ -30,4 +30,7 @@
     .metadata {
         text-align: center;
     }
+    img {
+        text-align: center;
+    }
 </style>

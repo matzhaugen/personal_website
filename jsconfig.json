@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
+			"$static": ["static"],
 			"$lib": ["src/lib"],
 			"$resume": ["resume"],
 			"$lib/*": ["src/lib/*"]
