@@ -1,4 +1,5 @@
 <script context="module">
+    export const prerender = true
     export async function load({fetch, page}) {
       // request post from [url].json.js endpoint
       const post = await fetch(`${page.params.url}.json`).then((r) => r.json())
