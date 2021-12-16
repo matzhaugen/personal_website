@@ -15,6 +15,9 @@
 </div>
 
 <style>   
+    h1 {
+        line-height: 2.4rem;
+    }
     a {
         font-weight: 100;
         font-size: 20px;
@@ -27,7 +30,7 @@
     }
 
     .post-card {
-      padding: 20px;
+      padding: 15px;
     }
 
 </style>

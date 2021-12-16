@@ -18,6 +18,14 @@ nav a {
 	font-size: 1.2rem;
 	margin-right: 20px;
 }
+
+math-field {
+        text-align: center;
+    }
+
+.test {
+    text-align: center;
+}
 /*a:hover { color: #fff; background: #b48608; }*/
 
 @media screen and (max-width: 481px){

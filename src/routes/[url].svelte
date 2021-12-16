@@ -26,11 +26,15 @@
     }
     .section-header {
         text-align: center;
+        line-height: 2rem;
     }
     .metadata {
         text-align: center;
     }
-    img {
+    .math-field {
+        text-align: center;
+    }
+    .test {
         text-align: center;
     }
 </style>

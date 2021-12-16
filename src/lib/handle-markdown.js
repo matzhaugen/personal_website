@@ -28,7 +28,6 @@ export function convertMarkdown(path) {
     // extract frontmatter and body with the front-matter package
     let content = fm(file);
     const html = marked(content.body);
-    console.log(html)
     return { path, attributes: content.attributes, html: html};
 }
 
