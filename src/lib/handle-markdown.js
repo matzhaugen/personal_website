@@ -13,7 +13,6 @@ import {marked} from "marked"
  */
 export function importMarkdowns(markdownPath) {
     let fileNames = glob.sync(`${markdownPath}*.md`);
-
     return fileNames.map((path) => convertMarkdown(path));
 }
 
