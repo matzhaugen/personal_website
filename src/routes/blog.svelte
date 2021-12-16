@@ -1,4 +1,5 @@
 <script context="module">
+  export const prerender = true
   // load data
   export async function load({fetch}) {
     // request data from endpoint
