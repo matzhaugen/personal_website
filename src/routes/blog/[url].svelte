@@ -1,10 +1,14 @@
 <script context="module">
     // For pagination see https://meow.dev/tutorials/sveltekit-pagination
     // Or infinity scroll https://rodneylab.com/sveltekit-infinite-scroll/
-    export const prerender = true
+    export const prerender = true;
+    export const ssr = false;
     export async function load({fetch, page}) {
       // request post from [url].json.js endpoint
-      const post = await fetch(`${page.params.url}.json`).then((r) => r.json())
+      const post = await fetch(`${page.params.url}.json`)
+      .then((r) => r.json())
+        // .then(res => res.text())
+        // .then(text => console.log(text))        
   
       return {
           props: {post}
@@ -32,12 +36,6 @@
         line-height: 2rem;
     }
     .metadata {
-        text-align: center;
-    }
-    .math-field {
-        text-align: center;
-    }
-    .test {
         text-align: center;
     }
 </style>

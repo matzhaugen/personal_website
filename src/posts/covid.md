@@ -3,6 +3,7 @@ title: Hva var egentlig resultatene fra den første Pfizer vaksinestudien?
 description: Ny informasjon tyder på at det er ting som holdes skjult for allmenheten. 
 date: Dec 14, 2021
 authors: Matz Haugen
+language: Norwegian
 ---
 
 

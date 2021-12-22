@@ -23,6 +23,12 @@ export function importMarkdowns(markdownPath) {
  */
 export function convertMarkdown(path) {
     // read file
+    // try {
+    //   const arrayOfFiles = fs.readdirSync("src/")
+    //   console.log(arrayOfFiles)
+    // } catch(e) {
+    //   console.log(e)
+    // }
     let file = fs.readFileSync(path, 'utf8');
     // extract frontmatter and body with the front-matter package
     let content = fm(file);
@@ -31,7 +37,6 @@ export function convertMarkdown(path) {
 }
 
 export function convertToPostPreview(object) {
-    console.log(object.path)
     const url = object.path.replace(".md","").replace("src/posts/", "");
     return {...object.attributes, url};
 }
