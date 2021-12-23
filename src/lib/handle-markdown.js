@@ -6,13 +6,15 @@ import glob from "glob";
 import fm from "front-matter";
 // parse body to html
 import {marked} from "marked"
+import path from "path"
 /**
  * import all markdown files in specified path, extract front matter and convert to html
  * @param {string} markdownPath path to folder containing the markdown files (ends on /)
  * @returns [{path, attributes, body}]
  */
 export function importMarkdowns(markdownPath) {
-    let fileNames = glob.sync(`${markdownPath}*.md`);
+    let fileNames = glob.sync(`${markdownPath}/**/*.md`);
+    // let fileNames = import.meta.globEager(`${markdownPath}*.md`);
     return fileNames.map((path) => convertMarkdown(path));
 }
 
@@ -37,6 +39,8 @@ export function convertMarkdown(path) {
 }
 
 export function convertToPostPreview(object) {
-    const url = object.path.replace(".md","").replace("src/posts/", "");
-    return {...object.attributes, url};
+    const url = object.path.replace(".md","").split('/');
+
+    postName = url[url.length - 1]
+    return {...object.attributes, url: postName};
 }

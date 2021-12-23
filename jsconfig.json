@@ -3,9 +3,10 @@
 		"baseUrl": ".",
 		"paths": {
 			"$posts": ["src/posts"],
-			"$lib": ["src/lib"],
 			"$resume": ["resume"],
-			"$lib/*": ["src/lib/*"]
+			"$lib/*": ["src/lib/*"],
+            "@lib": ["src/lib"],
+            "@posts": ["src/posts"]
 		}
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.svelte", "src/**/*.md"]

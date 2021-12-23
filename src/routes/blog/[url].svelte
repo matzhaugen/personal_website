@@ -2,7 +2,6 @@
     // For pagination see https://meow.dev/tutorials/sveltekit-pagination
     // Or infinity scroll https://rodneylab.com/sveltekit-infinite-scroll/
     export const prerender = true;
-    export const ssr = false;
     export async function load({fetch, page}) {
       // request post from [url].json.js endpoint
       const post = await fetch(`${page.params.url}.json`)
