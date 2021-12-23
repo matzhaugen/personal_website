@@ -1,10 +1,8 @@
-import { convertMarkdown } from "$lib/handle-markdown"
-
+import { imports } from "$lib/handle-markdown"
 export function get({ params }) {
 
     const {url} = params;
-    const post = convertMarkdown(`src/routes/blog/posts/${url}.md`)
-    let body = JSON.stringify(post);
-
+    const key = `./posts/${url}.md`
+    let body = JSON.stringify({metadata: imports[key].metadata, ...imports[key].default.render()})
     return {body}
 }

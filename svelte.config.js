@@ -1,20 +1,15 @@
 import adapter from '@sveltejs/adapter-netlify';
 import path from 'path'
+import { mdsvex } from 'mdsvex'
 export default {
+	extensions: ['.svelte', '.svx', '.md'],
+	preprocess: mdsvex({ extensions: ['.svx', '.md'] }),
+		
 	kit: {
 		adapter: adapter(),
 		target: '#svelte',
 		vite: {
-			mode: "production",
-            resolve: {
-                alias: {
-                    // these are the aliases and paths to them
-                    '@components': path.resolve('src/lib/components'),
-                    '@lib': path.resolve('src/lib'),
-                    '@posts': path.resolve('src/posts')
-                },
-                extensions: ['.md', '.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
-            }
+			mode: "production"
 		}
 	}
 

@@ -5,7 +5,7 @@
     export async function load({fetch, page}) {
       return {
           status: 301,
-          redirect: "/blog/" + page.params.slug
+          redirect: "/blog/" + page.params.slug.replace(".md","")
       }
     }
 </script>

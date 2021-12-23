@@ -1,46 +1,14 @@
+// Import the markdown files for each post
+const imports = import.meta.globEager('./posts/*.md');
 
-import fs from 'fs';
-// import files with pattern
-import glob from "glob";
-// parse front matter and body of markdown
-import fm from "front-matter";
-// parse body to html
-import {marked} from "marked"
-import path from "path"
-/**
- * import all markdown files in specified path, extract front matter and convert to html
- * @param {string} markdownPath path to folder containing the markdown files (ends on /)
- * @returns [{path, attributes, body}]
- */
-export function importMarkdowns(markdownPath) {
-    let fileNames = glob.sync(`${markdownPath}/**/*.md`);
-    // let fileNames = import.meta.globEager(`${markdownPath}*.md`);
-    return fileNames.map((path) => convertMarkdown(path));
+const posts = [];
+// console.log(imports['./posts/covid-en.md'])
+for (const mymd in imports) {
+    const post = imports[mymd]
+    posts.push({
+        url: mymd.replace("./posts", "/blog").replace(".md", ""),
+        ...post.metadata,
+        ...post.default.render()
+    });
 }
-
-/**
- * convert markdown to object with attributes and html
- * @param {string} path path to file
- * @returns 
- */
-export function convertMarkdown(path) {
-    // read file
-    // try {
-    //   const arrayOfFiles = fs.readdirSync("src/")
-    //   console.log(arrayOfFiles)
-    // } catch(e) {
-    //   console.log(e)
-    // }
-    let file = fs.readFileSync(path, 'utf8');
-    // extract frontmatter and body with the front-matter package
-    let content = fm(file);
-    const html = marked(content.body);
-    return { path, attributes: content.attributes, html: html};
-}
-
-export function convertToPostPreview(object) {
-    const url = object.path.replace(".md","").split('/');
-
-    postName = url[url.length - 1]
-    return {...object.attributes, url: postName};
-}
+export {posts, imports};

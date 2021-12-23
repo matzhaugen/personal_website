@@ -3,12 +3,18 @@
     // Or infinity scroll https://rodneylab.com/sveltekit-infinite-scroll/
     export const prerender = true;
     export async function load({fetch, page}) {
-      // request post from [url].json.js endpoint
+      
+      if (page.params.url.endsWith(".md")) {
+        return {
+          status: 301,
+          redirect: "/blog/" + page.params.url.replace(".md","")
+        }
+      }
+
       const post = await fetch(`${page.params.url}.json`)
       .then((r) => r.json())
         // .then(res => res.text())
         // .then(text => console.log(text))        
-  
       return {
           props: {post}
       }
@@ -21,8 +27,8 @@
 </script>
   
 <article>
-    <h1 class="section-header">{post.attributes.title}</h1>
-    <div class="metadata"><i>{post.attributes.authors}  – {post.attributes.date}</i></div>
+    <h1 class="section-header">{post.metadata.title}</h1>
+    <div class="metadata"><i>{post.metadata.authors}  – {post.metadata.date}</i></div>
     {@html post.html}
 </article>
 

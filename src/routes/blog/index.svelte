@@ -1,7 +1,7 @@
 <script context="module">
-    export const ssr = false;
+    // export const ssr = false;
 
-    export const prerender = false;
+    export const prerender = true;
   // load data
   export async function load({fetch}) {
     // request data from endpoint

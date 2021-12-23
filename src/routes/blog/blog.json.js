@@ -1,13 +1,12 @@
-import { importMarkdowns, convertToPostPreview } from "$lib/handle-markdown"
-import path from "path"
+import {posts} from "$lib/handle-markdown"
+// Import the markdown files for each post
 // load all markdown files from the posts directory
-let postFiles = importMarkdowns(path.resolve("src"))
 
 export function get() {
     // convert the markdown to the required format
-    let posts = postFiles.map((file) => convertToPostPreview(file));
+    // let posts = postFiles.map((file) => convertToPostPreview(file));
     // stringify to give it as a result of the get command
-    
+    // const myposts = convertMarkdown()
     let body = JSON.stringify(posts);
     
     return {body}
