@@ -4,6 +4,9 @@ export default {
 	kit: {
 		adapter: adapter(),
 		target: '#svelte',
+		vite: {
+			mode: "production"
+		}
 	}
 
 };
