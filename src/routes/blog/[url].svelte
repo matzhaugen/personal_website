@@ -43,4 +43,10 @@
     .metadata {
         text-align: center;
     }
+
+    figure {
+      border: 1px #cccccc solid;
+      padding: 4px;
+      margin: auto;
+    }
 </style>
