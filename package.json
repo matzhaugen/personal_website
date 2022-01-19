@@ -18,6 +18,7 @@
     "eslint-plugin-svelte3": "^3.2.1",
     "prettier": "^2.4.1",
     "prettier-plugin-svelte": "^2.4.0",
+    "remark-footnotes": "2.0",
     "svelte": "^3.44.0"
   },
   "type": "module",
@@ -32,6 +33,7 @@
     "remark-gfm": "^3.0.1",
     "remark-github": "^11.2.2",
     "remark-html": "^15.0.1",
-    "remark-rehype": "^10.1.0"
+    "remark-rehype": "^10.1.0",
+    "svelte-preprocess": "^4.10.2"
   }
 }
