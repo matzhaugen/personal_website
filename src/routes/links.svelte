@@ -26,6 +26,13 @@
 <ul>
 	<li><a href="https://www.gurdjieff.org/challenger1.htm">Beelzebub's tales to his grandson by Gurdjieff</a></li>
 </ul>
+<h3>Medicine</h3>
+<ul>
+	<li><a href="https://www.torstenengelbrecht.com/en/virus-mania-neu/">Virus Mania by Torsten Engelbrecht, Claus Köhnlein, MD, 
+Dr. Samantha Bailey, MD, Dr. Stefano Scoglio </a></li>
+<li><a href="https://www.ener-chi.com/books/cancer-is-not-a-disease/">Cancer is Not a Disease by Andreas Moritz</a></li>
+</ul>
+
 
 <!-- <h2> Electromagnetic radiation and human health</h2>
 
