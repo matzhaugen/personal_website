@@ -1,6 +1,6 @@
 ---
 title: What were the results from the Pfizer trials?
-description: New information suggest that some results have been surpressed. 
+description: New information suggests inconsistencies in the data. 
 date: Dec 14, 2021
 authors: Matz Haugen
 language: English
