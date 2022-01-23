@@ -5,7 +5,28 @@
 	<li>
 		<a href="https://www.argmin.net/">Argmin: Blog by Ben Recht</a>
 	</li>
+	
+	<li><a href="https://www.argmin.net/2021/12/01/unblinding/">Ben Recht on the Bangladesh mask intervention study</a></li>
 </ul>
+<h2>Medicine</h2>
+<ul>
+	<li>
+		<a href="https://www.bmj.com/content/308/6924/283"> The scandal of poor medical research by D G Altman. in <i>The British Medical Journal</i> (1994)</a>
+	</li>
+	<li><a href="https://aapsonline.org/mask-facts/">Mask facts by the Association of American Physicians and Surgeons</a></li>
+</ul>
+
+<h2>Illuminating books</h2>
+<h3>Electromagnetism and health</h3>
+<ul>
+	<li><a href="https://www.goodreads.com/book/show/277641.The_Body_Electric">The Body Electric by Robert Becker</a></li>
+
+</ul>
+<h3>Philosophy</h3>
+<ul>
+	<li><a href="https://www.gurdjieff.org/challenger1.htm">Beelzebub's tales to his grandson by Gurdjieff</a></li>
+</ul>
+
 <!-- <h2> Electromagnetic radiation and human health</h2>
 
 <ul>
