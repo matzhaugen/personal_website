@@ -15,7 +15,6 @@
 
 <script>    
     import { onMount } from 'svelte';
-
     onMount(() => {
         let cachedLanguage = localStorage.getItem(`language`)
         if (!!cachedLanguage) {

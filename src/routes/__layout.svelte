@@ -1,3 +1,9 @@
+<script>
+  import { GoogleAnalytics } from '@beyonk/svelte-google-analytics'
+</script>
+
+<GoogleAnalytics properties={[ 'G-EQKEBHS9KL' ]} />
+
 <body>
 <nav>
   <a href="/">Home</a>
