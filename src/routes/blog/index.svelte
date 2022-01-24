@@ -40,6 +40,11 @@
     export let posts;
 </script>
 
+<svelte:head>
+ <title>Blog</title>
+</svelte:head>
+
+
 {#if typeof localStorage !== `undefined`}
     <div class="submenu">
         <div on:click={switchLanguage}>{language}</div>

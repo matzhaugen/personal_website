@@ -1,3 +1,7 @@
+<svelte:head>
+ <title>Links</title>
+</svelte:head>
+
 <h1> Links </h1>
 
 <h2>Statistics</h2>

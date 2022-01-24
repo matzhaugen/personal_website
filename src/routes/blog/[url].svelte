@@ -21,6 +21,10 @@
     }
 </script>
 
+<svelte:head>
+ <title>{post.metadata.title}</title>
+</svelte:head>
+
 
 <script>
     export let post;

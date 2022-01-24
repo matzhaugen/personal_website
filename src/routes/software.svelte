@@ -1,3 +1,7 @@
+<svelte:head>
+ <title>Software</title>
+</svelte:head>
+
 	<ul>
 		<li> <a href="https://github.com/matzhaugen/analytic_shrinkage/">Non-Linear Covariance Shrinkage</a>
 			Provides a function that calculates an estimate of the covariance matrix shrunk using a non-linear analytic formula provided by
