@@ -11,6 +11,7 @@
 	</li>
 	
 	<li><a href="https://www.argmin.net/2021/12/01/unblinding/">Ben Recht on the Bangladesh mask intervention study</a></li>
+	<li><a href="https://www.socscistatistics.com/tests/chisquare/">Chi-square calculator</a></li>
 </ul>
 <h2>Medicine</h2>
 <ul>
