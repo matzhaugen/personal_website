@@ -27,7 +27,7 @@ groups) from the <a href=https://www.ema.europa.eu/en/documents/assessment-repor
 discussion. </i> </figcaption>
 </figure>
 
-[Palmer *et al.*](https://doctors4covidethics.org/wp-content/uploads/2021/07/expertise-published_15.07.pdf) go on to show that the progression of immunity is inconsistent with their data listed in Table 4 in the EMA report (Table 1 below). This table shows a mere 0.5% difference in infection rates 14 days after the second dose, which is in stark contrast to the approximately doubled infection rates among the placebo group shown in their graph above (Figure 1B), assuming 14 days after second dose is approximately 35 days after first dose. In other words, one of these datasets are false, and it is likely that the false data is in Figure 1B due to the lack of biological plausibility.
+[Palmer *et al.*](https://doctors4covidethics.org/wp-content/uploads/2021/07/expertise-published_15.07.pdf) go on to show that the progression of immunity is inconsistent with their data listed in Table 4 in the EMA report (Table 1 below). This table shows a 0.5% difference in infection rates 14 days after the second dose, which is in stark contrast to the approximately doubled infection rates among the placebo group shown in their graph above (Figure 1B), assuming 14 days after second dose is approximately 35 days after first dose. In other words, one of these datasets are false, and it is likely that the false data is in Figure 1B due to the lack of biological plausibility.
 
 <figure>
 <img src="/Table1.png" width="650">
