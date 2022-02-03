@@ -23,11 +23,12 @@ Main comments
 
 2. After all this they only find a 89.1% match between their Megahit sample and the database sample. In light of the fact that monkey DNA and human DNA are 96% [similar](http://www.differencebetween.info/difference-between-human-and-monkey-dna), 89.1% is not very impressive.
 
-3. They claim that their whole novel genome was actually 29,903 nt long, whereas their Megahit sample was 30,474 nt long. What happened to the 500 nt difference?
+3. The discovery has no statistical significance test or uncertainty associated with it. No null hypothesis is introduced, presumably because even formulating such a hypothesis is an immense challenge. For example, one would have to compute the combined likelihood that all snippets that form a contig are in fact contiguous. Not an easy task. The paper seems to rely on Megahit. But the field is well aware of these shortcomings. As [O'Rawe et al. (2015)](https://www.cell.com/trends/genetics/fulltext/S0168-9525(14)00209-1) say: *Several statistical studies have tried to measure error rates for basic determinations, but there are no general schemes to project these uncertainties so as to assess the surety of the conclusions drawn*.
 
-4. There is no control used in this experiment, e.g. a sample from a healthy person, presumably because they have no idea which contig to select. Let's not forget that they threw away the 1 million contigs Trinity found (with no justification other than it didn't match the target). They did use controls in the PCR test, however, but not a healthy person, only a positive control (with no description of what a positive control is) and water.
+4. They claim that their whole novel genome was actually 29,903 nt long, whereas their Megahit sample was 30,474 nt long. What happened to the 500 nt difference?
 
-5. What guarantees are there that the assembled contigs are in fact contiguous? The paper seems to rely on Megahit.
+5. There is no control used in this experiment, e.g. a sample from a healthy person, presumably because they have no idea which contig to select. Let's not forget that they threw away the 1 million contigs Trinity found (with no justification other than it didn't match the target). They did use controls in the PCR test, however, but not a healthy person, only a positive control (with no description of what a positive control is) and water.
+
 
 Interesting side notes
 -----------------------
@@ -35,7 +36,7 @@ Interesting side notes
 
 3. What we call variants are efforts to repeat the experiment in this paper but coming up with slightly different results. In other words, variants are failed repeated experiments, which also invalidates the original experiment.
 
-4. The patient was mildly hypoxic, a trademark symptom of radiation poisoning, see [Rubik and Brown (2021)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8580522/) for more detail.
+4. The patient was mildly hypoxic, a trademark symptom of radiation poisoning, as discussed by [Rubik and Brown (2021)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8580522/) and [Rios et al. (2021)](https://meridian.allenpress.com/radiation-research/article/195/1/1/446280/Commonalities-Between-COVID-19-and-Radiation).
 
 On transmissibility of virus (not the scope of the paper)
 ---
@@ -43,6 +44,6 @@ I was recently made aware of an interesting paper by the CDC where they provide 
 
 "*Therefore, we examined the capacity of SARS-CoV-2 to infect and replicate in several common primate and human cell lines, including human adenocarcinoma cells (A549), human liver cells (HUH7.0), and human embryonic kidney cells (HEK-293T), in addition to Vero E6 and Vero CCL81 cells. We also examined an available big brown bat kidney cell line (EFK3B) for SARS-CoV-2 replication capacity. Each cell line was inoculated at high multiplicity of infection and examined 24 h postinfection (Figure 3, panel A). **No [cytopathic effect] was observed in any of the cell lines except in Vero cells**, which grew to >107 PFU at 24 h postinfection. In contrast, HUH7.0 and 293T cells showed only modest viral replication, and A549 cells were incompatible with SARS-CoV-2 infection.*"
 
-In other words, the covid virus is not cytopathic unless you add vero cells ([monkey kidney cells](https://www.atcc.org/products/ccl-81)).
+In other words, the covid virus is not cytopathic unless you add vero cells ([monkey kidney cells](https://www.atcc.org/products/ccl-81)). Could it be that this "virus" is not foreign genetic material but rather originates from the human genome itself?
 
 [^1]: [Li et al. (2015)](https://academic.oup.com/bioinformatics/article/31/10/1674/177884). See also [Gurevich et al. (2013)](https://academic.oup.com/bioinformatics/article/29/8/1072/228832?login=true) for description of the SPAdes algorithm.
