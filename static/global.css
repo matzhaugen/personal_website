@@ -2,7 +2,7 @@
 body { 
 	margin: auto;
 	margin-top: 50px;
-	line-height: 1.4rem;
+	line-height: 1.6rem;
 	width: 750px;
 	font-size: 1.1rem;
 	color: #333333;
@@ -15,7 +15,7 @@ li{ margin:0 20px 20px 0; vertical-align:top}
 a { color: #b48608; text-decoration: none;}
 a:hover { color: #e5a400; }
 nav a {
-	font-size: 1.2rem;
+	font-size: 1.1rem;
 	margin-right: 20px;
 }
 

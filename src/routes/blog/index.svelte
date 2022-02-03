@@ -50,7 +50,7 @@
         <div on:click={switchLanguage}>{language}</div>
     </div>
     {#each posts as post} 
-        {#if post.language === getOtherLanguage(language)}
+        {#if post.language === getOtherLanguage(language) && ! post.hidden}
             <PostCard title={post.title} description={post.description} url={post.url} date={post.date}/>
         {/if}
     {/each}

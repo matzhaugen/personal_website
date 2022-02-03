@@ -20,7 +20,7 @@
     }
     a {
         font-weight: 100;
-        font-size: 20px;
+        font-size: 15px;
         color: black;
         text-decoration: none;
     }
