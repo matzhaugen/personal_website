@@ -18,6 +18,9 @@
 	<li>
 		<a href="https://www.bmj.com/content/308/6924/283"> The scandal of poor medical research by D G Altman. in <i>The British Medical Journal</i> (1994)</a>
 	</li>
+	<li>
+		<a href="https://www.lifeextension.com/magazine/2006/8/report_death">Doctors are the leading cause of death by G. Null (peer-reviewed in) <i>Life Extension Magazine </i> (2006)</a>
+	</li>
 	<li><a href="https://aapsonline.org/mask-facts/">Mask facts by the Association of American Physicians and Surgeons</a></li>
 </ul>
 
@@ -35,8 +38,17 @@
 <ul>
 	<li><a href="https://www.torstenengelbrecht.com/en/virus-mania-neu/">Virus Mania by Torsten Engelbrecht, Claus Köhnlein, MD, 
 Dr. Samantha Bailey, MD, Dr. Stefano Scoglio </a></li>
-<li><a href="https://www.ener-chi.com/books/cancer-is-not-a-disease/">Cancer is Not a Disease by Andreas Moritz</a></li>
+<li><a href="https://www.ener-chi.com/books/cancer-is-not-a-disease/">Cancer is Not a Disease by Andreas Moritz
+</a></li>
+
 </ul>
+<h3>Social Critique</h3>
+<ul>
+	<li>
+		<a href="http://edwardcurtin.com/2293-2/">Seeking truth in a country of lies by Edward Curtin (2020)</a>
+	</li>
+</ul>
+
 
 
 <!-- <h2> Electromagnetic radiation and human health</h2>

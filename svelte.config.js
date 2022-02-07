@@ -1,13 +1,14 @@
 import adapter from '@sveltejs/adapter-netlify';
 import { mdsvex } from 'mdsvex'
-import remarkFootnotes from 'remark-footnotes'
-import numberedFootnoteLabels from "remark-numbered-footnote-labels"
+import remarkGfm from 'remark-gfm'
+// import remarkFootnotes from 'remark-footnotes'
+// import numberedFootnoteLabels from "remark-numbered-footnote-labels"
 
 export default {
 	extensions: ['.svelte', '.svx', '.md'],
 	preprocess: mdsvex({ 
-		remarkPlugins: [[remarkFootnotes, {inlineNotes: true}]],
-		// remarkPlugins: [[numberedFootnoteLabels]],
+		// remarkPlugins: [[remarkFootnotes, {inlineNotes: true}]],
+		remarkPlugins: [[remarkGfm]],
 		extensions: ['.svx', '.md'] }),
 
 		
