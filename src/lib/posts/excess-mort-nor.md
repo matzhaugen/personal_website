@@ -83,7 +83,7 @@ Fordi Norge har gode statistiske kilder har vi observasjoner helt tilbake til 20
 5. Gjenta steg 2-4 med forskjellige frihetsgrader i polynomene.
 6. Den frihetsgraden som er minst og dekker det antatte konfidensintervallet er den mest sparsommelige modellen med nøyaktig dekning.
 
-Vi gjør denne estimeringsprosessen og ser at 6-8 frihetsgrader er en god modellkompleksitet, sett at denne modellen dekker 95% av observasjonene i en periode modellen ikke er trenert på (Figur 6). Slik kan man da si med økt sikkerhet at konfidensintervallet er stødig i perioden etter 2020.
+Vi gjør denne estimeringsprosessen og ser at 6-8 frihetsgrader er en god modellkompleksitet, sett at denne modellen dekker 95% av observasjonene i en periode modellen ikke er trenert på (Figur 6). Slik kan man da si med økt sikkerhet at konfidensintervallet er stødig i perioden etter 2020. Disse konklusjonene holder også om man tar ut Covid-dødsfall fra observasjonene (Figur 7).
 
 <!-- Når man trekker fra denne trenden og transformerer observasjonene tilbake til de orginale tallene kan man se at de følger en tilnærmet Poisson fordeling, som støtter grunnlaget til model-valget der vi jobber i logg-domenet (Figur 6).
 
@@ -96,3 +96,11 @@ Vi gjør denne estimeringsprosessen og ser at 6-8 frihetsgrader er en god modell
 <img alt=6 src="/excess-mort-nor/cv_pois_s2008.png" width="650">
 <figcaption> <b> Figur 6: </b> <i> Kryss-validerte dekningsestimater: Et estimat av andelen av årlige observasjoner fra 2001-2019 innenfor konfidensintervallet på 95% for treningsperioden (blå) og for hold-out-året utenom (i) rød). Hvert år avholdes etter tur mens de andre årene brukes til å beregne konfidensintervallet. Feilstolper er ett standardavvik fra gjennomsnittsestimatet.  </i> </figcaption>
 </figure>
+
+
+
+<figure>
+<img alt=one src="/excess-mort-nor/norway_excess_nc_deaths_pois.png" width="650">
+<figcaption> <b> Figur 7: </b> <i> Overdødsfall utenom Covid dødsfall for personer over 65 år i Norge etter aldersstandardisering og fjernet sesong- og tiårstrend. Basisestimat er sentrert til x-aksen beregnet med kvaltilregresjon. Trender er robust tilpasset ved den 50. kvantilen, mens konfidensintervallet passer til henholdsvis 97,5 % og 2,5 % kvantilen. Vaksinasjonsdata er lagt over for samme aldersgruppe, atskilt med injeksjonsnummer. </i> </figcaption>
+</figure>
+
