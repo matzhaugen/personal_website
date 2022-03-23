@@ -100,7 +100,7 @@
     <!-- chart title -->
         <Pancake.Point x={2019} y={40}>
             <div class="text">
-                <h2>Low-Earth Orbit Sattelite Launches</h2>
+                <h2>Low-Earth Orbit Satellite Launches</h2>
 
                 <p>
                     <span style="color: #676778; opacity: 0.5">•</span>
@@ -114,7 +114,7 @@
     <!-- note -->
         <Pancake.Point x={2022.5} y={2}>
             <div class="text" style="right: 0; text-align: right;">
-                <p><em>Sattelites in orbit</em></p>
+                <p><em>Satellites in orbit</em></p>
                 <p><em>Source: www.n2yo.com</em></p>
             </div>
         </Pancake.Point>
