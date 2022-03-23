@@ -36,6 +36,7 @@
     "mdsvex": "^0.9.8",
     "micromark-extension-gfm": "^2.0.1",
     "nanoid": "^3.2.0",
+    "prismjs": "^1.27.0",
     "rehype": "^12.0.0",
     "remark": "^14.0.2",
     "remark-gfm": "^3.0.1",
