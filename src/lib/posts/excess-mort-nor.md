@@ -7,14 +7,17 @@ language: Norwegian
 hidden: False
 ---
 
-Hvordan går man frem for å estimere overdødsfallsrater over tid med nøyaktige konfidensintervaller? 
-Dette er nyttig ettersom det kan svare på spørsmål om hvor dødelig pandemien var i 2020-2021, så vel som effekten av vaksinen for å redusere disse dødsfallene. 
+Hvordan går man frem for å estimere overdødelighet over tid? 
+Dette er nyttig ettersom det kan svare på spørsmål om hvor dødelig pandemien var i 2020-2021, så vel som effekten av vaksinen brukt for å redusere disse dødsfallene. 
 I denne analysen, begrenser vi oss til aldersgruppen 65+ siden denne aldersgruppen har økt risiko for å dø og er mer følsomme for endringer i det indre og ytre miljøet. 
 Norge er et interessant land å studere siden det hadde en relativt lav dødelighet i den innledende pandemibølgen i mars 2020 og har god statistikk tilgjengelig for analyse fra Statistisk Sentralbyrå (SSB). 
-Sammen med den relativt lille befolkningen gjør dette Norge til en god kandidat til å teste hvor bra konfidensintervaller er estimert. 
-Vi bruker også alle dødsårssaker siden disse ikke har noen skjevfordeling med hensyn til diagnostisering.
+Sammen med den relativt lille befolkningen gjør dette Norge til en god kandidat til å teste nøyaktighetsmarginen på estimatet. Denne marginen kalles også et *konfidensintervall*, og kan tolkes som sannsynligheten for at observasjonen er et resultat av tilfeldig variasjon. For eksempel, et 95% konfidensintervall betyr at 1 av 20 observasjoner kan forventes å være utenfor intervallet. I dette tilfellet er dette snakk om en ukentlig observasjon som er utenfor intervallet sammenlignet med samme uke i andre år.
 
-Vi ser at den første pandemibølgen var så vidt over det normale mens siste halvdel av 2021 hadde en markant høy dødelighet (Figur 1). Vi ser også at vaksinen ikke nødvendigvis har begrenset dødsfall i 2021, selv om det er vanskelig å trekke faste konklusjoner. Ettersom pandemibølgen faktisk startet litt under basisestimatet, kan det være et tegn på at overdødelighetsestimatet er konservativt. Første halvdel har en dødelighet under basisestimatet. Det kan tenkes at den høye dødeligheten på slutten av året er etterslep på den tidligere lave dødeligheten, men det er 35% av ukene i 2021 som er over 95% konfidensintervallet, mens bare 23% er under. Vi bruker 95% som en konservativ grense for hva som er normalt. Dette estimatet kan tolkes som grensen man må over for at det er 5% sjanse for at estimatet er høyt ved en tilfeldighet eller tilfeldig variasjon, basert på tidligere dødelighetstall som vi her inkluderer med årene 2001-2021 (se Figur 5).
+Vi bruker også alle dødsårssaker siden disse ikke har noen skjevfordeling med hensyn til diagnostisering, selv om vi har tatt forbehold for covid-dødsfall helt til slutt.
+
+Etter vår statistiske analyse ser vi at den første pandemibølgen var så vidt over det normale mens siste halvdel av 2021 hadde en markant høy dødelighet (Figur 1). Vi ser også at vaksinen ikke nødvendigvis har begrenset dødsfall i 2021, selv om det er vanskelig å trekke faste konklusjoner. Ettersom pandemibølgen faktisk startet litt under basisestimatet, kan det være et tegn på at overdødelighetsestimatet er konservativt. Første halvdel har en dødelighet under basisestimatet. Det kan tenkes at den høye dødeligheten på slutten av året er etterslep på den tidligere lave dødeligheten, men det er 35% av ukene i 2021 som er over 95% konfidensintervallet, mens bare 23% er under. Vi bruker 95% som en konservativ grense for hva som er normalt. Dette estimatet kan tolkes som grensen man må over for at det er 5% sjanse for at estimatet er høyt ved en tilfeldighet eller tilfeldig variasjon, basert på tidligere dødelighetstall som vi her inkluderer med årene 2001-2021 (se Figur 5).
+
+Vi estimerer *basis estimatet* basert på tiårig - og sesong-baserte trender, ved å minimere distansen fra avvikene til denne trenden. Dette trenden kalles den 50. *kvantilen*, eller *medianen*. Dette er beskrevet i detalj i neste seksjon. 
 
 <!-- How does one go about estimating excess death over time with accurate confidence intervals (Figure 1)? This is useful information as it can answer questions about how deadly the pandemic was in 2020-2021 as well as the efficacy of the vaccine in reducing these deaths. We will constrain ourselves to ages 65+ since this age group is at hightened risk of dying and more sensitive to changes in the internal and external environment. Norway is an intersting country to study since it had a relatively low mortality in the initial pandemic wave in March 2020 and it has good statistics available for analysis. Coupled with the relatively small population this makes Norway a good candidate to test how well confidens intervals are estimated. -->
 
@@ -23,9 +26,10 @@ Vi ser at den første pandemibølgen var så vidt over det normale mens siste ha
 <figcaption> <b> Figur 1: </b> <i> Overdødsfall for personer over 65 år i Norge etter aldersstandardisering og fjernet sesong- og tiårstrend. Basisestimat er sentrert til x-aksen beregnet med kvaltilregresjon. Trender er robust tilpasset ved den 50. kvantilen, mens konfidensintervallet passer til henholdsvis 97,5 % og 2,5 % kvantilen. Vaksinasjonsdata er lagt over for samme aldersgruppe, atskilt med injeksjonsnummer. </i> </figcaption>
 </figure>
 
+
 Fordi vi bruker observasjonsbaserte kvantiler i konfidensestimatet vil det være en vertikal asymmetri over og under basis estimatet (x-aksen i Figur 1). 
 Fordelen med denne metodikken er at vi får nøyaktig konfidensdekning på observasjonene, som testes i perioden 2001-2019. 
-Dette er beskrevet i detalj i neste seksjon. 
+
 
 
 ## Statistisk metodikk
