@@ -1,3 +1,4 @@
+<!-- Using Pancake by Rich Harris: https://github.com/Rich-Harris/pancake/ -->
 <svelte:head>
  <title>Sattelites</title>
 </svelte:head>
@@ -66,7 +67,7 @@
 <div class="chart">
 <Pancake.Chart x1={minx} x2={maxx} y1={miny} y2={maxy}>
     <Pancake.Grid horizontal={true} count={5} let:value let:last>
-        <div class="grid-line horizontal"><span>{value} {last ? 'launches' : ''}</span></div>
+        <div class="grid-line horizontal"><span>{value} {last ? 'satellites' : ''}</span></div>
     </Pancake.Grid>
 
     <Pancake.Grid vertical count={4} let:value>
@@ -90,7 +91,7 @@
                 <div class="focus"></div>
                 <div class="tooltip" style="transform: translate(-{pc(closest.date)}%,0)">
                     <strong>{closest.type}</strong> 
-                    <span>{closest.count} {closest.count === 1 ? "launch" : 'launches'}</span>
+                    <span>{closest.count} {closest.count === 1 ? "satellite" : 'satellites'}</span>
                     <div><span>{closest.date}</span></div>
                 </div>
             </Pancake.Point>
@@ -114,7 +115,7 @@
     <!-- note -->
         <Pancake.Point x={2022.5} y={2}>
             <div class="text" style="right: 0; text-align: right;">
-                <p><em>Satellites in orbit</em></p>
+                <p><em>Satellites/payloads in orbit</em></p>
                 <p><em>Source: www.n2yo.com</em></p>
             </div>
         </Pancake.Point>
@@ -149,7 +150,7 @@
         bottom: 2px;
         line-height: 1;
         font-family: sans-serif;
-        font-size: 14px;
+        font-size: 16px;
         color: #999;
     }
     .year-label {
@@ -158,7 +159,7 @@
         left: -2em;
         bottom: -30px;
         font-family: sans-serif;
-        font-size: 14px;
+        font-size: 16px;
         color: #999;
         text-align: center;
     }
