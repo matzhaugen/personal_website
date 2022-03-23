@@ -14,6 +14,9 @@ the Community Earth System Model and the accompanying paper is submitted with ti
 temperature distributions using ensemble model simulations" and authors Matz A. Haugen, Michael L. Stein, Ryan L.
 Sriver, Elisabeth J. Moyer.
 		</li>
+		<li>
+			<a href="/sattelites/">Sattelite data</a>
+		</li>
 		<!-- <li>
 			<a href="">Concord-MAF Stock Picker</a>: Choose some stocks and build your own portfolio. the work is based on <a href="https://arxiv.org/abs/1307.5381">this paper</a> (will most certainly break if you use it too much, and even if it doesn't aws will probably complain about CPU usage).
 		</li> -->

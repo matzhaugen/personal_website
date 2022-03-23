@@ -12,6 +12,7 @@
   <a href="/software">Software</a> 
   <a href="/MatzHaugenResume.pdf" download="MatzHaugenResume">CV</a>
   <a href="/blog">Blog</a> 
+  <a href="/satellites">Satellites</a> 
 </nav>
 <slot></slot>
 </body>

@@ -16,7 +16,7 @@ export default {
 		adapter: adapter(),
 		target: '#svelte',
 		vite: {
-			mode: "production"
+			mode: "production",
 		}
 	}
 
