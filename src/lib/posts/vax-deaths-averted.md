@@ -32,7 +32,7 @@ En annen observasjon er at fertiliteten synker verden over. I Sveits har fertili
 </figure>
 
 
-Alt i alt blir Watson et al. sin studie mindre viktig sett i lys av vaksineskadene som nå er blitt åpenbare. Men denne artikkelen ville nok ikke gått imot vaksineagendaen da den er finansiert av Gavi, WHO, The Vaccine Alliance, og the Bill & Melinda Gates Foundation, der førstnevnte forsyner fattige land med vaksiner, som er nøyaktig beskrevet i Robert F. Kennedy's book ["The Real Anthony Fauci"](https://www.amazon.com/Real-Anthony-Fauci-Democracy-Childrens/dp/1510766804/). Verdens helseorganisasjon har også nylig blitt implisert og anklaget for å sterilisere kenyanske kvinner med vaksiner som beskrives i en ny [dokumentar](https://infertilitymovie.org/).
+Alt i alt blir Watson et al. sin studie mindre viktig sett i lys av vaksineskadene som nå er blitt åpenbare. Men denne artikkelen ville nok ikke gått imot vaksineagendaen da den er finansiert av Gavi, WHO, The Vaccine Alliance, og the Bill & Melinda Gates Foundation, der førstnevnte forsyner fattige land med vaksiner, som er nøyaktig beskrevet i Robert F. Kennedy's book ["The Real Anthony Fauci"](https://www.amazon.com/Real-Anthony-Fauci-Democracy-Childrens/dp/1510766804/). Verdens helseorganisasjon har også nylig blitt implisert og anklaget for å sterilisere kenyanske kvinner med vaksiner som beskrives i en ny [dokumentar](https://infertilitymovie.org/) og er også detaljert av [Oller et al. (2017)](https://www.scirp.org/html/81838_81838.htm). 
 
 
 
