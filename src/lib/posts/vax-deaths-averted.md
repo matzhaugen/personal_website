@@ -17,18 +17,22 @@ Det er kun [en artikkel](https://www.nejm.org/doi/full/10.1056/nejmoa2116597) so
 
 Det er videre mange artikler som nå har blitt publisert som viser negativ effektivitet av vaksinene. [Brown et al. (2021)](https://pubmed.ncbi.nlm.nih.gov/34351882/) fant "mer virus" i vaksinerte personer enn uvaksinerte, mens [Gazit et al. (2021)](https://www.medrxiv.org/content/10.1101/2021.08.24.21262415v1.full) fant 13x høyere sannsynlighet for infeksjon i vaksinerte enn de tidligere smittede.  Flere studier er gjennomgått av [Paul Alexander](https://brownstone.org/articles/16-studies-on-vaccine-efficacy/), epidemiolog tidligere konsulent til WHO. Dermed ligger antagelsen at smitten minker med vaksinasjon på løs grunn.
 
-Men kanskje det aller viktigste som ikke ble tatt med av Watson et al. er bivirkninger fra vaksinen som nå har blitt så åpenbart at det finnes mere enn [1000 fagfellevurderte studier](https://new.awakeningchannel.com/vax-injuries-1000-peer-reviewed-medical-papers/) publisert som omhandler forskjellige skader fra vaksinen. Den nyeste installasjonen er i den anerkjente journalen _Nature_ der [Le Vu et al. (2022)](https://www.nature.com/articles/s41467-022-31401-5) viser en 44x forhøyet risiko for myokarditt blant menn i gruppen 18-24 (Figur 1). Andre noteverdige bivirkninger er [Guillain-Barre's](https://www.sciencedirect.com/science/article/pii/S0303846721004169) syndrom, [Bell's palsy](https://www.sciencedirect.com/science/article/pii/S1473309921002735), og [blodpropp som medfører amputering](https://swprs.org/covid-vaccine-adverse-events/). 
+Men kanskje det aller viktigste som ikke ble tatt med av Watson et al. er bivirkninger fra vaksinen som nå har blitt så åpenbart at det finnes mere enn [1000 fagfellevurderte studier](https://new.awakeningchannel.com/vax-injuries-1000-peer-reviewed-medical-papers/) publisert som omhandler forskjellige skader fra vaksinen. Den nyeste installasjonen er i den anerkjente journalen _Nature_ der [Le Vu et al. (2022)](https://www.nature.com/articles/s41467-022-31401-5) viser en 44x forhøyet risiko for myokarditt blant menn i gruppen 18-24 (Figur 1). Andre noteverdige bivirkninger er [Guillain-Barre's](https://www.sciencedirect.com/science/article/pii/S0303846721004169) syndrom, [Bell's palsy](https://www.sciencedirect.com/science/article/pii/S1473309921002735), og [blodpropp som medfører amputering](https://swprs.org/covid-vaccine-adverse-events/), og ikke minst dødsfall som også viser en kraftig tidsmessig correlasjon med overdødlighetsstatistikk (Figur 2).
 
 <figure>
 <img src="/vax-deaths-averted/myocarditis.png" width="650">
 </figure>
 
+<figure>
+<img src="/vax-deaths-averted/deaths.png" width="650">
+<figcaption> Figur 2: Overdødelighet i Europa sammenlignet med vaksineringsprogrammet. </figcaption>
+</figure>
 
-En annen observasjon er at fertiliteten synker verden over. I Sveits har fertiliteten [sunket](https://swprs.org/covid-vaccines-and-fertility/) med ca. 10-15% ca 9 måneder etter vaksineprogrammet begynte (Figur 2). Det rapporteres også om en økning av dødfødsler, f.eks. i [Israel og Østerike](https://swprs.org/covid-vaccination-and-pregnancy/).
+En annen observasjon er at fertiliteten synker verden over. I Sveits har fertiliteten [sunket](https://swprs.org/covid-vaccines-and-fertility/) med ca. 10-15% ca 9 måneder etter vaksineprogrammet begynte (Figur 3). Det rapporteres også om en økning av dødfødsler, f.eks. i [Israel og Østerike](https://swprs.org/covid-vaccination-and-pregnancy/).
 
 <figure>
 <img src="/vax-deaths-averted/fertility.png" width="650">
-<figcaption> Figur 2: Fertilitet sammenlignet med vaksinasjon i Sveits. </figcaption>
+<figcaption> Figur 3: Fertilitet sammenlignet med vaksinasjon i Sveits. </figcaption>
 </figure>
 
 
