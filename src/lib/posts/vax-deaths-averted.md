@@ -24,7 +24,7 @@ Men kanskje det aller viktigste som ikke ble tatt med av Watson et al. er bivirk
 </figure>
 
 <figure>
-<img src="/vax-deaths-averted/deaths.png" width="650">
+<img src="/vax-deaths-averted/deaths.png" width="600">
 <figcaption> Figur 2: Overdødelighet i Europa sammenlignet med vaksineringsprogrammet. </figcaption>
 </figure>
 
