@@ -1,16 +1,7 @@
 <script context="module">
 
     export const prerender = true;
-  // load data
-  export async function load({fetch}) {
-    // request data from endpoint
-    const posts = await fetch("/blog/blog.json").then((r) => r.json())
-
-    // assign it to the variable
-    return {
-        props: {posts}
-    }
-  }
+    
 </script>
 
 <script>    
@@ -37,7 +28,8 @@
         localStorage.setItem(`language`, language)
     }
     import PostCard from "/src/components/post-card.svelte";
-    export let posts;
+    export let data
+
 </script>
 
 <svelte:head>
@@ -47,9 +39,10 @@
 
 {#if typeof localStorage !== `undefined`}
     <div class="submenu">
-        <div on:click={switchLanguage}>{language}</div>
+        <div role="presentation" on:click={switchLanguage}>{language}</div>
     </div>
-    {#each posts as post} 
+
+    {#each data.posts as post} 
         {#if post.language === getOtherLanguage(language) && ! post.hidden}
             <PostCard title={post.title} description={post.description} url={post.url} date={post.date}/>
         {/if}

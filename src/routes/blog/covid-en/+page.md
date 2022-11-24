@@ -20,7 +20,7 @@ Additionally, covid case numbers do not give information about the vaccine's abi
 The raw data in the Pfizer vaccine's [assessment report](https://www.ema.europa.eu/en/documents/assessment-report/comirnaty-epar-public-assessment-report_en.pdf) from the European Medicines Agency (EMA) also had inconsistencies. Professors M. Palmer, Prof. Emerit. S. Bhakdi and S. Hockert show in their [analysis](https://doctors4covidethics.org/wp-content/uploads/2021/07/expertise-published_15.07.pdf) of the EMA report that antibodies develop 21 days after first dose but full immunity starts at day 12, i.e. before antibody development (Figure 1). The second dose is given at least 19 days before the first dose, so one then has to conclude that a) only one dose is needed, b) antibodies are not necessary to develop immunity (contrary to immunology theory), and c) practically every subject develops immunity exactly at 12 days after first dose. Does this seem too good to be true? If there is a gradual development of antibodies then there should be a correspondingly gradual development of immunity, tempered by the patients' individual immune system.
 
 <figure>
-<img src="/PalmerFig1.png" width="650">
+<img src="/PalmerFig1.png" width="650" alt="Palmer1">
 <figcaption> <b> Figure 1: </b> <i> Reproduction of Figure 7 of the (A; neutralizing antibody titres on various days after the first
 injection) and of Figure 9 (B; cumulative incidence of COVID-19 among vaccinated and placebo
 groups) from the <a href=https://www.ema.europa.eu/en/documents/assessment-report/comirnaty-epar-public-assessment-report_en.pdf>EMA report</a>. Note the logarithmic y axis in B. See text for
@@ -30,7 +30,7 @@ discussion. </i> </figcaption>
 [Palmer *et al.*](https://doctors4covidethics.org/wp-content/uploads/2021/07/expertise-published_15.07.pdf) go on to show that the progression of immunity is inconsistent with their data listed in Table 4 in the EMA report (Table 1 below). This table shows a 0.5% difference in infection rates 14 days after the second dose, which is in stark contrast to the approximately doubled infection rates among the placebo group shown in their graph above (Figure 1B), assuming 14 days after second dose is approximately 35 days after first dose. In other words, one of these datasets are false, and it is likely that the false data is in Figure 1B due to the lack of biological plausibility.
 
 <figure>
-<img src="/Table1.png" width="650">
+<img src="/Table1.png" width="650" alt="Table1">
 <figcaption> <b> Table 1: </b> <i> Subjects without evidence of infection in vaccine and placebo groups at various time
 points in the clinical trial. Data excerpted from Table 4 in the <a href=https://www.ema.europa.eu/en/documents/assessment-report/comirnaty-epar-public-assessment-report_en.pdf>EMA report</a>. </i> </figcaption>
 </figure>

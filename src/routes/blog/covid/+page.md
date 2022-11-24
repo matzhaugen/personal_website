@@ -15,14 +15,14 @@ Problemer med fase 3 studien har nylig blitt beskrevet i *The British Medical Jo
 Men selv [rapporten](https://www.ema.europa.eu/en/documents/assessment-report/comirnaty-epar-public-assessment-report_en.pdf) som European Medicines Agency (EMA) avga om Pfizer vaksinens godkjenning i Europa hadde suspekt informasjon om effektivitet. Professor M. Palmer, Prof. Emerit. S. Bhakdi, og S. Hockertz viser i sin [analyse](https://doctors4covidethics.org/wp-content/uploads/2021/07/expertise-published_15.07.pdf) graverende feil i EMA rapporten. De trekker f.eks. frem at antistoff utvikling hos pasienter skjer 21 dager etter første dose mens full immunitet begynner tilsynelatende etter dag 12, altså før antistoff utvikling (Figur 1). Andre dose gis minst 19 dager etter første dose, så man må da konkludere her at man a) trenger bare en dose og b) trenger ikke antistoffer for å utvikle immunitet (i motsetning til vanlig immunologiteori), og c) nærmest alle pasienter utvikler immunitet 12 dager etter første dose. Virker ikke dette litt for godt til å være sant? Hvis man ser en gradvis utvikling av antistoffer, burde man også se en gradvis utvikling av immunitet som varierer basert på immunforsvar og pasient.
 
 <figure>
-<img src="/PalmerFig1.png" width="650">
+<img src="/PalmerFig1.png" width="650" alt="Palmer1">
 <figcaption> <b> Figur 1: </b> <i> Reproduksjon av Figur 7 fra <a href=https://www.ema.europa.eu/en/documents/assessment-report/comirnaty-epar-public-assessment-report_en.pdf> EMA rapporten</a>, A: Antistoff nivå på forskjellige dager etter første vaksinedose, og Figur 9, B: kumulativ insidens av covid-19 i vaksine og placebogruppene. Noter logaritmisk skala i antistoff nivåene (A) og full immunitet 12 dager etter første vaksinedose i vaksinegruppen (B) til tross for antistoff utvikling etter 21 dager (A). </i> </figcaption>
 </figure>
 
 Videre viser [Palmer *et al.*](https://doctors4covidethics.org/wp-content/uploads/2021/07/expertise-published_15.07.pdf) at immunitetsfordelingen mellom vaksine og placebogruppene er motsigende med sammenligning mot Tabell 4 i EMA rapporten (Tabell 1 under). Denne tabellen viser en 0.5% forskjellig infeksjonsrate mellom de to gruppene 14 dager etter andre dose. Om vi antar at dette er ca. 35 dager etter første dose ser vi at grafen i Figur 1B har over dobbelt så stor forskjell i insidens mellom gruppene, mens tabellen viser at gruppene har nesten lik insidens. Altså, rapporten er selvmotsigende og data i Figur 1B er sannsynligvis forfalsket. 
 
 <figure>
-<img src="/Table1.png" width="650">
+<img src="/Table1.png" width="650" alt="table1">
 <figcaption> <b> Tabell 1: </b> <i> Reproduksjon av Tabell 4 fra <a href=https://www.ema.europa.eu/en/documents/assessment-report/comirnaty-epar-public-assessment-report_en.pdf> EMA rapporten</a>: Pasienters symptomsbevis for covid-19 før første dose og 14 dager etter andre dose. </i> </figcaption>
 </figure>
 
