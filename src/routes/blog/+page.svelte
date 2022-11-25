@@ -54,6 +54,7 @@
 <style type="text/css">
     .submenu {
         text-align: right;
+        margin-right: 5%;
         color: #b48608; text-decoration: none;
 
     }

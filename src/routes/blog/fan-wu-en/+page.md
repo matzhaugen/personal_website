@@ -1,7 +1,7 @@
 ---
 title: Critique of the original covid isolation paper by F. Wu et al. (2020).
 description: Some points worth noting regarding the virus isolation procedure used.
-date: Feb 2, 2022
+date: Nov 25, 2022
 authors: Matz Haugen
 language: English
 hidden: False
