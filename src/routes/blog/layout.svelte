@@ -23,4 +23,5 @@
     .metadata {
         text-align: center;
     }
+    
 </style>
