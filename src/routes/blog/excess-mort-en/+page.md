@@ -1,6 +1,6 @@
 ---
 title: Excess mortality compared to vaccination in the covid era 
-description: En statistisk of excess mortality and vaccination.
+description: A statistical analysis of excess mortality and vaccination association.
 date: Jan 2, 2023
 authors: Matz Haugen
 language: English
@@ -32,7 +32,7 @@ For ease of comparing mortality rates between countries (Figure 2), the data was
 
 Note also that the booster is more strongly associated with increased all-cause-mortality than the first two doses (see appendix). This might be due to the memory of the human immune system intensifying the self-to-self attack caused by spike protein production of our own cells post-vaccination (discussed by [Doctors for Covid Ethics, 2022](https://doctors4covidethics.org/boosting-blood-clots-and-leaky-vessels-the-dangers-of-covid-19-vaccines-and-booster-shots/)).
 
-Finally, it is interesting to note that less than half of the countries analyzed showed anomalous mortality in the initial Covid wave of March-April 2020 (although there is evidence that covid was endemic before 2020, as early as September 2019, according to [this Italian study](https://journals.sagepub.com/doi/full/10.1177/0300891620974755)).
+Finally, it is interesting to note that less than half of the countries analyzed showed anomalous mortality in the initial Covid wave of March-April 2020 (although there is evidence that covid was endemic before 2020, as early as September 2019, according to [this Italian study](https://journals.sagepub.com/doi/full/10.1177/0300891620974755)) (see also [Elmore et al. 2020](https://www.jmir.org/2020/9/e21562)).
 
 ## Methodology
 
