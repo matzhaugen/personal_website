@@ -49,9 +49,13 @@ Dr. Samantha Bailey, MD, Dr. Stefano Scoglio </a></li>
 	</li>
 </ul>
 
+<h2>Educational Videos</h2>
+<ul>
+	<li><a href="https://www.youtube.com/watch?v=VgdyXh4m9Mc">The Wave Genome</a></li>
+</ul>
 
 
-<!-- <h2> Electromagnetic radiation and human health</h2>
+<h2> Electromagnetic radiation and human health</h2>
 
 <ul>
 	<li>
@@ -80,7 +84,7 @@ radiation by I. Yakymenko et al. in <i>Electromagnetic Biology and Medicine</i> 
 	<li>
 		<a href="https://www.nature.com/articles/s41598-018-26185-y/briefing/signup/">On honey bees by S. Sheppard et al. <i>Nature</i> (2018)</a>
 	</li>
-		<a href="https://www.telefonie.li/wp-content/uploads/sites/7/2014/10/publikation_nature_svenjaengels.pdf">On birds by S. Engels at al. <i>Nature</i> (2014)</a>
+	<li><a href="https://www.telefonie.li/wp-content/uploads/sites/7/2014/10/publikation_nature_svenjaengels.pdf">On birds by S. Engels at al. <i>Nature</i> (2014)</a></li>
 	<li><a href="http://media.withtank.com/592b5448ab/waldmann-selsam_2016_scitotenv572p554-569_rf__trees.pdf"> On trees by  Waldmann-Selsam et al. <i>Science of the Total Environment</i> (2016) </a></li>
 	<li><a href="https://www.nature.com/articles/srep36413">On desert locusts by J. Wyszkowska <i>Nature</i> (2016)</a></li>
 	<li><a href="https://ehtrust.org/wp-content/uploads/Thill_Review_Insects_2020_Engl.pdf">Biological effects of electromagnetic fields on insects by A. Thill (2020) </a></li>
@@ -109,4 +113,3 @@ Oncology</i> (2020)</a>
 	<li><a href="https://electromagneticlife.substack.com/p/5g-are-there-biological-impacts">5G: Are there biological effects? </a></li>
 </ul>
 
- -->
