@@ -36,7 +36,7 @@ It is interesting to note that less than half of the countries analyzed showed a
 
 ## On causality
 
-While there is a clear association between vaccination and mortality in these results, the question of causation remains. Bradford Hill argued in 1965 that 9 criteria could be used as guidelines to be followed in pursuing the question of causality. [Ioannidis (2015)](https://doi.org/10.1002/sim.6825) argued that only 3 of these criteria have been proven to be useful given the literature published since Hill's paper, these being _experiment_, _temporality_, and _consistency_. Thus, we will focus only on these criteria.
+While there is a clear association between vaccination and mortality in these results, the question of causation remains. Bradford Hill [argued in 1965](https://journals.sagepub.com/doi/pdf/10.1177/003591576505800503) that 9 criteria could be used as guidelines to be followed in pursuing the question of causality. [Ioannidis (2015)](https://doi.org/10.1002/sim.6825) argued that only 3 of these criteria have been proven to be useful given the literature published since Hill's paper, these being _experiment_, _temporality_, and _consistency_. Thus, we will focus only on these criteria.
 
 _Experiment_: The first criteria relates to the emergence of the claimed effect in a controlled experiment. We now have [more than 1000 papers](https://react19.org/1250-covid-vaccine-reports/) with case reports of adverse effects and death induced after the vaccination, fulfilling this criteria by most standards. In some situations, one could divide this criteria into _in vitro_ and _in vivo_ studies, although given the large body of evidence of harm this might seem redundant. 
 
@@ -92,4 +92,5 @@ The smoothing parameters for the annual and weekly smoothing was cross-validated
 </figure>
 
 
-
+## Code availability
+All code to calculate age-standardized and de-trended excess mortality is available in [this notebook](https://nbviewer.org/url/www.matzhaugen.com/excess-mort-en/all_countries.ipynb) and the vaccination pre-processing and plotting is available in [this notebook](https://nbviewer.org/url/www.matzhaugen.com/excess-mort-en/all_countries_vacc_py.ipynb).
