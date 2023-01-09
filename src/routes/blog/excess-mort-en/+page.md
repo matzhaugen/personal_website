@@ -30,9 +30,33 @@ For ease of comparing mortality rates between countries (Figure 2), the data was
   </figcaption>
 </figure>
 
-Note also that the booster is more strongly associated with increased all-cause-mortality than the first two doses (see appendix). This might be due to the memory of the human immune system intensifying the self-to-self attack caused by spike protein production of our own cells post-vaccination (discussed by [Doctors for Covid Ethics, 2022](https://doctors4covidethics.org/boosting-blood-clots-and-leaky-vessels-the-dangers-of-covid-19-vaccines-and-booster-shots/)).
+The booster is also more strongly associated with increased all-cause-mortality than the first two doses (see figures in Appendix). This might be due to the memory of the human immune system intensifying the autoimmune (self-to-self) attack caused by spike protein production of our own cells post-vaccination (discussed by [Doctors for Covid Ethics, 2022](https://doctors4covidethics.org/boosting-blood-clots-and-leaky-vessels-the-dangers-of-covid-19-vaccines-and-booster-shots/)).
 
-Finally, it is interesting to note that less than half of the countries analyzed showed anomalous mortality in the initial Covid wave of March-April 2020 (although there is evidence that covid was endemic before 2020, as early as September 2019, according to [this Italian study](https://journals.sagepub.com/doi/full/10.1177/0300891620974755)) (see also [Elmore et al. 2020](https://www.jmir.org/2020/9/e21562)).
+It is interesting to note that less than half of the countries analyzed showed anomalous mortality in the initial Covid wave of March-April 2020 (although there is evidence that covid was endemic before 2020, as early as September 2019, according to [this Italian study](https://journals.sagepub.com/doi/full/10.1177/0300891620974755)) (see also [Elmore et al. 2020](https://www.jmir.org/2020/9/e21562)).
+
+## On causality
+
+While there is a clear association between vaccination and mortality in these results, the question of causation remains. Bradford Hill argued in 1965 that 9 criteria could be used as guidelines to be followed in pursuing the question of causality. [Ioannidis (2015)](https://doi.org/10.1002/sim.6825) argued that only 3 of these criteria have been proven to be useful given the literature published since Hill's paper, these being _experiment_, _temporality_, and _consistency_. Thus, we will focus only on these criteria.
+
+_Experiment_: The first criteria relates to the emergence of the claimed effect in a controlled experiment. We now have [more than 1000 papers](https://react19.org/1250-covid-vaccine-reports/) with case reports of adverse effects and death induced after the vaccination, fulfilling this criteria by most standards. In some situations, one could divide this criteria into _in vitro_ and _in vivo_ studies, although given the large body of evidence of harm this might seem redundant. 
+
+_Temporality_, or as Hill says: _‘The temporal relationship of the association – which is the cart and which is the horse?'_. This criteria is at the core of our study. As we have already established visually but without a formal statistical hypothesis test, there seems to be a temporal relationship between our two variables mortality and vaccination at least in the 4 countries shown above. This claim is supported both by the shapes of the curves and the timing wherein vaccination is followed by excess mortality. In other countries it may seem that the delay between the two is larger (see Norway in Appendix figures). There are many reasons to expect a non-linear relationship between the these two variables though: 1. Different demographics received the vaccine at different times, where older people were generally the first group to receive it. 2. There might be multiple pathways through which the vaccine induces harm. For example, there can be short-term anaphylactic shocks while heart complications manifest over longer time scales. 3. Each pathway to harm can be non-linear in time, with a certain window period of heightened risk. These complications render a formal statistical causality analysis tenuous. 
+
+For the statisticians in the audience a linear Granger causality test produces significance at the 1% level for the 4 countries above, and most of the other countries in the data set, but I would not lean heavily on such an argument for the reasons mentioned above. More complicated non-linear tests exist but are outside the scope of this analysis. For further discussions on pitfalls of Granger causality see [G. Grassmann (2020)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7578691/). 
+
+One point worth noting is that with the confidence bands reported in the mortality curves, anything that exceeds these bands should already be significant from a statistical point of view. If vaccination precedes such mortality anomalies, they would trivially be attributed causality. One case in point is the mortality curve of Norway, which never exceeds the confidence bands before vaccination starts but spikes beyond this band and follows the vaccination curve by a 10-week delay (Figure 3), with a linear correlation of 0.21. This clear temporality would be difficult to attribute anything other than vaccination. The Norwegian Health Institute notes the anomalous mortality at the end of 2021 but speculates that it is due to covid deaths, avoiding this large warning signal with regards to vaccination ([FHI (2022)](https://www.fhi.no/nyheter/2022/overdodelighet-pa-7-prosent-i-2022/)).
+
+<figure>
+<a target="_blank" href="/excess-mort-en/norway_mortality_vs_vaccine_shifted_mid_age_m_sex.jpg">
+  <img class="mort-img" src="/excess-mort-en/norway_mortality_vs_vaccine_shifted_mid_age_m_sex.jpg" alt="mort-vs-vax-nor">
+</a>
+<figcaption>
+  <b> Figure 3 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15+ from 2020-2022 in Norway: Mortality is plotted in % (in black) and is age standardized to the European Standard Population (100k). Baseline mortality rates are calculated from the period 2013-2019, or the latest available data. Vaccination doses (red) are the sum of all doses. </i>
+  </figcaption>
+</figure>
+
+_Consistency_: In light of the large variability of adverse effects across batches, expecting consistency across countries might not be realistic. Nevertheless, most countries do show an effect even though the effect is varied in strength and sometimes in timing. Israel is perhaps the most striking example of a consistent spike in mortality followed by vaccination doses, where even smaller features in vaccination rates are mirrored in mortality (see Appendix). 
+
 
 ## Methodology
 
@@ -53,7 +77,7 @@ The smoothing parameters for the annual and weekly smoothing was cross-validated
   <img class="mort-img-small" src="/excess-mort-en/all_countries_mortality_vs_vax_adult_age_b_sex.jpg" alt="mort-vs-vax">
 </a>
 <figcaption>
-  <b> Figure 3 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15+ from 2020-2022: Mortality is plotted in % (in black) and is age standardized to the European Standard Population (100k). Baseline mortality rates are calculated from the period 2013-2019, or the latest available data. Vaccination doses (red) are the sum of all doses, including boosters often seen as a secondary peak in the plots.  </i>
+  <b> Figure 4 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15+ from 2020-2022: Mortality is plotted in % (in black) and is age standardized to the European Standard Population (100k). Baseline mortality rates are calculated from the period 2013-2019, or the latest available data. Vaccination doses (red) are the sum of all doses, including boosters often seen as a secondary peak in the plots.  </i>
   </figcaption>
 </figure>
 
@@ -63,7 +87,7 @@ The smoothing parameters for the annual and weekly smoothing was cross-validated
   <img class="mort-img-small" src="/excess-mort-en/all_countries_mortality_w_trend_b_gender_adult_age.jpg" alt="excess-mort">
 </a>
 <figcaption>
-  <b> Figure 4 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15+: Mortality (in black) is age standardized to the European Standard Population (100k). The two trendlines (in gold) are annual and weekly trends, where the annual is a polynomial before 2020 (natural spline w/ 2 degrees of freedom) and constant after 2020 and the weekly trend is another polynomial (spline) with periodic constraints and 4 degrees of freedom across the 52 weeks of the year fitted in the period before 2020. </i>
+  <b> Figure 5 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15+: Mortality (in black) is age standardized to the European Standard Population (100k). The two trendlines (in gold) are annual and weekly trends, where the annual is a polynomial before 2020 (natural spline w/ 2 degrees of freedom) and constant after 2020 and the weekly trend is another polynomial (spline) with periodic constraints and 4 degrees of freedom across the 52 weeks of the year fitted in the period before 2020. </i>
   </figcaption>
 </figure>
 
