@@ -44,11 +44,11 @@ _Temporality_, or as Hill says: _‘The temporal relationship of the association
 
 For the statisticians in the audience a linear Granger causality test produces significance at the 1% level for the 4 countries above, and most of the other countries in the data set, but I would not lean heavily on such an argument for the reasons mentioned above. More complicated non-linear tests exist but are outside the scope of this analysis. For further discussions on pitfalls of Granger causality see [G. Grassmann (2020)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7578691/). 
 
-One point worth noting is that with the confidence bands reported in the mortality curves, anything that exceeds these bands should already be significant from a statistical point of view. If vaccination precedes such mortality anomalies, they would trivially be attributed causality. One case in point is the mortality curve of Norway, which never exceeds the confidence bands before vaccination starts but spikes beyond this band and follows the vaccination curve by a 10-week delay (Figure 3), with a linear correlation of 0.21. This clear temporality would be difficult to attribute anything other than vaccination. The Norwegian Health Institute notes the anomalous mortality at the end of 2021 but speculates that it is due to covid deaths, avoiding this large warning signal with regards to vaccination ([FHI (2022)](https://www.fhi.no/nyheter/2022/overdodelighet-pa-7-prosent-i-2022/)).
+One point worth noting is that with the confidence bands reported in the mortality curves, anything that exceeds these bands should already be significant from a statistical point of view. If vaccination precedes such mortality anomalies, they would trivially be attributed causality. One case in point is the mortality curve of Norway, which never exceeds the confidence bands before vaccination starts but spikes beyond this band and follows the vaccination curve by a 11-week delay (Figure 3). This clear temporality would be difficult to attribute anything other than vaccination. The Norwegian Health Institute notes the anomalous mortality at the end of 2021 but speculates that it is due to covid deaths, avoiding this large warning signal with regards to vaccination ([FHI (2022)](https://www.fhi.no/nyheter/2022/overdodelighet-pa-7-prosent-i-2022/)).
 
 <figure>
-<a target="_blank" href="/excess-mort-en/norway_mortality_vs_vaccine_shifted_mid_age_m_sex.jpg">
-  <img class="mort-img" src="/excess-mort-en/norway_mortality_vs_vaccine_shifted_mid_age_m_sex.jpg" alt="mort-vs-vax-nor">
+<a target="_blank" href="/excess-mort-en/norway_excess_mortality_ppl_vs_total_vax.jpg">
+  <img class="mort-img" src="/excess-mort-en/norway_excess_mortality_ppl_vs_total_vax.jpg" alt="mort-vs-vax-nor">
 </a>
 <figcaption>
   <b> Figure 3 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15+ from 2020-2022 in Norway: Mortality is plotted in % (in black) and is age standardized to the European Standard Population (100k). Baseline mortality rates are calculated from the period 2013-2019, or the latest available data. Vaccination doses (red) are the sum of all doses. </i>
@@ -81,6 +81,14 @@ The smoothing parameters for the annual and weekly smoothing was cross-validated
   </figcaption>
 </figure>
 
+<figure>
+<a target="_blank" href="/excess-mort-en/all_countries_mortality_vs_vax_mid_age_b_sex.jpg">
+  <img class="mort-img-small" src="/excess-mort-en/all_countries_mortality_vs_vax_adult_age_b_sex.jpg" alt="mort-vs-vax">
+</a>
+<figcaption>
+  <b> Figure 4 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15-64 from 2020-2022: Mortality is plotted in % (in black) and is age standardized to the European Standard Population (100k). Baseline mortality rates are calculated from the period 2013-2019, or the latest available data. Vaccination doses (red) are the sum of all doses, including boosters often seen as a secondary peak in the plots.  </i>
+  </figcaption>
+</figure>
 
 <figure>
 <a target="_blank" href="/excess-mort-en/all_countries_mortality_w_trend_b_gender_adult_age.jpg">
