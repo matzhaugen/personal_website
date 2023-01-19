@@ -83,10 +83,10 @@ The smoothing parameters for the annual and weekly smoothing was cross-validated
 
 <figure>
 <a target="_blank" href="/excess-mort-en/all_countries_mortality_vs_vax_mid_age_b_sex.jpg">
-  <img class="mort-img-small" src="/excess-mort-en/all_countries_mortality_vs_vax_mid_age_b_sex.jpg" alt="mort-vs-vax">
+  <img class="mort-img-small" src="/excess-mort-en/all_countries_mortality_vs_vax_mid_age_b_sex.jpg" alt="mort-vs-vax-mid">
 </a>
 <figcaption>
-  <b> Figure 4 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15-64 from 2020-2022: Mortality is plotted in % (in black) and is age standardized to the European Standard Population (100k). Baseline mortality rates are calculated from the period 2013-2019, or the latest available data. Vaccination doses (red) are the sum of all doses, including boosters often seen as a secondary peak in the plots.  </i>
+  <b> Figure 5 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15-64 from 2020-2022: Mortality is plotted in % (in black) and is age standardized to the European Standard Population (100k). Baseline mortality rates are calculated from the period 2013-2019, or the latest available data. Vaccination doses (red) are the sum of all doses, including boosters often seen as a secondary peak in the plots.  </i>
   </figcaption>
 </figure>
 
@@ -95,7 +95,7 @@ The smoothing parameters for the annual and weekly smoothing was cross-validated
   <img class="mort-img-small" src="/excess-mort-en/all_countries_mortality_w_trend_b_gender_adult_age.jpg" alt="excess-mort">
 </a>
 <figcaption>
-  <b> Figure 5 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15+: Mortality (in black) is age standardized to the European Standard Population (100k). The two trendlines (in gold) are annual and weekly trends, where the annual is a polynomial before 2020 (natural spline w/ 2 degrees of freedom) and constant after 2020 and the weekly trend is another polynomial (spline) with periodic constraints and 4 degrees of freedom across the 52 weeks of the year fitted in the period before 2020. </i>
+  <b> Figure 6 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15+: Mortality (in black) is age standardized to the European Standard Population (100k). The two trendlines (in gold) are annual and weekly trends, where the annual is a polynomial before 2020 (natural spline w/ 2 degrees of freedom) and constant after 2020 and the weekly trend is another polynomial (spline) with periodic constraints and 4 degrees of freedom across the 52 weeks of the year fitted in the period before 2020. </i>
   </figcaption>
 </figure>
 
