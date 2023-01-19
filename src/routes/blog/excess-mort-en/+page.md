@@ -83,7 +83,7 @@ The smoothing parameters for the annual and weekly smoothing was cross-validated
 
 <figure>
 <a target="_blank" href="/excess-mort-en/all_countries_mortality_vs_vax_mid_age_b_sex.jpg">
-  <img class="mort-img-small" src="/excess-mort-en/all_countries_mortality_vs_vax_adult_age_b_sex.jpg" alt="mort-vs-vax">
+  <img class="mort-img-small" src="/excess-mort-en/all_countries_mortality_vs_vax_mid_age_b_sex.jpg" alt="mort-vs-vax">
 </a>
 <figcaption>
   <b> Figure 4 </b> <i> Excess mortality plotted against weekly vaccination doses for ages 15-64 from 2020-2022: Mortality is plotted in % (in black) and is age standardized to the European Standard Population (100k). Baseline mortality rates are calculated from the period 2013-2019, or the latest available data. Vaccination doses (red) are the sum of all doses, including boosters often seen as a secondary peak in the plots.  </i>
