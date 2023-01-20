@@ -4,7 +4,7 @@ description: Ny studie gir et annslag, men unngår noen detaljer
 date: Jun 29, 2021
 authors: Matz Haugen
 language: Norwegian
-hidden: True
+hidden: False
 ---
 
 Nylig ble det publisert [en artikkel](https://www.thelancet.com/journals/laninf/article/PIIS1473-3099(22)00320-6/fulltext) av Watson et al. som estimerer at vi reddet 19.8 millioner mennesker med vaksiner med en reduksjon på 68% fra scenariet uten vaksinasjon. Resultatet kommer fra en spredningsmodell der parametrene er tatt fra eksisterende publikasjoner angående vaksinens effekt til å stoppe infeksjon og spredning, med ca. 80% effektivitet mot direkte infeksjon og 50% reduksjon i smittespredning dersom hver smittespreder allerede er vaksinert. At modellen viser en 68% reduksjon vil være åpenbart et resultat av disse parametrene, og modellens teknikaliteter vil ha mindre påvirkning på dette tallet. For eksempel vil et gjennomsnitt mellom 50% og 80% gi 65% smittereduksjon, et lignende resultat sammenlignet med deres modell.
