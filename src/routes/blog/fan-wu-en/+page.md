@@ -4,7 +4,7 @@ description: Some points worth noting regarding the virus isolation procedure us
 date: Nov 25, 2022
 authors: Matz Haugen
 language: English
-hidden: False
+hidden: True
 ---
 
 Below are some comments on the paper which is widly recognized to be the first covid-19 sequencing paper, by [Wu et *al*., 2021](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7094943/pdf/41586_2020_Article_2008.pdf). Their goal is to isolate a coronavirus they suspect is contained in a sample of bronchoalveolar lavage fluid (BALF). This sample undergoes a series of processing steps whereby the sample's genetic material is split into millions of pieces which is then attempted reassembly by looking at snippets of genetic material (nucleotides) to find likely matches between snippets. A match indicate a likelihood of two snippets being contiguous. The process of matching is repeated until a stopping criteria is reached and the resulting combined snippets are together called a *contig*. This process is again repeated to find a plethora of contigs using computer software. One of these contigs show an 89.1% match with an exiting coronavirus as it exists in a virus database, from which they conclude the discovery of a new coronavirus.

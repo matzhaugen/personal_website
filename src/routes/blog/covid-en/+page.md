@@ -4,6 +4,7 @@ description: New information suggests inconsistencies in the data.
 date: Dec 14, 2021
 authors: Matz Haugen
 language: English
+hidden: True
 ---
 
 The Food and Drug Administration (FDA), who approved the vaccine for Pfizer, has been asked in a US court to present all the documents involved in the approval process of the vaccine. In response, the FDA requests to wait until 2096 to comply, according to [Aaron Siri](https://aaronsiri.substack.com/p/fda-doubles-down-asks-federal-judge) who is the lawyer in the case. Why would the FDA need this much time to present documents they spent 108 days on reading before approving the vaccine?

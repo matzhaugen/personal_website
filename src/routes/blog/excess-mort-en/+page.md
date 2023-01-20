@@ -2,9 +2,9 @@
 title: Excess mortality compared to vaccination in the covid era 
 description: A statistical analysis of excess mortality and vaccination association.
 date: Jan 2, 2023
-authors: Matz Haugen
+authors: .
 language: English
-hidden: False
+hidden: True
 ---
 
 Here we investigate at the possible association between excess mortality and vaccination rates. One would expect vaccination to decrease overall mortality in a population but sometimes we see the opposite (Figure 1). Especially the booster doses are closely related to increased mortality. Four countries are picked out as case studies, while the remaining countries are plotted in the Appendix. However, not all countries have the same strong association with mortality. This is likely because only 5% of the vaccine batches appear to have produced [90% of the adverse reactions](https://www.howbadismybatch.com). Some Pfizer batches are associated with 30 x the number of deaths and disabilities compared to other batches. Thus, some countries could have received more of the tainted batches.
