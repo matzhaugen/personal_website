@@ -4,6 +4,7 @@ description: Ny informasjon tyder på at det er ting som holdes skjult for allme
 date: Dec 14, 2021
 authors: Matz Haugen
 language: Norwegian
+hidden: True
 ---
 
 The Food and Drug Administration (FDA), som godkjente vaksinen til Pfizer, har blitt spurt i en amerikansk rettsinstans om å fremlegge alle dokumentene som var involvert i godkjenningsprosessen av vaksinen. Som svar [krever](https://www.sirillp.com/wp-content/uploads/2021/12/FDA-Brief-and-Appendix-e3999de9aee38921cd4fbb035c33e304.pdf) FDA å vente til 2096 med å legge frem alle dokumentene, ifølge [Aaron Siri](https://aaronsiri.substack.com/p/fda-doubles-down-asks-federal-judge) som er [advokaten](https://www.sirillp.com/aaron-siri/) i saken. Hvorfor spør FDA om så lang tid til å legge frem fakta?
