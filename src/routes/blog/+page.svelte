@@ -41,7 +41,6 @@
     <div class="submenu">
         <div role="presentation" on:click={switchLanguage}>{language}</div>
     </div>
-
     {#each data.posts as post} 
         {#if post.language === getOtherLanguage(language) && ! post.hidden}
             <PostCard title={post.title} description={post.description} url={post.url} date={post.date}/>

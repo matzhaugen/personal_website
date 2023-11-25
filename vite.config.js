@@ -1,7 +1,19 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 
 const config = {
-	plugins: [sveltekit()]
+	server: {
+    fs: {
+      allow: [
+        // your custom rules
+        process.cwd() + '/static/',
+    
+      ],
+    },
+  },
+
+	plugins: [
+		sveltekit(), 
+	]
 };
 
 export default config;
