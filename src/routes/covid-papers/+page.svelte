@@ -95,7 +95,7 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
   on:click={filter}>{word["text"]}</button>
 {/each}
 </div>
-
+<!-- Comment -->
 <div id="container"> 
 	<div id="left"> Showing <b>{nShowing}</b> papers </div>
 	<div id="middle"> </div>
