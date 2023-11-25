@@ -99,7 +99,7 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 <div id="container"> 
 	<div id="left"> Showing <b>{nShowing}</b> papers </div>
 	<div id="middle"> </div>
-	<div id="right"> <button on:click={exportToCsv}>Export to csv</button> </div>
+	<div id="right"> <button class=btn on:click={exportToCsv}>Export to csv</button> </div>
 </div>
 
 <ol>
@@ -108,9 +108,9 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
  <li> 
 
 {#if main_category !== sub_category}
-	{author}{year}, {title},  <a href={link}> <i>{journal}</i>, {volume}. </a> Keywords: <i>{main_category}, {sub_category}</i>
+	{author} ({year}), {title},  <a href={link}> <i>{journal}</i>, {volume}. </a> Keywords: <i>{main_category}, {sub_category}</i>
 {:else}
-	{author}{year}, {title},  <a href={link}> <i>{journal}</i>, {volume}. </a> Keywords: <i>{main_category}</i>
+	{author} ({year}), {title},  <a href={link}> <i>{journal}</i>, {volume}. </a> Keywords: <i>{main_category}</i>
 {/if}
 </li>
 {/if}
@@ -118,6 +118,7 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 </ol>
 
 <style>
+	.menu_links { cursor: pointer; }
 	#container {height: 100%; width:100%; display: flex; }
 	#left {width: 25%;}
 	#middle {
@@ -126,6 +127,10 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 	#right {width: 25%; }
   .btn {
   	margin: .05cm;
+  }
+  .btn:hover {
+  	cursor: pointer;
+  	background-color: #ccc;
   }
   .tags {
   	margin-top: .7cm;
