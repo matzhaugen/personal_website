@@ -8,6 +8,7 @@ import csvDownload from 'json-to-csv-export'
 import WordCloud from "svelte-d3-cloud";
 
 let category = new Map();
+let subCategory = new Map();
 const get = (id) => category.get(id) ?? 0;  
 
 let papersToShow = [...papers]
@@ -15,6 +16,7 @@ let papersToShow = [...papers]
 let i = 0;
 do {
     category.set(papers[i]["main_category"], get(papers[i]["main_category"]) + 1);
+    subCategory.set(papers[i]["sub_category"], get(papers[i]["sub_category"]) + 1);
     papersToShow[i]["show"] = true
     i++;
 } while (i < papers.length);
@@ -29,12 +31,29 @@ Array.prototype.remove = function(element){
 };
 
 let words = []
+let subWords = []
 let active = new Map();
 for (let [key, value] of category) {
 	words.push({"text": key, "count": value / 100});	
 	active.set(key, false)
 }
+for (let [key, value] of subCategory) {
+	subWords.push({"text": key, "count": value / 100});	
+	active.set(key, false)
+}
 
+let grouping = "main_category"
+let groupWords = words
+function switchGrouping() {
+	console.log(grouping)
+	if (grouping === "main_category") {
+		grouping = "sub_category"
+		groupWords = subWords
+	} else {
+		grouping = "main_category"
+		groupWords = words
+	}
+}
 
 let filterBy = []
 const filter = (e) => {
@@ -54,7 +73,7 @@ const filter = (e) => {
 		if (filterBy.length === 0) {
 			papersToShow[m]["show"] = true
 		} else {
-			if (filterBy.contains(papersToShow[m]["main_category"])) {
+			if (filterBy.contains(papersToShow[m][grouping])) {
 			    papersToShow[m]["show"] = true
 			} else {
 				papersToShow[m]["show"] = false
@@ -90,7 +109,7 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
    </div>
 <div class="tags">
 	Keywords:
-{#each words as word} 
+{#each groupWords as word} 
   <button class="btn" 
   on:click={filter}>{word["text"]}</button>
 {/each}
@@ -98,7 +117,7 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 <!-- Comment -->
 <div id="container"> 
 	<div id="left"> Showing <b>{nShowing}</b> papers </div>
-	<div id="middle"> </div>
+	<div id="middle"> <button class=btn on:click={switchGrouping}>Detailed keywords</button>  </div>
 	<div id="right"> <button class=btn on:click={exportToCsv}>Export to csv</button> </div>
 </div>
 
@@ -120,9 +139,10 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 <style>
 	.menu_links { cursor: pointer; }
 	#container {height: 100%; width:100%; display: flex; }
-	#left {width: 25%;}
+	#left {width: 35%;}
 	#middle {
 	  width: 50%;
+	  margin-left: 2cm;
 	}
 	#right {width: 25%; }
   .btn {
