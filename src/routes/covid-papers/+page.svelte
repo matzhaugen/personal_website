@@ -122,8 +122,10 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 	Keywords:
 {#each groupWords as word} 
 {@const active = filterBy.contains(word["text"])}
+<div style="display: inline">
   <button class="btn" class:active={active}
   on:click={filter}>{word["text"]}</button>
+ </div>
 {/each}
 </div>
 <!-- Comment -->
