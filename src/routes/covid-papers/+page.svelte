@@ -43,9 +43,10 @@ for (let [key, value] of subCategory) {
 }
 
 let grouping = "main_category"
-let groupWords = words
+let filterBy = []
 function switchGrouping() {
-	console.log(grouping)
+	console.log("hi")
+	filterBy = []
 	if (grouping === "main_category") {
 		grouping = "sub_category"
 		groupWords = subWords
@@ -53,19 +54,27 @@ function switchGrouping() {
 		grouping = "main_category"
 		groupWords = words
 	}
+	let mm = 0;
+
+	do {
+		papersToShow[mm]["show"] = true 
+
+	    mm++;
+	} while (mm < papers.length);
+
+
 }
 
-let filterBy = []
+$: groupWords = grouping === "main_category" ? words : subWords
+
 const filter = (e) => {
 	let tag = e.target.textContent
 	
 	if (filterBy.contains(tag)) {
 		filterBy.remove(tag)
-		e.target.style.color = '';
 		active.set(tag, false)
 	} else {
 		filterBy.push(e.target.textContent)	
-		e.target.style.color = 'limegreen';
 		active.set(tag, true)
 	}
 	let m = 0;
@@ -81,6 +90,7 @@ const filter = (e) => {
 		}
 	    m++;
 	} while (m < papers.length);
+	groupWords = groupWords;
 }
 
 const exportToCsv = () => {
@@ -98,6 +108,7 @@ const exportToCsv = () => {
 	}
 	csvDownload(dataToConvert)
 }
+$: filterBy, console.log(filterBy)
 
 $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 
@@ -110,14 +121,15 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 <div class="tags">
 	Keywords:
 {#each groupWords as word} 
-  <button class="btn" 
+{@const active = filterBy.contains(word["text"])}
+  <button class="btn" class:active={active}
   on:click={filter}>{word["text"]}</button>
 {/each}
 </div>
 <!-- Comment -->
 <div id="container"> 
 	<div id="left"> Showing <b>{nShowing}</b> papers </div>
-	<div id="middle"> <button class=btn on:click={switchGrouping}>Detailed keywords</button>  </div>
+	<div id="middle"> <button class=btn on:click={switchGrouping}>Detailed keywords</button> </div>
 	<div id="right"> <button class=btn on:click={exportToCsv}>Export to csv</button> </div>
 </div>
 
@@ -145,9 +157,9 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 	  margin-left: 2cm;
 	}
 	#right {width: 25%; }
-  .btn {
-  	margin: .05cm;
-  }
+	.active {
+	  	color: limegreen;
+	  }
   .btn:hover {
   	cursor: pointer;
   	background-color: #ccc;
