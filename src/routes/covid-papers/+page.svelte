@@ -5,7 +5,7 @@
 <script>
 import papers from '$lib/react19data_merge.json'
 import csvDownload from 'json-to-csv-export'
-import WordCloud from "svelte-d3-cloud";
+import WordCloud from '/src/components/WordCloud.svelte'
 
 let category = new Map();
 let subCategory = new Map();
@@ -34,18 +34,17 @@ let words = []
 let subWords = []
 let active = new Map();
 for (let [key, value] of category) {
-	words.push({"text": key, "count": value / 100});	
+	words.push({"text": key, "count": value});	
 	active.set(key, false)
 }
 for (let [key, value] of subCategory) {
-	subWords.push({"text": key, "count": value / 100});	
+	subWords.push({"text": key, "count": value});	
 	active.set(key, false)
 }
 
 let grouping = "main_category"
 let filterBy = []
 function switchGrouping() {
-	console.log("hi")
 	filterBy = []
 	if (grouping === "main_category") {
 		grouping = "sub_category"
@@ -108,8 +107,6 @@ const exportToCsv = () => {
 	}
 	csvDownload(dataToConvert)
 }
-$: filterBy, console.log(filterBy)
-
 $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 
 </script>
@@ -128,7 +125,14 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
  </div>
 {/each}
 </div>
-<!-- Comment -->
+
+
+<!-- <div>
+  <WordCloud data={groupWords}/>
+	}
+</div>
+ -->
+
 <div id="container"> 
 	<div id="left"> Showing <b>{nShowing}</b> papers </div>
 	<div id="middle"> <button class=btn on:click={switchGrouping}>Detailed keywords</button> </div>
@@ -169,5 +173,9 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
   .tags {
   	margin-top: .7cm;
 	margin-bottom: .5cm;
+  }
+  body {
+    display: flex;
+    justify-content: center;
   }
 </style>
