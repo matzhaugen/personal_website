@@ -110,6 +110,7 @@ Oncology</i> (2020)</a>
 
 <h2>Misc</h2>
 <ul>
+	<li><a href="https://emmind.net/">EM-Mind: A database on electromagnetic research</a> </li>
 	<li><a href="https://electromagneticlife.substack.com/p/5g-are-there-biological-impacts">5G: Are there biological effects? </a></li>
 </ul>
 
