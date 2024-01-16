@@ -2,6 +2,7 @@
 <svelte:head>
  <title>Sattelites</title>
 </svelte:head>
+<h1>Sattelites</h1>
 
 <script>
 

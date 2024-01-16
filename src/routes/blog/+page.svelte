@@ -36,6 +36,7 @@
  <title>Blog</title>
 </svelte:head>
 
+<h1>Blog</h1>
 
 {#if typeof localStorage !== `undefined`}
     <div class="submenu">
