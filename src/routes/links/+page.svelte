@@ -15,6 +15,7 @@
 </ul>
 <h2>Medicine</h2>
 <ul>
+	<li><a href="https://c19injury.com"> A collection of articles on covid vaccine injuries</a></li>
 	<li>
 		<a href="https://www.bmj.com/content/308/6924/283"> The scandal of poor medical research by D G Altman. in <i>The British Medical Journal</i> (1994)</a>
 	</li>
