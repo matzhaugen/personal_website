@@ -26,3 +26,8 @@ I have developed algorithms for the extraction of signals embedded in potentiall
 	<li>  <i>Post-doctoral fellow in Climate Statistics</i>,  <a href="https://www.uchicago.edu/" > University of Chicago </a>, 2017-2018</li>
 	
 </ul>
+
+<h3>Contact info</h3>
+<ul>
+	<li>email (read backwards): moc.liamg @ neguahztam</li>
+</ul>
