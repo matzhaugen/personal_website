@@ -1,6 +1,6 @@
 
 <svelte:head>
- <title>AboutMe</title>
+ <title>About Me</title>
 </svelte:head>
 
 <img id="me" src="/California2.jpeg" alt="Me" width="15%" height="15%" align="right">

@@ -21,7 +21,10 @@
 	<li>
 		<a href="https://www.lifeextension.com/magazine/2006/8/report_death">Doctors are the leading cause of death by G. Null (peer-reviewed in) <i>Life Extension Magazine </i> (2006)</a>
 	</li>
+	<li><a href="https://visionlaunch.com/more-than-a-dozen-credible-medical-studies-prove-face-masks-do-not-work-even-in-hospitals/"> Arthur Firstenberg on Face Masks</a></li>
 	<li><a href="https://aapsonline.org/mask-facts/">Mask facts by the Association of American Physicians and Surgeons</a></li>
+
+	
 </ul>
 
 <h2>Illuminating books</h2>
@@ -40,6 +43,7 @@
 Dr. Samantha Bailey, MD, Dr. Stefano Scoglio </a></li>
 <li><a href="https://www.ener-chi.com/books/cancer-is-not-a-disease/">Cancer is Not a Disease by Andreas Moritz
 </a></li>
+<li><a href="https://vactruth.com/vaccine-books/">Book list on vaccination</a></li>
 
 </ul>
 <h3>Social Critique</h3>
