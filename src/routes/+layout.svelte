@@ -1,5 +1,18 @@
 <script>
   import { GoogleAnalytics } from '@beyonk/svelte-google-analytics'
+  import { goto, beforeNavigate, afterNavigate } from '$app/navigation';
+  beforeNavigate(async ({ to, from, cancel }) => {
+
+    if (to !== null && from !== "/stocks") {
+      if (to.route.id == "/stocks" || to.route.id == null) {
+        var password = prompt("What is Ra's law?");
+        if (password != "1") {
+            cancel()
+        }
+      }
+    }
+
+  });
 </script>
 
 <!-- <GoogleAnalytics properties={[ 'G-EQKEBHS9KL' ]} /> -->

@@ -10,7 +10,8 @@
     import { timeParse, timeFormat } from 'd3-time-format';
     const parseDate = d => new Date(d);
 
-    import {csv} from "csvtojson";
+    import pkg from 'csvtojson';
+    const {csv} = pkg;
     import { onMount } from 'svelte';
 
     const url = `/satellite_data.csv`
