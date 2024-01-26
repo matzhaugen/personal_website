@@ -28,7 +28,7 @@
 			highest = point;
 		}
 	}
-	console.log(minx)
+
 	// });
 	
 
@@ -74,7 +74,7 @@
 		</Pancake.Svg>
 
 
-		<Pancake.Point x={2022.2} y={1800}>
+		<Pancake.Point x={minx + (maxx - minx)*0.1} y={1800}>
 			<div class="text">
 				<h2>Price</h2>
 
