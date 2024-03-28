@@ -27,7 +27,7 @@ I have developed algorithms for the extraction of signals embedded in potentiall
 	
 </ul>
 
-<h3>Contact info</h3>
+<h3>Contact info (if you find my lost wallet)</h3>
 <ul>
 	<li>email (read backwards): moc.liamg @ neguahztam</li>
 </ul>
