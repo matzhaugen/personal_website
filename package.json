@@ -36,6 +36,7 @@
 		"mdsvex": "^0.11.0",
 		"remark-gfm": "^4.0.0",
 		"svelte-d3-cloud": "^0.0.2",
+		"update-node": "^0.1.0",
 		"yahoo-finance2": "^2.11.0"
 	}
 }
