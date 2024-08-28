@@ -1,5 +1,6 @@
 <script>
   import { GoogleAnalytics } from '@beyonk/svelte-google-analytics'
+  import MyFile from '/resume/MatzHaugenResume.pdf';
 </script>
 
 <!-- <GoogleAnalytics properties={[ 'G-EQKEBHS9KL' ]} /> -->
@@ -10,7 +11,7 @@
   <a href="/research">Research</a>
   <a href="/links">Links</a>
   <a href="/software">Software</a> 
-  <a href="/resume" download="MatzHaugenResume">CV</a>
+  <a href={MyFile} target="_blank" download="MatzHaugenResume.pdf">CV</a>
   <a href="/blog">Blog</a> 
   <a href="/satellites">Satellites</a>
   <!-- <a href="/stocks">Stocks</a> -->

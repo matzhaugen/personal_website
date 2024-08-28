@@ -6,6 +6,7 @@ const config = {
       allow: [
         // your custom rules
         process.cwd() + '/static/',
+        process.cwd() + '/resume/',
     
       ],
     },
