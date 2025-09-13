@@ -6,6 +6,9 @@
 
 <script lang="ts">    
     import { onMount } from 'svelte';
+    import { isAuthenticated } from '$lib/authStore';
+    import PostCard from "../../components/post-card.svelte";
+    
     onMount(() => {
         let cachedLanguage = localStorage.getItem(`language`)
         if (!!cachedLanguage) {
@@ -27,7 +30,6 @@
         language = getOtherLanguage(language);
         localStorage.setItem(`language`, language)
     }
-    import PostCard from "../../components/post-card.svelte";
     
     interface Props {
         data: any;
@@ -49,7 +51,7 @@
         <div role="presentation" onclick={switchLanguage}>{language}</div>
     </div>
     {#each data.posts as post} 
-        {#if post.language === getOtherLanguage(language) && ! post.hidden}
+        {#if post.language === getOtherLanguage(language) && (!$isAuthenticated ? !post.hidden : true)}
             <PostCard title={post.title} description={post.description} url={post.url} date={post.date}/>
         {/if}
     {/each}
