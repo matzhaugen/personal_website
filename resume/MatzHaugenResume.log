@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.21)  28 AUG 2024 14:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.8.21)  6 JUN 2025 14:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -356,7 +356,7 @@ Overfull \hbox (28.12984pt too wide) in paragraph at lines 93--98
 al/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/texlive/2024
 /texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
 LaTeX Font Info:    Font shape `T1/pplj/m/sl' in size <12> not available
-(Font)              Font shape `T1/pplj/m/it' tried instead on input line 168.
+(Font)              Font shape `T1/pplj/m/it' tried instead on input line 170.
 [2] [3] [4] (/Users/mhaugen/personal_website/resume/MatzHaugenResume.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
@@ -368,11 +368,11 @@ Package rerunfilecheck Info: File `MatzHaugenResume.out' has not changed.
 Here is how much of TeX's memory you used:
  10383 strings out of 474116
  164252 string characters out of 5743682
- 1938187 words of memory out of 5000000
+ 1939187 words of memory out of 5000000
  32571 multiletter control sequences out of 15000+600000
  593486 words of font info for 97 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,8n,79p,389b,529s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,389b,532s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/fpl/fplbj8a.pfb></usr/l
 ocal/texlive/2024/texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb></usr/local/tex
@@ -382,7 +382,7 @@ live/2024/texmf-dist/fonts/type1/public/fpl/fplrij8a.pfb></usr/local/texlive/20
 dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2024/texmf-dist/fo
 nts/type1/urw/palatino/uplri8a.pfb>
 Output written on /Users/mhaugen/personal_website/resume/MatzHaugenResume.pdf (
-4 pages, 146086 bytes).
+4 pages, 146199 bytes).
 PDF statistics:
  80 PDF objects out of 1000 (max. 8388607)
  57 compressed objects within 1 object stream
