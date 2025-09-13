@@ -1,16 +1,26 @@
 
 
-<script>
-  export let title;
-  export let authors;
-  export let date;
+<script lang="ts">
+  interface Props {
+    title?: string;
+    authors?: string;
+    date?: string;
+    children?: any;
+  }
+
+  let {
+    title,
+    authors,
+    date,
+    children
+  }: Props = $props();
 </script>
 
 <h1 class="section-header">{title}</h1>
     <div class="metadata"><i>{authors}  – {date}</i></div>
-<slot>
+{#if children}{@render children()}{:else}
   <!-- the mdsvex content will be slotted in here -->
-</slot>
+{/if}
 
 <style>
     article {

@@ -4,10 +4,10 @@ export function load({ params }) {
     // let posts = postFiles.map((file) => convertToPostPreview(file));
     // stringify to give it as a result of the get command
     // const myposts = convertMarkdown()
-    const files = import.meta.globEager('./**/*.md');
+    const files = import.meta.glob('./**/*.md', { eager: true });
     var posts = []
     for (const mymd in files) {
-        const post = files[mymd]
+        const post = files[mymd] as any;
         
         posts.push({
             url: mymd.replace("/+page.md", "").replace(".", "/blog"),

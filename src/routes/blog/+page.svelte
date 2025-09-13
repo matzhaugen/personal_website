@@ -1,10 +1,10 @@
-<script context="module">
+<script module>
 
     export const prerender = true;
     
 </script>
 
-<script>    
+<script lang="ts">    
     import { onMount } from 'svelte';
     onMount(() => {
         let cachedLanguage = localStorage.getItem(`language`)
@@ -14,8 +14,8 @@
             localStorage.setItem(`language`, language)
         }
     })
-    let language = "English";
-    function getOtherLanguage(language) {
+    let language = $state("English");
+    function getOtherLanguage(language: string): string {
         if (language === "Norwegian") {
             return "English"
         } else {
@@ -27,8 +27,14 @@
         language = getOtherLanguage(language);
         localStorage.setItem(`language`, language)
     }
-    import PostCard from "/src/components/post-card.svelte";
-    export let data
+    import PostCard from "../../components/post-card.svelte";
+    
+    interface Props {
+        data: any;
+        children?: any;
+    }
+    
+    let { data, children }: Props = $props();
 
 </script>
 
@@ -40,7 +46,7 @@
 
 {#if typeof localStorage !== `undefined`}
     <div class="submenu">
-        <div role="presentation" on:click={switchLanguage}>{language}</div>
+        <div role="presentation" onclick={switchLanguage}>{language}</div>
     </div>
     {#each data.posts as post} 
         {#if post.language === getOtherLanguage(language) && ! post.hidden}
@@ -49,7 +55,7 @@
     {/each}
 {/if}
 
-{#if false}<slot></slot>{/if}
+{#if false}{@render children?.()}{/if}
 
 <style type="text/css">
     .submenu {

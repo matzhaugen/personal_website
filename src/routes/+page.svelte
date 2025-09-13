@@ -3,7 +3,7 @@
  <title>About Me</title>
 </svelte:head>
 
-<img id="me" src="/California2.jpeg" alt="Me" width="15%" height="15%" align="right">
+<img id="me" src="/California2.jpeg" alt="Me" width="15%" height="15%" style="float: right;">
 <h1> About me </h1>
 
 <p>

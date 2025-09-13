@@ -2,16 +2,30 @@
  <title>Covid Papers</title>
 </svelte:head>
 
-<script>
+<script lang="ts">
+import '../../types/array-extensions.d.ts';
 import papers from '$lib/react19data_merge.json'
+type PaperData = {
+  author: string;
+  year: string;
+  title: string;
+  link: string;
+  journal: string;
+  volume: string;
+  short_title: string;
+  main_category: string;
+  sub_category: string;
+  report_type: string;
+  show?: boolean;
+}
 import csvDownload from 'json-to-csv-export'
-import WordCloud from '/src/components/WordCloud.svelte'
+import WordCloud from '../../components/WordCloud.svelte'
 
 let category = new Map();
 let subCategory = new Map();
-const get = (id) => category.get(id) ?? 0;  
+const get = (id: string) => category.get(id) ?? 0;  
 
-let papersToShow = [...papers]
+let papersToShow: PaperData[] = $state([...papers])
 
 let i = 0;
 do {
@@ -21,17 +35,17 @@ do {
     i++;
 } while (i < papers.length);
 
-Array.prototype.contains = function(element){
+Array.prototype.contains = function(element: any): boolean {
     return this.indexOf(element) > -1;
 };
 
-Array.prototype.remove = function(element){
+Array.prototype.remove = function(element: any): any[] {
     let idx = this.indexOf(element);
     return this.splice(idx, 1);
 };
 
-let words = []
-let subWords = []
+let words: any[] = []
+let subWords: any[] = []
 let active = new Map();
 for (let [key, value] of category) {
 	words.push({"text": key, "count": value});	
@@ -42,8 +56,8 @@ for (let [key, value] of subCategory) {
 	active.set(key, false)
 }
 
-let grouping = "main_category"
-let filterBy = []
+let grouping = $state("main_category")
+let filterBy: any[] = $state([])
 function switchGrouping() {
 	filterBy = []
 	if (grouping === "main_category") {
@@ -64,9 +78,9 @@ function switchGrouping() {
 
 }
 
-$: groupWords = grouping === "main_category" ? words : subWords
+let groupWords = $derived(grouping === "main_category" ? words : subWords)
 
-const filter = (e) => {
+const filter = (e: any) => {
 	let tag = e.target.textContent
 	
 	if (filterBy.contains(tag)) {
@@ -107,7 +121,7 @@ const exportToCsv = () => {
 	}
 	csvDownload(dataToConvert)
 }
-$: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
+let nShowing = $derived(papersToShow.reduce((t, n) => t + n["show"], 0));
 
 </script>
 
@@ -121,7 +135,7 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 {@const active = filterBy.contains(word["text"])}
 <div style="display: inline">
   <button class="btn" class:active={active}
-  on:click={filter}>{word["text"]}</button>
+  onclick={filter}>{word["text"]}</button>
  </div>
 {/each}
 </div>
@@ -135,8 +149,8 @@ $: nShowing = papersToShow.reduce((t, n) => t + n["show"], 0);
 
 <div id="container"> 
 	<div id="left"> Showing <b>{nShowing}</b> papers </div>
-	<div id="middle"> <button class=btn on:click={switchGrouping}>Detailed keywords</button> </div>
-	<div id="right"> <button class=btn on:click={exportToCsv}>Export to csv</button> </div>
+	<div id="middle"> <button class=btn onclick={switchGrouping}>Detailed keywords</button> </div>
+	<div id="right"> <button class=btn onclick={exportToCsv}>Export to csv</button> </div>
 </div>
 
 <ol>

@@ -10,14 +10,11 @@ const config = {
 		// remarkPlugins: [[remarkFootnotes, {inlineNotes: true}]],
 		remarkPlugins: [[remarkGfm]],
 		extensions: ['.svx', '.md'],
-		layout: "./src/routes/blog/layout.svelte",
+		layout: "./src/routes/blog/+layout.svelte",
 	}),
 		
 	kit: {
-		adapter: adapter(),
-		files: {
-                lib: '/src/lib'
-            }
+		adapter: adapter()
 	}
 };
 

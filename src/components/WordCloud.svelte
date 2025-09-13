@@ -1,8 +1,24 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import d3Cloud from "d3-cloud";
   import { descending, extent, rollups } from "d3-array";
 import { onMount } from 'svelte';
-  export let data = [];
+
+interface WordData {
+  text: string;
+  size: number;
+}
+
+interface CloudWord {
+  size: number;
+  x: number;
+  y: number;
+  rotate: number;
+  text: string;
+}
+
+  let { data = [] }: { data: WordData[] } = $props();
   console.log(data)
 
   const dimensions = {
@@ -17,7 +33,7 @@ import { onMount } from 'svelte';
 };
 
 const wordPadding = 2;
-let cloudWords = [];
+let cloudWords: CloudWord[] = [];
 
  onMount(() => {
  	const cloud = d3Cloud()
@@ -29,9 +45,9 @@ let cloudWords = [];
   .padding(wordPadding)
   .rotate(0)
   .font("Helvetica")
-  .fontSize(d => Math.sqrt(d.size) * 20)
-  .on("word", ({ size, x, y, rotate, text }) => {
-    cloudWords.push({ size, x, y, rotate, text });
+  .fontSize((d: any) => Math.sqrt(d.size) * 20)
+  .on("word", ({ size, x, y, rotate, text }: any) => {
+    cloudWords.push({ size: size || 0, x: x || 0, y: y || 0, rotate: rotate || 0, text: text || '' });
   });
 
 	cloud.start();
@@ -39,8 +55,10 @@ let cloudWords = [];
 )
 
 
-$: words = cloudWords;
-$: console.log(words)
+let words: CloudWord[] = $derived(cloudWords);
+run(() => {
+    console.log(words)
+  });
 
 </script>
 

@@ -4,31 +4,31 @@
 </svelte:head>
 <h1>Sattelites</h1>
 
-<script>
+<script lang="ts">
 
     import * as Pancake from '@sveltejs/pancake';
     import { timeParse, timeFormat } from 'd3-time-format';
-    const parseDate = d => new Date(d);
+    const parseDate = (d: string) => new Date(d);
 
-    import {csv} from "csvtojson";
+    import csv from "csvtojson";
     import { onMount } from 'svelte';
 
     const url = `/satellite_data.csv`
-    const combineArrays = (first, second) => {
-       return first.reduce((acc, val, ind) => {
+    const combineArrays = (first: string[], second: any[]) => {
+       return first.reduce((acc: any, val: string, ind: number) => {
           acc[val] = second[ind];
           return acc;
        }, {});
     };
 
     const months = 'Jan Feb Mar Apr May June July Aug Sept Oct Nov Dec'.split(' ');
-    const format = date => {
+    const format = (date: number) => {
         const year = ~~date;
         const month = Math.floor((date % 1) * 12);
         return `${months[month]} ${year}`;
     };
 
-    const parse = datestr => {
+    const parse = (datestr: string) => {
         const date = parseDate(datestr)
         const year = date.getFullYear();
         const ms = date.getTime() - (new Date(year, 1, 1)).getTime();
@@ -37,15 +37,15 @@
     };
 
     import rawData from './satellite_data.js';
-    const sorted = rawData.sort((a,b) => b.launchDate < a.launchDate)
+    const sorted = rawData.sort((a: any, b: any) => new Date(b.launchDate).getTime() - new Date(a.launchDate).getTime())
 
     
     let starlink = sorted.filter(row => row.Name.indexOf("STARLINK") !== -1 && row.Status.indexOf("ORBIT") !== -1)
     
     const oneweb = sorted.filter(row => row.Name.indexOf("ONEWEB") !== -1 && row.Status.indexOf("ORBIT") !== -1)
     
-    const starlink_count = starlink.map(row => row.launchDate).reduce((r,c) => (r[c] = (r[c] || 0) + 1, r), {})
-    const oneweb_count = oneweb.map(row => row.launchDate).reduce((r,c) => (r[c] = (r[c] || 0) + 1, r), {})
+    const starlink_count = starlink.map(row => row.launchDate).reduce((r: any, c: string) => (r[c] = (r[c] || 0) + 1, r), {})
+    const oneweb_count = oneweb.map(row => row.launchDate).reduce((r: any, c: string) => (r[c] = (r[c] || 0) + 1, r), {})
     const starlink_dates = Object.keys(starlink_count)
     const starlink_values = Object.values(starlink_count)
 
@@ -56,10 +56,10 @@
     const maxx = Math.max(...all_arr.map(d => parseDate(d.date).getFullYear())) + 0.3;
     const minx = Math.min(...all_arr.map(d => parseDate(d.date).getFullYear()));
     const miny = 0;
-    const maxy = Math.max(...all_arr.map(d => d.count))*1.05;
+    const maxy = Math.max(...all_arr.map((d: any) => d.count))*1.05;
     const midx = (maxx + minx) / 2;
 
-    const pc = date => {
+    const pc = (date: number) => {
         return 100 * (date - minx) / (maxx - minx);
     };
 
@@ -67,37 +67,49 @@
 
 <div class="chart">
 <Pancake.Chart x1={minx} x2={maxx} y1={miny} y2={maxy}>
-    <Pancake.Grid horizontal={true} count={5} let:value let:last>
-        <div class="grid-line horizontal"><span>{value} {last ? 'satellites' : ''}</span></div>
-    </Pancake.Grid>
+    <Pancake.Grid horizontal={true} count={5}  >
+        {#snippet children({ value, last }: { value: any, last: boolean })}
+                        <div class="grid-line horizontal"><span>{value} {last ? 'satellites' : ''}</span></div>
+                            {/snippet}
+                </Pancake.Grid>
 
-    <Pancake.Grid vertical count={4} let:value>
-        <div class="grid-line vertical"></div>
-        <span class="year-label">{value}</span>
-    </Pancake.Grid>
+    <Pancake.Grid vertical count={4} >
+        {#snippet children({ value }: { value: any })}
+                        <div class="grid-line vertical"></div>
+            <span class="year-label">{value}</span>
+                            {/snippet}
+                </Pancake.Grid>
 
 
     <Pancake.Svg>
-        <Pancake.SvgScatterplot data={starlink_arr} x="{d => parse(d.date)}" y="{d => d.count}" let:d>
-            <path class="starlink avg" {d}/>
-        </Pancake.SvgScatterplot>
-        <Pancake.SvgScatterplot data={oneweb_arr} x="{d => parse(d.date)}" y="{d => d.count}" let:d>
-            <path class="oneweb avg" {d}/>
-        </Pancake.SvgScatterplot>
+        <Pancake.SvgScatterplot data={starlink_arr} x="{(d: any) => parse(d.date)}" y="{(d: any) => d.count}" >
+            {#snippet children({ d }: { d: any })}
+                                <path class="starlink avg" {d}/>
+                                        {/snippet}
+                        </Pancake.SvgScatterplot>
+        <Pancake.SvgScatterplot data={oneweb_arr} x="{(d: any) => parse(d.date)}" y="{(d: any) => d.count}" >
+            {#snippet children({ d }: { d: any })}
+                                <path class="oneweb avg" {d}/>
+                                        {/snippet}
+                        </Pancake.SvgScatterplot>
 
     </Pancake.Svg>
-    <Pancake.Quadtree data={all_arr} x="{d => parse(d.date)}" y="{d => d.count}" let:closest>
-        {#if closest}
-            <Pancake.Point x={parse(closest.date)} y={closest.count} let:d>
-                <div class="focus"></div>
-                <div class="tooltip" style="transform: translate(-{pc(closest.date)}%,0)">
-                    <strong>{closest.type}</strong> 
-                    <span>{closest.count} {closest.count === 1 ? "satellite" : 'satellites'}</span>
-                    <div><span>{closest.date}</span></div>
-                </div>
-            </Pancake.Point>
-        {/if}
-    </Pancake.Quadtree>
+    <Pancake.Quadtree data={all_arr} x="{(d: any) => parse(d.date)}" y="{(d: any) => d.count}" >
+        {#snippet children({ closest }: { closest: any })}
+                        {#if closest}
+                <Pancake.Point x={parse(closest.date)} y={closest.count} >
+                    {#snippet children({ d }: { d: any })}
+                                        <div class="focus"></div>
+                        <div class="tooltip" style="transform: translate(-{pc(closest.date)}%,0)">
+                            <strong>{closest.type}</strong> 
+                            <span>{closest.count} {closest.count === 1 ? "satellite" : 'satellites'}</span>
+                            <div><span>{closest.date}</span></div>
+                        </div>
+                                                        {/snippet}
+                                </Pancake.Point>
+            {/if}
+                            {/snippet}
+                </Pancake.Quadtree>
 
     <!-- chart title -->
         <Pancake.Point x={2019} y={40}>
@@ -227,7 +239,7 @@
         line-height: 1.2;
         text-shadow: 0 0 10px white, 0 0 10px white, 0 0 10px white, 0 0 10px white, 0 0 10px white, 0 0 10px white, 0 0 10px white;
     }
-    .tooltip strong {;
+    .tooltip strong {
         font-size: 1.4em;
         display: block;
     }
