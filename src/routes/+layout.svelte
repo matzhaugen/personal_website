@@ -1,6 +1,5 @@
 <script lang="ts">
   import { GoogleAnalytics } from '@beyonk/svelte-google-analytics'
-  import MyFile from '/resume/MatzHaugenResume.pdf';
   import { isAuthenticated } from '$lib/authStore';
   
   interface Props {
@@ -61,7 +60,7 @@
   <a href="/research">Research</a>
   <a href="/links">Links</a>
   <a href="/software">Software</a> 
-  <a href={MyFile} target="_blank" download="MatzHaugenResume.pdf">CV</a>
+  <a href="/MatzHaugenResume.pdf" target="_blank" download="MatzHaugenResume.pdf">CV</a>
   <a href="/blog">Blog</a> 
   <a href="/satellites">Satellites</a>
   <!-- <a href="/stocks">Stocks</a> -->
