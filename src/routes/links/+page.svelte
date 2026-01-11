@@ -42,8 +42,12 @@
 <ul>
 	<li><a href="https://www.torstenengelbrecht.com/en/virus-mania-neu/">Virus Mania by Torsten Engelbrecht, Claus Köhnlein, MD, 
 Dr. Samantha Bailey, MD, Dr. Stefano Scoglio </a></li>
-<li><a href="https://www.ener-chi.com/books/cancer-is-not-a-disease/">Cancer is Not a Disease by Andreas Moritz
-</a></li>
+<li>
+	<a href="https://www.ener-chi.com/books/cancer-is-not-a-disease/">Cancer is Not a Disease by Andreas Moritz</a>
+</li>
+<li>
+	<a href="https://www.lightbuilder.org/library/manlypalmerhall/occult-anatomy-of-man.pdf">The occult anatomy of Man, by Manly P Hall</a>
+</li>
 
 </ul>
 <h3>Social Critique</h3>
