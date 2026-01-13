@@ -59,6 +59,7 @@
   <a href="/">Home</a>
   <a href="/research">Research</a>
   <a href="/links">Links</a>
+  <a href="/books">Books</a>
   <a href="/software">Software</a> 
   <a href="/MatzHaugenResume.pdf" target="_blank" download="MatzHaugenResume.pdf">CV</a>
   <a href="/blog">Blog</a> 

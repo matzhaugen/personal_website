@@ -28,35 +28,6 @@
 	
 </ul>
 
-<h2>Illuminating books</h2>
-<h3>Electromagnetism and health</h3>
-<ul>
-	<li><a href="https://www.goodreads.com/book/show/277641.The_Body_Electric">The Body Electric by Robert Becker</a></li>
-
-</ul>
-<h3>Philosophy</h3>
-<ul>
-	<li><a href="https://www.gurdjieff.org/challenger1.htm">Beelzebub's tales to his grandson by Gurdjieff</a></li>
-</ul>
-<h3>Medicine</h3>
-<ul>
-	<li><a href="https://www.torstenengelbrecht.com/en/virus-mania-neu/">Virus Mania by Torsten Engelbrecht, Claus Köhnlein, MD, 
-Dr. Samantha Bailey, MD, Dr. Stefano Scoglio </a></li>
-<li>
-	<a href="https://www.ener-chi.com/books/cancer-is-not-a-disease/">Cancer is Not a Disease by Andreas Moritz</a>
-</li>
-<li>
-	<a href="https://www.lightbuilder.org/library/manlypalmerhall/occult-anatomy-of-man.pdf">The occult anatomy of Man, by Manly P Hall</a>
-</li>
-
-</ul>
-<h3>Social Critique</h3>
-<ul>
-	<li>
-		<a href="http://edwardcurtin.com/2293-2/">Seeking truth in a country of lies by Edward Curtin (2020)</a>
-	</li>
-</ul>
-
 <h2>Educational Videos</h2>
 <ul>
 	<li><a href="https://www.youtube.com/watch?v=VgdyXh4m9Mc">The Wave Genome</a></li>
