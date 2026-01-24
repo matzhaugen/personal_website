@@ -8,7 +8,7 @@
 <ul>
 	<li><a href="https://www.hup.harvard.edu/books/9780674971448">Law’s Abnegation - From Law’s Empire to the Administrative State by Adrian Vermeule </a></li>
 	<li><a href="http://voidjudgements.net/suedc/WoeUntoYou,Lawyers!.pdf">Woe unto you, lawyers! by Fred Rodell</a></li>
-	<li><a href="https://nwvstore.com/product/how-to-dethrone-the-imperial-judiciary/"> How to Dethrone the Imperial Judiciary by Fred Rodell</a></li>
+	<li><a href="https://nwvstore.com/product/how-to-dethrone-the-imperial-judiciary/"> How to Dethrone the Imperial Judiciary by Dr. Edwin Vieira</a></li>
 </ul>
 
 <h3>Electromagnetism and health</h3>
