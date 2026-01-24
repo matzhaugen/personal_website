@@ -22,7 +22,11 @@
 - [On the vitamin K shot](https://marcellapiperterry.substack.com/p/vitamin-k-shot-and-delayed-cord-clamping)
 - Another study not only found much lower levels in autistic children (mean of 15 ng/ml compared with 30 ng/ml in controls), it also found an extremely strong correlation coefficient (R = -0.84) between vitamin D levels and severity on autism rating scales (p  ≤ 0.001) ([Mostafa et al. (2013)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3476426/pdf/1742-2094-9-201.pdf))
 
+- [On neonatal vaccination](https://vaccinepapers.org/postnatal-immune-activation/)
 
+![Recommended childhood vaccine schedule](/VaccineSchedule.png)
+
+_Adapted from [Estes and McAllister, 2016](https://pubmed.ncbi.nlm.nih.gov/27540164/)._
 
 ## Educational Videos
 
