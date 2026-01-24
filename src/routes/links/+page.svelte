@@ -24,6 +24,7 @@
 	</li>
 	<li><a href="https://visionlaunch.com/more-than-a-dozen-credible-medical-studies-prove-face-masks-do-not-work-even-in-hospitals/"> Arthur Firstenberg on Face Masks</a></li>
 	<li><a href="https://aapsonline.org/mask-facts/">Mask facts by the Association of American Physicians and Surgeons</a></li>
+	<li><a href="https://vaccinepapers.org/">Research of vaccine side effects</a></li>
 
 	
 </ul>
