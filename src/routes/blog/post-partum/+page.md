@@ -1,5 +1,5 @@
 ---
-title: Post-partum
+title: Å gjøre det beste ut av den umiddelbare postpartum-perioden
 description: Post-partum care guide
 date: ''
 authors: Jan Wolfenberg, CPM, LM
@@ -7,10 +7,7 @@ language: Norwegian
 hidden: False
 ---
 
-*By [Jan Wolfenberg, CPM, LM](https://birthspirit.com)*
-
-
-# Å gjøre det beste ut av den umiddelbare postpartum-perioden
+*[Original article](https://birthspirit.com/wp-content/uploads/2014/03/MAKING-THE-MOST-OF-THE-IMMEDIATE-POSTPARTUM-1.pdf) translated from [Jan Wolfenberg, CPM, LM](https://birthspirit.com)'s website*
 
 Tiden rett etter at babyen er født – de første par timene – er en kritisk, fantastisk og magisk tid. Det som følger på de første 2,5 sidene er en mer medisinsk og vitenskapelig beskrivelse av prosessen fra et biokjemisk perspektiv. Hvis dette kjeder deg, kan du bare hoppe videre til midten av den tredje siden.
 
