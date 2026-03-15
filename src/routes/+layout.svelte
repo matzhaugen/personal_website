@@ -64,7 +64,7 @@
   <a href="/MatzHaugenResume.pdf" target="_blank" download="MatzHaugenResume.pdf">CV</a>
   <a href="/blog">Blog</a> 
   <a href="/satellites">Satellites</a>
-  <a href="/law">Law</a>
+  {#if $isAuthenticated}<a href="/law">Law</a>{/if}
   <a href="/pregnancy">Pregnancy</a>
   <!-- <a href="/stocks">Stocks</a> -->
   <!-- <a href="/covid-papers">Covid Papers</a> -->
