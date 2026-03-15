@@ -21,6 +21,7 @@
 - Autism rates [linked](https://vaccinepapers.org/vitamin-d-immune-activation-autism/) to serum vitamin D deficiency, and shown to vary widely based on melanin content in skin ([Cannell 2007](https://vaccinepapers.org/wp-content/uploads/Cannell-Autism-and-Vitamin-D.pdf) and [Cannell 2013](https://vaccinepapers.org/wp-content/uploads/What-is-the-role-of-vitamin-D-in-autism-1.pdf)).
 - [On the vitamin K shot](https://marcellapiperterry.substack.com/p/vitamin-k-shot-and-delayed-cord-clamping)
 - Another study not only found much lower levels in autistic children (mean of 15 ng/ml compared with 30 ng/ml in controls), it also found an extremely strong correlation coefficient (R = -0.84) between vitamin D levels and severity on autism rating scales (p  ≤ 0.001) ([Mostafa et al. (2013)](https://pmc.ncbi.nlm.nih.gov/articles/PMC3476426/pdf/1742-2094-9-201.pdf))
+- [More Vit K info from holistic midwife, Jan Wolfenberg](https://birthspirit.com/wp-content/uploads/2014/03/Vitamin-K-for-Newborns.pdf) / [Norwegian translation](/Vitamin-K-for-Newborns_nb.pdf)
 
 - [On neonatal vaccination](https://vaccinepapers.org/postnatal-immune-activation/)
 
