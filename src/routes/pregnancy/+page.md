@@ -4,6 +4,9 @@
 
 # Pregnancy
 
+## Post-partum
+- [An informative article](https://birthspirit.com/wp-content/uploads/2014/03/MAKING-THE-MOST-OF-THE-IMMEDIATE-POSTPARTUM-1.pdf) on the port-partum period by Jan Wolfenberg ([Norwegian translation](/blog/post-partum)).
+
 ## Ultrasound and pregnancy
 
 - [A 1990 RCT](https://sci-hub.st/10.1016/0140-6736(90)91941-3) gave 4691 women ultrasound and 4619 no ultrasound. They experienced 20 miscarriages and 11 elective abortions (due to diagnosed birth defects), whereas zero of either occurred in the control group. Additionally, it was determined that of the 250 placenta previas diagnosed by ultrasound (a key reason for prenatal ultrasounds), only 4 were present at birth.  
