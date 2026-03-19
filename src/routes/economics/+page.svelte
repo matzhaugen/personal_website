@@ -19,6 +19,15 @@
 		fedfunds: [string, number][];
 		usdyen: [string, number][];
 		recession: [string, number][];
+		cpi: [string, number][];
+		corePce: [string, number][];
+		breakeven5y: [string, number][];
+		t10y3m: [string, number][];
+		hySpread: [string, number][];
+		realRate10y: [string, number][];
+		icsa: [string, number][];
+		sp500: [string, number][];
+		indpro: [string, number][];
 	}
 
 	interface Props {
@@ -55,7 +64,9 @@
 	const dollarMaxy = dollarInGold.reduce((a, d) => Math.max(a, d.value), 0.001) * 1.1;
 
 	// ── macro chart ────────────────────────────────────────────────────────────
-	const { nasdaq, t10y2y, unrate, fedfunds, usdyen, recession } = data.macro;
+	const { nasdaq, t10y2y, unrate, fedfunds, usdyen, recession,
+	        cpi, corePce, breakeven5y, t10y3m, hySpread, realRate10y, icsa,
+	        sp500, indpro } = data.macro;
 
 	// Transformations matching the Python chart
 	const nasFirst = nasdaq[0]?.[1] ?? 1;
@@ -113,6 +124,135 @@
 			usdyen:   fmt(usdyenMap.get(ym)),
 		};
 	}
+
+	// ── indicator dashboard ────────────────────────────────────────────────────
+	// Compute YoY % change for a monthly level series
+	function computeYoY(series: [string, number][]): [string, number][] {
+		return series.slice(12).map(([date, v], i) => [date, ((v - series[i][1]) / Math.abs(series[i][1])) * 100]);
+	}
+
+	const cpiYoY = computeYoY(cpi);
+	const pceYoY = computeYoY(corePce);
+	const indproYoY = computeYoY(indpro);
+
+	// Percentile rank of value within array (0–100)
+	function pctRank(values: number[], val: number): number {
+		const sorted = [...values].sort((a, b) => a - b);
+		const below = sorted.filter(v => v <= val).length;
+		return (below / sorted.length) * 100;
+	}
+
+	// Last N years of a series
+	function last20yr(series: [string, number][]): number[] {
+		const cutoff = new Date();
+		cutoff.setFullYear(cutoff.getFullYear() - 20);
+		const cutStr = cutoff.toISOString().slice(0, 10);
+		return series.filter(([d]) => d >= cutStr).map(([, v]) => v);
+	}
+
+	type Signal = 'green' | 'yellow' | 'red';
+
+	function sig(pct: number, dir: 'goodHigh' | 'goodLow'): Signal {
+		if (dir === 'goodHigh') return pct >= 75 ? 'green' : pct <= 25 ? 'red' : 'yellow';
+		return pct <= 25 ? 'green' : pct >= 75 ? 'red' : 'yellow';
+	}
+
+	function last(s: [string, number][]): number { return s.at(-1)?.[1] ?? 0; }
+	function nBack(s: [string, number][], n: number): number { return s.at(-n)?.[1] ?? 0; }
+	function fmtPp(diff: number): string { return `${diff >= 0 ? '+' : ''}${diff.toFixed(1)}pp`; }
+	function fmtPct(v: number): string { return `${v.toFixed(1)}%`; }
+
+	type DashRow = { label: string; value: string; change: string; signal: Signal; note: string };
+
+	const dashRows: DashRow[] = [
+		// Inflation
+		(() => {
+			const cur = last(pceYoY);
+			const diff = cur - nBack(pceYoY, 13);
+			const pct = pctRank(last20yr(pceYoY), cur);
+			return { label: 'Core PCE (YoY)', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: "Fed's inflation target" };
+		})(),
+		(() => {
+			const cur = last(cpiYoY);
+			const diff = cur - nBack(cpiYoY, 13);
+			const pct = pctRank(last20yr(cpiYoY), cur);
+			return { label: 'CPI (YoY)', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Headline consumer prices' };
+		})(),
+		(() => {
+			const cur = last(breakeven5y);
+			const diff = cur - nBack(breakeven5y, 53);
+			const pct = pctRank(last20yr(breakeven5y), cur);
+			return { label: '5yr Breakeven', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Market inflation expectation' };
+		})(),
+		// Spreads & rates
+		(() => {
+			const cur = last(t10y3m);
+			const diff = cur - nBack(t10y3m, 53);
+			const hist = last20yr(t10y3m);
+			const pct = pctRank(hist, cur);
+			return { label: '10y−3m Spread', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodHigh'), note: 'Recession predictor (Estrella-Mishkin)' };
+		})(),
+		(() => {
+			const cur = last(t10y2y);
+			const diff = cur - nBack(t10y2y, 53);
+			const pct = pctRank(last20yr(t10y2y), cur);
+			return { label: '10y−2y Spread', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodHigh'), note: 'Yield curve' };
+		})(),
+		(() => {
+			const cur = last(hySpread);
+			const diff = cur - nBack(hySpread, 53);
+			const pct = pctRank(last20yr(hySpread), cur);
+			return { label: 'HY Credit Spread', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Financial stress; widens before recessions' };
+		})(),
+		(() => {
+			const cur = last(realRate10y);
+			const diff = cur - nBack(realRate10y, 53);
+			const pct = pctRank(last20yr(realRate10y), cur);
+			return { label: '10yr TIPS Real Rate', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Real interest rate; gold proxy' };
+		})(),
+		// Labor
+		(() => {
+			const cur = last(icsa) / 1000;
+			const prev = nBack(icsa, 53) / 1000;
+			const diff = cur - prev;
+			const pct = pctRank(last20yr(icsa).map(v => v / 1000), cur);
+			return { label: 'Initial Claims', value: `${cur.toFixed(0)}K`, change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Weekly jobless claims; leads UNRATE' };
+		})(),
+		(() => {
+			const cur = last(unrate);
+			const diff = cur - nBack(unrate, 13);
+			const pct = pctRank(last20yr(unrate), cur);
+			return { label: 'Unemployment', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'U-3 unemployment rate' };
+		})(),
+		// Output & equity
+		(() => {
+			const cur = last(indproYoY);
+			const diff = cur - nBack(indproYoY, 13);
+			const pct = pctRank(last20yr(indproYoY), cur);
+			return { label: 'Industrial Production (YoY)', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodHigh'), note: 'Real economy pulse' };
+		})(),
+		(() => {
+			const cur = last(sp500);
+			const prev = nBack(sp500, 13);
+			const pct1yr = ((cur - prev) / prev) * 100;
+			const returns = sp500.slice(12).map(([, v], i) => ((v - sp500[i][1]) / sp500[i][1]) * 100);
+			const rpct = pctRank(returns.slice(-240), pct1yr);
+			return { label: 'S&P 500', value: cur.toFixed(0), change: fmtPct(pct1yr), signal: sig(rpct, 'goodHigh'), note: 'Broad equity market' };
+		})(),
+		(() => {
+			const cur = rows.at(-1)?.gold_usd ?? 0;
+			const oneYrAgo = new Date(rows.at(-1)!.date);
+			oneYrAgo.setFullYear(oneYrAgo.getFullYear() - 1);
+			const oneYrAgoStr = oneYrAgo.toISOString().slice(0, 10);
+			const prevRow = rows.findLast(r => r.date <= oneYrAgoStr);
+			const prev = prevRow?.gold_usd ?? cur;
+			const pct1yr = ((cur - prev) / prev) * 100;
+			const step = 252;
+			const returns = rows.slice(step).map((r, i) => ((r.gold_usd - rows[i].gold_usd) / rows[i].gold_usd) * 100);
+			const rpct = pctRank(returns.slice(-240 * 5), pct1yr);
+			return { label: 'Gold', value: `$${cur.toFixed(0)}/oz`, change: fmtPct(pct1yr), signal: sig(rpct, 'goodHigh'), note: 'XAU/USD spot price' };
+		})(),
+	];
 </script>
 
 <!-- ── Chart 1: Oil in Gold ─────────────────────────────────────────────────── -->
@@ -373,6 +513,37 @@
 	</Pancake.Chart>
 </div>
 
+<!-- ── Chart 4: Indicator Dashboard ────────────────────────────────────────── -->
+<div class="dashboard">
+	<h2>Macro Indicator Dashboard</h2>
+	<p class="dash-subtitle">Signal: percentile rank vs last 20 years — green ≤ 25th, red ≥ 75th (direction-adjusted)</p>
+	<table class="dash-table">
+		<thead>
+			<tr>
+				<th>Indicator</th>
+				<th>Current</th>
+				<th>1yr change</th>
+				<th>Signal</th>
+				<th class="note-col">Note</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each dashRows as row}
+				<tr>
+					<td class="dash-label">{row.label}</td>
+					<td class="dash-value">{row.value}</td>
+					<td class="dash-change">{row.change}</td>
+					<td class="dash-signal">
+						<span class="signal-dot signal-{row.signal}">●</span>
+					</td>
+					<td class="note-col dash-note">{row.note}</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
+	<p class="dash-source"><em>Source: FRED (PCEPILFE, CPIAUCSL, T5YIE, T10Y3M, T10Y2Y, BAMLH0A0HYM2, DFII10, ICSA, UNRATE, INDPRO, SP500)</em></p>
+</div>
+
 <style>
 	/* ── layout ──────────────────────────────────────────────────────────────── */
 	.chart {
@@ -519,6 +690,54 @@
 		text-shadow: 0 0 6px white, 0 0 6px white, 0 0 6px white, 0 0 6px white,
 			0 0 6px white, 0 0 6px white, 0 0 6px white, 0 0 6px white;
 	}
+
+	/* ── indicator dashboard ─────────────────────────────────────────────────── */
+	.dashboard {
+		max-width: 80em;
+		margin: 0 auto 36px;
+		padding: 0 1em;
+	}
+	.dashboard h2 { margin-bottom: 0.25em; }
+	.dash-subtitle {
+		font-size: 13px;
+		color: #999;
+		margin: 0 0 1em;
+	}
+	.dash-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-family: sans-serif;
+		font-size: 14px;
+	}
+	.dash-table thead tr {
+		border-bottom: 2px solid #ddd;
+	}
+	.dash-table th {
+		text-align: left;
+		padding: 6px 10px;
+		color: #666;
+		font-weight: 600;
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+	.dash-table tbody tr {
+		border-bottom: 1px solid #f0f0f0;
+	}
+	.dash-table tbody tr:hover { background: #fafafa; }
+	.dash-table td { padding: 7px 10px; }
+	.dash-label { color: #333; font-weight: 500; }
+	.dash-value { font-variant-numeric: tabular-nums; font-weight: 600; }
+	.dash-change { font-variant-numeric: tabular-nums; color: #888; font-size: 13px; }
+	.dash-signal { text-align: center; }
+	.dash-note { color: #999; font-size: 12px; }
+	.note-col { display: none; }
+	@media (min-width: 700px) { .note-col { display: table-cell; } }
+	.signal-dot { font-style: normal; font-size: 18px; }
+	.signal-green  { color: #16a34a; }
+	.signal-yellow { color: #d97706; }
+	.signal-red    { color: #dc2626; }
+	.dash-source { font-size: 12px; color: #bbb; margin-top: 0.75em; }
 
 	/* ── colored dots ────────────────────────────────────────────────────────── */
 	.dot         { font-style: normal; }

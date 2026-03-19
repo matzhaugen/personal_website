@@ -16,7 +16,11 @@ export const load: PageServerLoad = async () => {
 			.filter(r => !isNaN(r.gold_usd) && !isNaN(r.oil_usd));
 	} catch { /* file not yet generated */ }
 
-	let macro = { nasdaq: [], t10y2y: [], unrate: [], fedfunds: [], usdyen: [], recession: [] };
+	let macro = {
+		nasdaq: [], t10y2y: [], unrate: [], fedfunds: [], usdyen: [], recession: [],
+		cpi: [], corePce: [], breakeven5y: [], t10y3m: [], hySpread: [], realRate10y: [],
+		icsa: [], sp500: [], indpro: [],
+	};
 	try {
 		macro = JSON.parse(fs.readFileSync(path.resolve('static/data/macro.json'), 'utf8'));
 	} catch { /* file not yet generated */ }
