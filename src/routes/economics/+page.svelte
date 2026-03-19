@@ -68,9 +68,23 @@
 	        cpi, corePce, breakeven5y, t10y3m, hySpread, realRate10y, icsa,
 	        sp500, indpro } = data.macro;
 
-	// Transformations matching the Python chart
-	const nasFirst = nasdaq[0]?.[1] ?? 1;
-	const nasdaqSeries = nasdaq.map(([date, v]) => ({ date, value: Math.log(v) - Math.log(nasFirst) }));
+	// Gold: aggregate daily rows to monthly (last entry per month), then log-index
+	// Done first so we can use goldFirst as the shared index base for NASDAQ too.
+	const goldMonthly: Point[] = [];
+	for (const r of rows) {
+		const ym = r.date.slice(0, 7);
+		if (goldMonthly.at(-1)?.date.slice(0, 7) === ym) goldMonthly.at(-1)!.value = r.gold_usd;
+		else goldMonthly.push({ date: r.date, value: r.gold_usd });
+	}
+	const goldFirst = goldMonthly[0]?.value ?? 1;
+	const goldStartDate = goldMonthly[0]?.date ?? '';
+	const goldSeries = goldMonthly.map(({ date, value }) => ({ date, value: Math.log(value) - Math.log(goldFirst) }));
+
+	// Index NASDAQ to the same start date as gold for direct comparison
+	const nasRef = nasdaq.find(([d]) => d >= goldStartDate)?.[1] ?? nasdaq[0]?.[1] ?? 1;
+	const nasdaqSeries = nasdaq
+		.filter(([d]) => d >= goldStartDate)
+		.map(([date, v]) => ({ date, value: Math.log(v) - Math.log(nasRef) }));
 
 	const t10y2ySeries = t10y2y.map(([date, v]) => ({ date, value: v }));
 
@@ -83,6 +97,7 @@
 	const usdyenRef =
 		usdyen.find(([d]) => d.startsWith('2025-06'))?.[1] ?? usdyen.at(-1)?.[1] ?? 1;
 	const usdyenSeries = usdyen.map(([date, v]) => ({ date, value: (v / usdyenRef) * 3 }));
+
 
 	// Recession shaded regions (JHDUSRGDPBR: quarterly 0/1)
 	type Period = { start: string; end: string };
@@ -113,6 +128,7 @@
 	const unrateMap   = new Map(unrateSeries.map(d => [d.date.slice(0, 7), d.value]));
 	const fedfundsMap = new Map(fedfundsSeries.map(d => [d.date.slice(0, 7), d.value]));
 	const usdyenMap   = new Map(usdyenSeries.map(d => [d.date.slice(0, 7), d.value]));
+	const goldMap     = new Map(goldSeries.map(d => [d.date.slice(0, 7), d.value]));
 
 	function tooltipValues(date: string) {
 		const ym = date.slice(0, 7);
@@ -122,6 +138,7 @@
 			unrate:   fmt(unrateMap.get(ym)),
 			fedfunds: fmt(fedfundsMap.get(ym)),
 			usdyen:   fmt(usdyenMap.get(ym)),
+			gold:     fmt(goldMap.get(ym)),
 		};
 	}
 
@@ -456,6 +473,17 @@
 					<path class="macro-line usdyen" {d} />
 				{/snippet}
 			</Pancake.SvgLine>
+
+			<!-- Gold log-indexed (gold) -->
+			<Pancake.SvgLine
+				data={goldSeries}
+				x={xAcc}
+				y={yAcc}
+			>
+				{#snippet children({ d }: { d: string })}
+					<path class="macro-line gold" {d} />
+				{/snippet}
+			</Pancake.SvgLine>
 		</Pancake.Svg>
 
 		<!-- Hover tooltip on T10Y2Y (most granular series) -->
@@ -478,6 +506,7 @@
 									<tr><td class="dot unrate-dot">●</td><td>Unemployment</td><td>{tv.unrate}</td></tr>
 									<tr><td class="dot fedfunds-dot">●</td><td>Fed rate / 5</td><td>{tv.fedfunds}</td></tr>
 									<tr><td class="dot usdyen-dot">●</td><td>JPY/USD ×3</td><td>{tv.usdyen}</td></tr>
+									<tr><td class="dot gold-dot">●</td><td>Gold (log)</td><td>{tv.gold}</td></tr>
 								</tbody></table>
 							</div>
 						{/snippet}
@@ -505,6 +534,7 @@
 					<div><span class="dot unrate-dot">●</span> Unemployment (indexed to Jan 2020)</div>
 					<div><span class="dot fedfunds-dot">●</span> Fed funds rate ÷ 5</div>
 					<div><span class="dot usdyen-dot">●</span> JPY/USD (indexed to Jun 2025, ×3)</div>
+					<div><span class="dot gold-dot">●</span> Gold (log-indexed to 1986)</div>
 					<div><span style="color: #93c5fd">■</span> Recession (FRED)</div>
 				</div>
 			{/snippet}
@@ -616,6 +646,7 @@
 	path.unrate  { stroke: #16a34a; }
 	path.fedfunds { stroke: #dc2626; }
 	path.usdyen  { stroke: #7c3aed; }
+	path.gold    { stroke: #ca8a04; }
 
 	/* ── recession shading ───────────────────────────────────────────────────── */
 	.recession-shade {
@@ -746,4 +777,5 @@
 	.unrate-dot  { color: #16a34a; }
 	.fedfunds-dot { color: #dc2626; }
 	.usdyen-dot  { color: #7c3aed; }
+	.gold-dot    { color: #ca8a04; }
 </style>
