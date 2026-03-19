@@ -15,6 +15,7 @@
 - [Doctors are the leading cause of death by G. Null (peer-reviewed in) *Life Extension Magazine* (2006)](https://www.lifeextension.com/magazine/2006/8/report_death)
 - [Arthur Firstenberg on Face Masks](https://visionlaunch.com/more-than-a-dozen-credible-medical-studies-prove-face-masks-do-not-work-even-in-hospitals/)
 - [Mask facts by the Association of American Physicians and Surgeons](https://aapsonline.org/mask-facts/)
+- [Blind man seeing with echolocation](https://www.youtube.com/watch?v=A8lztr1tu4o)
 
 ## Vaccines and other injections
 - [Research on vaccine side effects](https://vaccinepapers.org/)
