@@ -2,9 +2,11 @@ declare module '@sveltejs/pancake' {
   export const Chart: any;
   export const Grid: any;
   export const Svg: any;
+  export const SvgLine: any;
   export const SvgScatterplot: any;
   export const Quadtree: any;
   export const Point: any;
+  export const Box: any;
 }
 
 declare module '*.json' {

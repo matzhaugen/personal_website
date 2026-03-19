@@ -1,0 +1,59 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const JSON_PATH = path.resolve(__dirname, '../static/data/macro.json');
+
+const FRED_API_KEY = process.env.FRED_API_KEY;
+if (!FRED_API_KEY) {
+	console.error('FRED_API_KEY environment variable is required');
+	process.exit(1);
+}
+
+async function fetchFred(seriesId, startDate = '1976-01-01', frequency = null) {
+	const url = new URL('https://api.stlouisfed.org/fred/series/observations');
+	url.searchParams.set('series_id', seriesId);
+	url.searchParams.set('api_key', FRED_API_KEY);
+	url.searchParams.set('file_type', 'json');
+	url.searchParams.set('observation_start', startDate);
+	if (frequency) {
+		url.searchParams.set('frequency', frequency);
+		url.searchParams.set('aggregation_method', 'avg');
+	}
+	const res = await fetch(url);
+	if (!res.ok) throw new Error(`FRED ${seriesId} error ${res.status}: ${await res.text()}`);
+	const json = await res.json();
+	return json.observations
+		.filter(o => o.value !== '.')
+		.map(o => [o.date, parseFloat(o.value)]);
+}
+
+async function main() {
+	console.log('Fetching macro data from FRED...');
+
+	const [nasdaq, t10y2y, unrate, fedfunds, usdyen, recession] = await Promise.all([
+		fetchFred('NASDAQCOM', '1976-01-01', 'm'),
+		fetchFred('T10Y2Y', '1976-01-01', 'w'),
+		fetchFred('UNRATE', '1976-01-01'),
+		fetchFred('FEDFUNDS', '1976-01-01'),
+		fetchFred('DEXJPUS', '1976-01-01', 'm'),
+		fetchFred('JHDUSRGDPBR', '1976-01-01'),
+	]);
+
+	const data = { nasdaq, t10y2y, unrate, fedfunds, usdyen, recession };
+
+	fs.mkdirSync(path.dirname(JSON_PATH), { recursive: true });
+	fs.writeFileSync(JSON_PATH, JSON.stringify(data));
+
+	console.log(
+		`Saved macro.json — nasdaq:${nasdaq.length} t10y2y:${t10y2y.length} ` +
+		`unrate:${unrate.length} fedfunds:${fedfunds.length} ` +
+		`usdyen:${usdyen.length} recession:${recession.length}`
+	);
+}
+
+main().catch(err => {
+	console.error(err);
+	process.exit(1);
+});

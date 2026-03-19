@@ -1,0 +1,30 @@
+name: Fetch commodity prices
+on:
+  schedule:
+    - cron: '0 22 * * 1-5'   # 22:00 UTC weekdays (after COMEX/NYMEX close)
+  workflow_dispatch:
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: node scripts/fetch-prices.js
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      - run: node scripts/fetch-macro.js
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add static/data/commodity_prices.csv static/data/macro.json
+          git diff --cached --quiet || git commit -m "chore: update commodity prices $(date -u +%Y-%m-%d)"
+          git push

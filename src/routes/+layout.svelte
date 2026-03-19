@@ -66,7 +66,7 @@
   <a href="/satellites">Satellites</a>
   {#if $isAuthenticated}<a href="/law">Law</a>{/if}
   <a href="/pregnancy">Pregnancy</a>
-  <!-- <a href="/stocks">Stocks</a> -->
+  <a href="/economics">Economics</a>
   <!-- <a href="/covid-papers">Covid Papers</a> -->
   <img 
     id="sun" 
