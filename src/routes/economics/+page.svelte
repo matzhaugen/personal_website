@@ -159,6 +159,24 @@
 		return (below / sorted.length) * 100;
 	}
 
+	// Histogram bins (normalized heights 0–1) + line position (0–1) for current value
+	function makeHistBars(values: number[], curVal: number, bins = 14): { bars: number[]; lineX: number } {
+		if (!values.length) return { bars: [], lineX: 0.5 };
+		const min = Math.min(...values);
+		const max = Math.max(...values);
+		const range = max - min || 1;
+		const counts = new Array(bins).fill(0);
+		for (const v of values) {
+			const i = Math.min(Math.floor(((v - min) / range) * bins), bins - 1);
+			counts[i]++;
+		}
+		const maxCount = Math.max(...counts, 1);
+		return {
+			bars: counts.map(c => c / maxCount),
+			lineX: Math.max(0, Math.min(1, (curVal - min) / range)),
+		};
+	}
+
 	// Last N years of a series
 	function last20yr(series: [string, number][]): number[] {
 		const cutoff = new Date();
@@ -179,82 +197,91 @@
 	function fmtPp(diff: number): string { return `${diff >= 0 ? '+' : ''}${diff.toFixed(1)}pp`; }
 	function fmtPct(v: number): string { return `${v.toFixed(1)}%`; }
 
-	type DashRow = { label: string; value: string; change: string; signal: Signal; note: string };
+	type DashRow = { label: string; value: string; change: string; signal: Signal; note: string; bars: number[]; lineX: number };
 
 	const dashRows: DashRow[] = [
 		// Inflation
 		(() => {
+			const hist = last20yr(pceYoY);
 			const cur = last(pceYoY);
 			const diff = cur - nBack(pceYoY, 13);
-			const pct = pctRank(last20yr(pceYoY), cur);
-			return { label: 'Core PCE (YoY)', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: "Fed's inflation target" };
+			const pct = pctRank(hist, cur);
+			return { label: 'Core PCE (YoY)', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: "Fed's inflation target", ...makeHistBars(hist, cur) };
 		})(),
 		(() => {
+			const hist = last20yr(cpiYoY);
 			const cur = last(cpiYoY);
 			const diff = cur - nBack(cpiYoY, 13);
-			const pct = pctRank(last20yr(cpiYoY), cur);
-			return { label: 'CPI (YoY)', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Headline consumer prices' };
+			const pct = pctRank(hist, cur);
+			return { label: 'CPI (YoY)', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Headline consumer prices', ...makeHistBars(hist, cur) };
 		})(),
 		(() => {
+			const hist = last20yr(breakeven5y);
 			const cur = last(breakeven5y);
 			const diff = cur - nBack(breakeven5y, 53);
-			const pct = pctRank(last20yr(breakeven5y), cur);
-			return { label: '5yr Breakeven', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Market inflation expectation' };
+			const pct = pctRank(hist, cur);
+			return { label: '5yr Breakeven', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Market inflation expectation', ...makeHistBars(hist, cur) };
 		})(),
 		// Spreads & rates
 		(() => {
+			const hist = last20yr(t10y3m);
 			const cur = last(t10y3m);
 			const diff = cur - nBack(t10y3m, 53);
-			const hist = last20yr(t10y3m);
 			const pct = pctRank(hist, cur);
-			return { label: '10y−3m Spread', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodHigh'), note: 'Recession predictor (Estrella-Mishkin)' };
+			return { label: '10y−3m Spread', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodHigh'), note: 'Recession predictor (Estrella-Mishkin)', ...makeHistBars(hist, cur) };
 		})(),
 		(() => {
+			const hist = last20yr(t10y2y);
 			const cur = last(t10y2y);
 			const diff = cur - nBack(t10y2y, 53);
-			const pct = pctRank(last20yr(t10y2y), cur);
-			return { label: '10y−2y Spread', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodHigh'), note: 'Yield curve' };
+			const pct = pctRank(hist, cur);
+			return { label: '10y−2y Spread', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodHigh'), note: 'Yield curve', ...makeHistBars(hist, cur) };
 		})(),
 		(() => {
+			const hist = last20yr(hySpread);
 			const cur = last(hySpread);
 			const diff = cur - nBack(hySpread, 53);
-			const pct = pctRank(last20yr(hySpread), cur);
-			return { label: 'HY Credit Spread', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Financial stress; widens before recessions' };
+			const pct = pctRank(hist, cur);
+			return { label: 'HY Credit Spread', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Financial stress; widens before recessions', ...makeHistBars(hist, cur) };
 		})(),
 		(() => {
+			const hist = last20yr(realRate10y);
 			const cur = last(realRate10y);
 			const diff = cur - nBack(realRate10y, 53);
-			const pct = pctRank(last20yr(realRate10y), cur);
-			return { label: '10yr TIPS Real Rate', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Real interest rate; gold proxy' };
+			const pct = pctRank(hist, cur);
+			return { label: '10yr TIPS Real Rate', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Real interest rate; gold proxy', ...makeHistBars(hist, cur) };
 		})(),
 		// Labor
 		(() => {
+			const hist = last20yr(icsa).map(v => v / 1000);
 			const cur = last(icsa) / 1000;
 			const prev = nBack(icsa, 53) / 1000;
 			const diff = cur - prev;
-			const pct = pctRank(last20yr(icsa).map(v => v / 1000), cur);
-			return { label: 'Initial Claims', value: `${cur.toFixed(0)}K`, change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Weekly jobless claims; leads UNRATE' };
+			const pct = pctRank(hist, cur);
+			return { label: 'Initial Claims', value: `${cur.toFixed(0)}K`, change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'Weekly jobless claims; leads UNRATE', ...makeHistBars(hist, cur) };
 		})(),
 		(() => {
+			const hist = last20yr(unrate);
 			const cur = last(unrate);
 			const diff = cur - nBack(unrate, 13);
-			const pct = pctRank(last20yr(unrate), cur);
-			return { label: 'Unemployment', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'U-3 unemployment rate' };
+			const pct = pctRank(hist, cur);
+			return { label: 'Unemployment', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodLow'), note: 'U-3 unemployment rate', ...makeHistBars(hist, cur) };
 		})(),
 		// Output & equity
 		(() => {
+			const hist = last20yr(indproYoY);
 			const cur = last(indproYoY);
 			const diff = cur - nBack(indproYoY, 13);
-			const pct = pctRank(last20yr(indproYoY), cur);
-			return { label: 'Industrial Production (YoY)', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodHigh'), note: 'Real economy pulse' };
+			const pct = pctRank(hist, cur);
+			return { label: 'Industrial Production (YoY)', value: fmtPct(cur), change: fmtPp(diff), signal: sig(pct, 'goodHigh'), note: 'Real economy pulse', ...makeHistBars(hist, cur) };
 		})(),
 		(() => {
 			const cur = last(sp500);
 			const prev = nBack(sp500, 13);
 			const pct1yr = ((cur - prev) / prev) * 100;
-			const returns = sp500.slice(12).map(([, v], i) => ((v - sp500[i][1]) / sp500[i][1]) * 100);
-			const rpct = pctRank(returns.slice(-240), pct1yr);
-			return { label: 'S&P 500', value: cur.toFixed(0), change: fmtPct(pct1yr), signal: sig(rpct, 'goodHigh'), note: 'Broad equity market' };
+			const hist = sp500.slice(12).map(([, v], i) => ((v - sp500[i][1]) / sp500[i][1]) * 100).slice(-240);
+			const rpct = pctRank(hist, pct1yr);
+			return { label: 'S&P 500', value: cur.toFixed(0), change: fmtPct(pct1yr), signal: sig(rpct, 'goodHigh'), note: 'Broad equity market', ...makeHistBars(hist, pct1yr) };
 		})(),
 		(() => {
 			const cur = rows.at(-1)?.gold_usd ?? 0;
@@ -265,9 +292,9 @@
 			const prev = prevRow?.gold_usd ?? cur;
 			const pct1yr = ((cur - prev) / prev) * 100;
 			const step = 252;
-			const returns = rows.slice(step).map((r, i) => ((r.gold_usd - rows[i].gold_usd) / rows[i].gold_usd) * 100);
-			const rpct = pctRank(returns.slice(-240 * 5), pct1yr);
-			return { label: 'Gold', value: `$${cur.toFixed(0)}/oz`, change: fmtPct(pct1yr), signal: sig(rpct, 'goodHigh'), note: 'XAU/USD spot price' };
+			const hist = rows.slice(step).map((r, i) => ((r.gold_usd - rows[i].gold_usd) / rows[i].gold_usd) * 100).slice(-240 * 5);
+			const rpct = pctRank(hist, pct1yr);
+			return { label: 'Gold', value: `$${cur.toFixed(0)}/oz`, change: fmtPct(pct1yr), signal: sig(rpct, 'goodHigh'), note: 'XAU/USD spot price', ...makeHistBars(hist, pct1yr) };
 		})(),
 	];
 </script>
@@ -554,6 +581,7 @@
 				<th>Current</th>
 				<th>1yr change</th>
 				<th>Signal</th>
+				<th class="hist-col">Distribution</th>
 				<th class="note-col">Note</th>
 			</tr>
 		</thead>
@@ -565,6 +593,21 @@
 					<td class="dash-change">{row.change}</td>
 					<td class="dash-signal">
 						<span class="signal-dot signal-{row.signal}">●</span>
+					</td>
+					<td class="hist-col">
+						<svg width="90" height="28" class="hist-svg">
+							{#each row.bars as h, i}
+								{@const bw = 90 / row.bars.length}
+								<rect
+									x={i * bw + 0.5}
+									y={28 - h * 24}
+									width={bw - 1}
+									height={h * 24}
+									class="hist-bar"
+								/>
+							{/each}
+							<line x1={row.lineX * 90} y1="0" x2={row.lineX * 90} y2="28" class="hist-line" />
+						</svg>
 					</td>
 					<td class="note-col dash-note">{row.note}</td>
 				</tr>
@@ -762,8 +805,15 @@
 	.dash-change { font-variant-numeric: tabular-nums; color: #888; font-size: 13px; }
 	.dash-signal { text-align: center; }
 	.dash-note { color: #999; font-size: 12px; }
+	.hist-col { display: none; }
 	.note-col { display: none; }
-	@media (min-width: 700px) { .note-col { display: table-cell; } }
+	@media (min-width: 700px) {
+		.hist-col { display: table-cell; vertical-align: middle; padding: 4px 10px; }
+		.note-col { display: table-cell; }
+	}
+	.hist-svg { display: block; }
+	.hist-bar { fill: #d1d5db; }
+	.hist-line { stroke: #dc2626; stroke-width: 1.5px; }
 	.signal-dot { font-style: normal; font-size: 18px; }
 	.signal-green  { color: #16a34a; }
 	.signal-yellow { color: #d97706; }
