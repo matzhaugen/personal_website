@@ -1,8 +1,8 @@
 
 <script lang="ts">
   import { isAuthenticated } from '$lib/authStore';
-  import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
+  import { goto, afterNavigate } from '$app/navigation';
+  import { onMount, tick } from 'svelte';
 
   interface Props {
     title?: string;
@@ -24,17 +24,32 @@
   let headings = $state<Heading[]>([]);
   let activeId = $state('');
   let pinned = $state(false);
-  let contentEl: HTMLElement;
-  let tocEl: HTMLElement;
+  let contentEl = $state<HTMLElement | undefined>(undefined);
+  let tocEl = $state<HTMLElement | undefined>(undefined);
+  let collected: Heading[] = [];
 
   function togglePin(e: MouseEvent) {
     e.stopPropagation();
     pinned = !pinned;
   }
 
-  onMount(() => {
+  function updateActive() {
+    const threshold = window.scrollY + 80;
+    let current = collected[0]?.id ?? '';
+    for (const h of collected) {
+      const el = document.getElementById(h.id);
+      if (el && el.getBoundingClientRect().top + window.scrollY <= threshold) {
+        current = h.id;
+      }
+    }
+    activeId = current;
+  }
+
+  async function scanHeadings() {
+    await tick(); // wait for new page content to render
+    if (!contentEl) return;
     const els = contentEl.querySelectorAll('h2, h3');
-    const collected: Heading[] = [];
+    collected = [];
     for (const el of els) {
       if (!el.id) {
         el.id = el.textContent!
@@ -45,22 +60,15 @@
       collected.push({ id: el.id, text: el.textContent!, level: parseInt(el.tagName[1]) });
     }
     headings = collected;
-
-    // Scroll-based active tracking: last heading that has scrolled past 80px from top
-    function updateActive() {
-      const threshold = window.scrollY + 80;
-      let current = collected[0]?.id ?? '';
-      for (const h of collected) {
-        const el = document.getElementById(h.id);
-        if (el && el.getBoundingClientRect().top + window.scrollY <= threshold) {
-          current = h.id;
-        }
-      }
-      activeId = current;
-    }
-
-    window.addEventListener('scroll', updateActive, { passive: true });
+    pinned = false;
     updateActive();
+  }
+
+  afterNavigate(scanHeadings);
+
+  onMount(() => {
+    scanHeadings();
+    window.addEventListener('scroll', updateActive, { passive: true });
 
     function onDocClick(e: MouseEvent) {
       if (pinned && !tocEl?.contains(e.target as Node)) pinned = false;
@@ -115,7 +123,7 @@
     display: none;
   }
 
-  @media (min-width: 1100px) {
+  @media (min-width: 768px) {
     .toc-container {
       display: flex;
       align-items: center;
