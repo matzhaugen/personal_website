@@ -16,6 +16,8 @@
 - [Arthur Firstenberg on Face Masks](https://visionlaunch.com/more-than-a-dozen-credible-medical-studies-prove-face-masks-do-not-work-even-in-hospitals/)
 - [Mask facts by the Association of American Physicians and Surgeons](https://aapsonline.org/mask-facts/)
 - [Blind man seeing with echolocation](https://www.youtube.com/watch?v=A8lztr1tu4o)
+- [Vitamin D supplements do not work](https://sci-net.xyz/10.1056/NEJMe2205993)
+- [The healthbringing effects of the sun](https://www.sciencedirect.com/science/article/pii/S0022202X2400280X)
 
 ## Vaccines and other injections
 - [Research on vaccine side effects](https://vaccinepapers.org/)
