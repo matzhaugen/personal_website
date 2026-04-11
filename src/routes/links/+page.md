@@ -10,7 +10,7 @@
 - [All the works](https://www.lysanderspooner.org/works) of Lysander Spooner
 
 ## Money
-- [Truth in Money](https://giftoftruth.wordpress.com/wp-content/uploads/2016/04/truth-in-money-book.pdf) -- On the mechanisms on inflation
+
 
 ## Statistics 
 
