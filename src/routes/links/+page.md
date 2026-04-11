@@ -4,11 +4,19 @@
 
 # Links
 
+## Law
+### On sovereignty
+- Lysander Spooner on legislation -- [A letter to congressman Thomas F. Bayard](https://shorturl.at/EPsdO): challenging his right -- and that of all the other so-called Senators and Representatives in Congress -- to exercise any Legislative Power Whatever Over the People of the United States
+- [All the works](https://www.lysanderspooner.org/works) of Lysander Spooner
+
+## Money
+- [Truth in Money](https://giftoftruth.wordpress.com/wp-content/uploads/2016/04/truth-in-money-book.pdf) -- On the mechanisms on inflation
+
 ## Statistics 
 
-- [Argmin: Blog by Ben Recht](https://www.argmin.net/)
 - [Ben Recht on the Bangladesh mask intervention study](https://www.argmin.net/2021/12/01/unblinding/)
 - [Chi-square calculator](https://www.socscistatistics.com/tests/chisquare/)
+- [Argmin: Blog by Ben Recht](https://www.argmin.net/)
 
 ## Medicine
 - [The scandal of poor medical research by D G Altman. in *The British Medical Journal* (1994)](https://www.bmj.com/content/308/6924/283)

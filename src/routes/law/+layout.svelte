@@ -8,13 +8,13 @@
 
   let { children }: Props = $props();
 
-  $effect(() => {
-    if (!$isAuthenticated) {
-      goto('/');
-    }
-  });
+  // $effect(() => {
+  //   if (!$isAuthenticated) {
+  //     goto('/');
+  //   }
+  // });
 </script>
 
-{#if $isAuthenticated}
+<!-- {#if $isAuthenticated} -->
   {@render children()}
-{/if}
+<!-- {/if} -->
