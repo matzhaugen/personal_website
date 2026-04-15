@@ -4,6 +4,9 @@
 
 # Links
 
+## Education
+- [NewEarth University](https://newearth.university)
+
 ## Law
 ### On sovereignty
 - Lysander Spooner on legislation -- [A letter to congressman Thomas F. Bayard](https://shorturl.at/EPsdO): challenging his right -- and that of all the other so-called Senators and Representatives in Congress -- to exercise any Legislative Power Whatever Over the People of the United States
@@ -71,5 +74,6 @@ _Adapted from [Estes and McAllister, 2016](https://pubmed.ncbi.nlm.nih.gov/27540
 
 ## Misc
 
+- [David Pratt on pretty much everything](https://www.davidpratt.info)
 - [EM-Mind: A database on electromagnetic research](https://emmind.net/)
 - [5G: Are there biological effects?](https://electromagneticlife.substack.com/p/5g-are-there-biological-impacts)
