@@ -4,11 +4,8 @@
 
 # Links
 
-## Education
-- [NewEarth University](https://newearth.university)
-
 ## Law
-### On sovereignty
+### On legislation
 - Lysander Spooner on legislation -- [A letter to congressman Thomas F. Bayard](https://shorturl.at/EPsdO): challenging his right -- and that of all the other so-called Senators and Representatives in Congress -- to exercise any Legislative Power Whatever Over the People of the United States
 - [All the works](https://www.lysanderspooner.org/works) of Lysander Spooner
 
