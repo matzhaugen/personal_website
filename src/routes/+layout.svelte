@@ -98,7 +98,7 @@
   <a href="/links">Links</a>
   <a href="/books">Books</a>
   <a href="/software">Software</a> 
-  <a href="/MatzHaugenResume.pdf" target="_blank" download="MatzHaugenResume.pdf">CV</a>
+  <a href="/MatzHaugenResume.pdf" target="_blank" rel="noopener">CV</a>
   <a href="/blog">Blog</a> 
   <a href="/satellites">Satellites</a>
   <a href="/law">Law</a>
