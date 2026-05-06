@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1764464492.16244 "/Users/mhaugen/personal_website/resume/MatzHaugenResume.tex" "MatzHaugenResume.pdf" "MatzHaugenResume" 1764464492.70366 0
-  "/Users/mhaugen/personal_website/resume/MatzHaugenResume.tex" 1764464488.00437 10750 a9d77dd1e8122a9e05b3dcd017879f4f ""
+["pdflatex"] 1778105560.20453 "/Users/mhaugen/personal_website/resume/MatzHaugenResume.tex" "MatzHaugenResume.pdf" "MatzHaugenResume" 1778105560.80576 0
+  "/Users/mhaugen/personal_website/resume/MatzHaugenResume.tex" 1778105559.99835 10769 8424d77539ffe794eff0929a64cf5631 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -105,9 +105,9 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1724253221.94925 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1724253186 8221425 05b6489cb559d74b7e1d91ee7ab0e84b ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "MatzHaugenResume.aux" 1764464492.65356 260 ad33f3fdcb75a9db70e18b05e804d533 "pdflatex"
-  "MatzHaugenResume.out" 1764464492.4883 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "MatzHaugenResume.tex" 1764464488.00437 10750 a9d77dd1e8122a9e05b3dcd017879f4f ""
+  "MatzHaugenResume.aux" 1778105560.74642 260 ad33f3fdcb75a9db70e18b05e804d533 "pdflatex"
+  "MatzHaugenResume.out" 1778105560.57398 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "MatzHaugenResume.tex" 1778105559.99835 10769 8424d77539ffe794eff0929a64cf5631 ""
   (generated)
   "MatzHaugenResume.aux"
   "MatzHaugenResume.log"
