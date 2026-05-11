@@ -35,6 +35,7 @@
 - [More Vit K info from holistic midwife, Jan Wolfenberg](https://birthspirit.com/wp-content/uploads/2014/03/Vitamin-K-for-Newborns.pdf) / [Norwegian translation](/Vitamin-K-for-Newborns_nb.pdf)
 
 - [On neonatal vaccination](https://vaccinepapers.org/postnatal-immune-activation/)
+- [On the measles vaccine](https://pierrekorymedicalmusings.com/p/two-texas-children-did-not-die-of)
 
 ![Recommended childhood vaccine schedule](/VaccineSchedule.png)
 
