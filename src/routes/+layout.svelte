@@ -103,6 +103,7 @@
   <a href="/satellites">Satellites</a>
   <a href="/law">Law</a>
   {#if $isAuthenticated}<a href="/law/secret">Secret Law</a>{/if}
+  {#if $isAuthenticated}<a href="/doctor">AI Doctor</a>{/if}
   <a href="/pregnancy">Pregnancy</a>
   <a href="/economics">Economics</a>
   <!-- <a href="/covid-papers">Covid Papers</a> -->
