@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "n_chunks": 11036,
+  "dim": 768,
+  "embed_model": "nomic-ai/nomic-embed-text-v1.5",
+  "build_timestamp": 1778265782
+}
