@@ -19,19 +19,26 @@ function readExistingDates() {
 	);
 }
 
-// Stooq returns CSV: Date,Open,High,Low,Close
-async function fetchGoldStooq(startDate, endDate) {
-	const d1 = startDate.replace(/-/g, '');
-	const d2 = endDate.replace(/-/g, '');
-	const url = `https://stooq.com/q/d/l/?s=xauusd&d1=${d1}&d2=${d2}&i=d`;
-	const res = await fetch(url);
-	if (!res.ok) throw new Error(`Stooq error ${res.status}`);
-	const text = await res.text();
-	const rows = text.trim().split('\n').slice(1); // skip header
-	return rows.map(line => {
-		const [date, , , , close] = line.split(',');
-		return { date, price: parseFloat(close) };
-	}).filter(r => !isNaN(r.price));
+// Yahoo Finance chart API returns JSON with daily gold futures (GC=F) closes.
+// (Replaced Stooq, which now serves a JS anti-bot challenge instead of CSV.)
+async function fetchGoldYahoo(startDate, endDate) {
+	const period1 = Math.floor(Date.parse(startDate) / 1000);
+	const period2 = Math.floor(Date.parse(endDate) / 1000) + 86400; // inclusive of endDate
+	const url =
+		`https://query1.finance.yahoo.com/v8/finance/chart/GC=F` +
+		`?period1=${period1}&period2=${period2}&interval=1d`;
+	const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+	if (!res.ok) throw new Error(`Yahoo error ${res.status}`);
+	const json = await res.json();
+	const result = json?.chart?.result?.[0];
+	if (!result?.timestamp) return [];
+	const closes = result.indicators.quote[0].close;
+	return result.timestamp
+		.map((t, i) => ({
+			date: new Date(t * 1000).toISOString().slice(0, 10),
+			price: closes[i],
+		}))
+		.filter(r => r.price != null && !isNaN(r.price));
 }
 
 // FRED returns JSON observations with value field ('.' = missing)
@@ -69,7 +76,7 @@ async function main() {
 	console.log(`Fetching ${startDate} → ${endDate}...`);
 
 	const [goldData, oilData] = await Promise.all([
-		fetchGoldStooq(startDate, endDate),
+		fetchGoldYahoo(startDate, endDate),
 		fetchOilFred(startDate),
 	]);
 
