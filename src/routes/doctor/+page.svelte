@@ -8,7 +8,7 @@
 	<title>The AI doctor</title>
 	<meta
 		name="description"
-		content="A private RAG chat over a personal library of papers and posts. Runs in your browser via WebLLM, or bring your own API key."
+		content="A RAG chat over a personal library of papers and posts. Answers from a hosted model (Groq) by default, or fully in-browser via WebLLM (WebGPU) for privacy."
 	/>
 </svelte:head>
 

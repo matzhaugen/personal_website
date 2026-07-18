@@ -1,5 +1,5 @@
-// Provider/model/key settings, persisted to localStorage. Keys never leave
-// this store — there is no server in the loop.
+// Provider/model settings, persisted to localStorage. Generation runs fully
+// in-browser via WebLLM — there is no server and no API key in the loop.
 import { writable } from 'svelte/store';
 import { DEFAULT_SETTINGS, type Settings } from './types';
 
@@ -11,12 +11,15 @@ function load(): Settings {
 	if (!raw) return DEFAULT_SETTINGS;
 	try {
 		const parsed = JSON.parse(raw) as Partial<Settings>;
-		// Shallow merge so a newer build that adds a provider doesn't blow up
-		// on settings written by an older build.
+		// Shallow merge so older/newer builds tolerate each other's stored shape.
+		// Guard the provider against stale/unknown values from older builds.
+		const provider =
+			parsed.provider === 'webllm' || parsed.provider === 'groq'
+				? parsed.provider
+				: DEFAULT_SETTINGS.provider;
 		return {
-			provider: parsed.provider ?? DEFAULT_SETTINGS.provider,
-			models: { ...DEFAULT_SETTINGS.models, ...(parsed.models ?? {}) },
-			keys: { ...DEFAULT_SETTINGS.keys, ...(parsed.keys ?? {}) }
+			provider,
+			models: { ...DEFAULT_SETTINGS.models, ...(parsed.models ?? {}) }
 		};
 	} catch {
 		return DEFAULT_SETTINGS;

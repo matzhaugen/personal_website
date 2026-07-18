@@ -18,9 +18,12 @@
 			advice.</strong> Consult a qualified healthcare professional for medical decisions.
 		</p>
 		<p>
-			Everything runs in your browser. No conversations, retrieved passages, or API keys
-			you enter are sent to my servers. The default model is downloaded locally; if you
-			paste an API key, requests go directly from your browser to that provider.
+			The search over the library always runs in your browser. For the answer, the
+			default is a hosted model (Groq): your question and the retrieved passages are
+			sent to Groq to generate the reply — they are not stored on my servers, but they
+			do leave your device. Prefer full privacy? Switch to the in-browser model
+			(WebLLM) in Settings — it runs entirely on your device via WebGPU (Chrome / Edge
+			/ Safari 26+), with nothing sent anywhere.
 		</p>
 		<label>
 			<input type="checkbox" bind:checked={agreed} />

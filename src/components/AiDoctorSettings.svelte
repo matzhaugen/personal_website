@@ -1,11 +1,6 @@
 <script lang="ts">
 	import { settings } from '$lib/aiDoctor/settingsStore';
-	import {
-		PROVIDER_LABELS,
-		WEBLLM_MODELS,
-		type ByokProviderId,
-		type ProviderId
-	} from '$lib/aiDoctor/types';
+	import { WEBLLM_MODELS, PROVIDER_LABELS, type ProviderId } from '$lib/aiDoctor/types';
 
 	interface Props {
 		open: boolean;
@@ -13,17 +8,13 @@
 	}
 	let { open, onClose }: Props = $props();
 
-	const PROVIDERS: ProviderId[] = ['webllm', 'anthropic', 'openai', 'xai', 'gemini'];
-	const BYOK: ByokProviderId[] = ['anthropic', 'openai', 'xai', 'gemini'];
+	const PROVIDERS: ProviderId[] = ['groq', 'webllm'];
 
 	function setProvider(p: ProviderId) {
 		settings.update((s) => ({ ...s, provider: p }));
 	}
-	function setModel(p: ProviderId, model: string) {
-		settings.update((s) => ({ ...s, models: { ...s.models, [p]: model } }));
-	}
-	function setKey(p: ByokProviderId, key: string) {
-		settings.update((s) => ({ ...s, keys: { ...s.keys, [p]: key } }));
+	function setWebllmModel(model: string) {
+		settings.update((s) => ({ ...s, models: { ...s.models, webllm: model } }));
 	}
 </script>
 
@@ -36,7 +27,7 @@
 		</header>
 
 		<section>
-			<h4>Provider</h4>
+			<h4>Where the model runs</h4>
 			<div class="providers">
 				{#each PROVIDERS as p}
 					<label class="row">
@@ -51,54 +42,33 @@
 					</label>
 				{/each}
 			</div>
+			{#if $settings.provider === 'groq'}
+				<p class="hint">
+					Answers come from a hosted Llama model (Groq). Works on any browser, no
+					download. Your question and the retrieved passages are sent to Groq to
+					generate the answer — they don't stay on your device.
+				</p>
+			{/if}
 		</section>
 
-		<section>
-			<h4>Model</h4>
-			{#if $settings.provider === 'webllm'}
+		{#if $settings.provider === 'webllm'}
+			<section>
+				<h4>Model</h4>
 				<select
 					value={$settings.models.webllm}
-					onchange={(e) => setModel('webllm', e.currentTarget.value)}
+					onchange={(e) => setWebllmModel(e.currentTarget.value)}
 				>
 					{#each WEBLLM_MODELS as m}
 						<option value={m.id}>{m.label} (~{m.sizeGB} GB)</option>
 					{/each}
 				</select>
 				<p class="hint">
-					Weights download once on first chat, then cache in your browser. Requires
-					WebGPU (Chrome / Edge / Safari 18+). Nothing leaves your device.
+					The model runs entirely in your browser (WebLLM / WebGPU). Weights download
+					once on first chat, then cache locally. Requires WebGPU (Chrome / Edge /
+					Safari 26+). Nothing you type ever leaves your device.
 				</p>
-			{:else}
-				<input
-					type="text"
-					value={$settings.models[$settings.provider]}
-					oninput={(e) => setModel($settings.provider, e.currentTarget.value)}
-					placeholder="model id"
-				/>
-				<p class="hint">Override the model id if you want a different one from the same provider.</p>
-			{/if}
-		</section>
-
-		<section>
-			<h4>API keys</h4>
-			<p class="hint">
-				Keys are stored only in this browser's localStorage. They are sent directly to
-				the provider's API and never to my servers. Anyone with access to this browser
-				can read them — use a dedicated key with rate limits.
-			</p>
-			{#each BYOK as p}
-				<label class="key-row">
-					<span>{PROVIDER_LABELS[p]}</span>
-					<input
-						type="password"
-						autocomplete="off"
-						value={$settings.keys[p]}
-						oninput={(e) => setKey(p, e.currentTarget.value)}
-						placeholder={p === 'gemini' ? 'AIza…' : 'sk-…'}
-					/>
-				</label>
-			{/each}
-		</section>
+			</section>
+		{/if}
 	</aside>
 {/if}
 
@@ -142,34 +112,22 @@
 		line-height: 1;
 		cursor: pointer;
 	}
-	.row {
-		display: flex;
-		gap: 0.5rem;
-		align-items: center;
-		padding: 0.25rem 0;
-	}
-	.providers {
-		display: flex;
-		flex-direction: column;
-		gap: 0.1rem;
-	}
-	select, input[type="text"] {
+	select {
 		width: 100%;
 		padding: 0.4rem 0.5rem;
 		font-size: 0.9rem;
 	}
-	.key-row {
+	.providers {
 		display: flex;
 		flex-direction: column;
-		gap: 0.2rem;
-		margin: 0.6rem 0;
+		gap: 0.3rem;
 	}
-	.key-row span { font-weight: 500; }
-	.key-row input {
-		width: 100%;
-		padding: 0.4rem 0.5rem;
-		font-family: ui-monospace, monospace;
-		font-size: 0.85rem;
+	.row {
+		display: flex;
+		gap: 0.5rem;
+		align-items: flex-start;
+		padding: 0.15rem 0;
+		cursor: pointer;
 	}
 	.hint {
 		font-size: 0.8rem;

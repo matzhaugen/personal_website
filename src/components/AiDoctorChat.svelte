@@ -9,7 +9,7 @@
 	import { settings } from '$lib/aiDoctor/settingsStore';
 	import { retrieve } from '$lib/aiDoctor/retrieval';
 	import { buildUserPrompt, SYSTEM_PROMPT } from '$lib/aiDoctor/prompt';
-	import { getAdapter, MissingApiKeyError } from '$lib/aiDoctor/llm';
+	import { getAdapter, GroqUnavailableError } from '$lib/aiDoctor/llm';
 	import { renumberCitations } from '$lib/aiDoctor/postprocess';
 	import AiDoctorSettings from './AiDoctorSettings.svelte';
 	import type { ChatMessage } from '$lib/aiDoctor/types';
@@ -51,11 +51,25 @@
 		s = s.replace(/^#{1,6}[ \t]+(.+)$/gm, '<h3>$1</h3>');
 		// bold: **foo**
 		s = s.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>');
+		// autolinks: <https://example.com>  — model commonly emits References
+		// entries in this form. Match the entity-encoded form since escapeHtml
+		// has already converted < / > to &lt; / &gt;.
+		s = s.replace(
+			/&lt;(https?:\/\/[^\s<>]+?)&gt;/g,
+			'<a href="$1" target="_blank" rel="noopener">$1</a>'
+		);
 		// hyperlinks: [text](https://...) — runs after bold so it doesn't
 		// greedily eat citations like [Source 1] (which have no URL).
 		s = s.replace(
 			/\[([^\]]+?)\]\((https?:\/\/[^\s)]+)\)/g,
 			'<a href="$2" target="_blank" rel="noopener">$1</a>'
+		);
+		// bare URL fallback: http(s):// not already inside an href.
+		// Use a lookahead to avoid double-linking ones we just wrapped above.
+		s = s.replace(
+			/(^|[\s(])((https?:\/\/[^\s<)"']+?))(?=[)\s.,;:!?]|$)/g,
+			(_m, lead, url) =>
+				`${lead}<a href="${url}" target="_blank" rel="noopener">${url}</a>`
 		);
 		// paragraphs: blank line breaks; single \n becomes <br>
 		return s
@@ -159,7 +173,7 @@
 				content: buildUserPrompt(query, sources)
 			};
 
-			// 3. Adapter — throws MissingApiKeyError for BYOK without a key.
+			// 3. Adapter — WebLLM (in-browser). May throw WebGpuUnsupportedError.
 			const adapter = getAdapter($settings);
 
 			// 4. Stream.
@@ -208,15 +222,24 @@
 				return next;
 			});
 		} catch (err) {
-			if (err instanceof MissingApiKeyError) {
+			const m = (err as Error)?.message ?? String(err);
+			if ((err as Error)?.name === 'AbortError') {
+				// user clicked Stop — leave whatever's accumulated as-is
+			} else if (err instanceof GroqUnavailableError) {
+				// message is already user-friendly; nudge to Settings when the fix is
+				// to switch providers (not configured / daily free-tier cap reached)
+				updateLastAssistant(m);
+				if (err.code === 'not_configured' || err.code === 'daily_cap') settingsOpen = true;
+			} else if (/maxStorageBuffersPerShaderStage|storage buffer|exceeds limit/i.test(m)) {
+				// The selected model's shaders need more WebGPU storage buffers than
+				// this GPU exposes (common on macOS, limit 8). Steer to a smaller model.
 				updateLastAssistant(
-					`No API key set for ${$settings.provider}. Open Settings to add one, or switch to WebLLM.`
+					"This model needs more GPU resources than your browser exposes " +
+						"(a known WebGPU limit, common on Macs). Open ⚙ Settings and pick a " +
+						"smaller model — Qwen 2.5 1.5B, Llama 3.2 1B, or Qwen 2.5 0.5B — which fit the limit."
 				);
 				settingsOpen = true;
-			} else if ((err as Error)?.name === 'AbortError') {
-				// user clicked Stop — leave whatever's accumulated as-is
 			} else {
-				const m = (err as Error)?.message ?? String(err);
 				errorMsg = m;
 				updateLastAssistant(`Error: ${m}`);
 				console.error('[aiDoctor]', err);
@@ -251,9 +274,9 @@
 
 	{#if showWebgpuWarning}
 		<div class="banner warn">
-			WebGPU isn't available in this browser. The local WebLLM model needs it —
-			either switch to a BYOK provider in Settings, or open this page in
-			Chrome / Edge / Safari 18+.
+			WebGPU isn't available in this browser. The AI doctor runs its model
+			locally via WebGPU — open this page in Chrome, Edge, or Safari 26+
+			(macOS Tahoe / iOS 26) to use it.
 		</div>
 	{/if}
 
