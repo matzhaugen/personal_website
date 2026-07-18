@@ -13,7 +13,7 @@ const engineCache = new Map<string, Promise<unknown>>();
 
 export class WebGpuUnsupportedError extends Error {
 	constructor() {
-		super('WebGPU is not available in this browser. Use Chrome/Edge/Safari 18+, or paste an API key in settings.');
+		super('WebGPU is not available in this browser. Use Chrome, Edge, or Safari 26+ to run the in-browser model.');
 		this.name = 'WebGpuUnsupportedError';
 	}
 }

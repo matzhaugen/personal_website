@@ -1,9 +1,13 @@
-// Shared types for the in-browser RAG chat ("AI Doctor" tab).
-// The pipeline mirrors rag-pipeline's retrieve → prompt → generate flow but
-// runs entirely in the browser; nothing here ever talks to our own server.
+// Shared types for the RAG chat ("AI Doctor" tab). Retrieval always runs in the
+// browser; generation runs either in the browser (WebLLM/WebGPU) or via a
+// hosted model (Groq) proxied through our own /api/doctor-chat endpoint.
 
-export type ProviderId = 'webllm' | 'anthropic' | 'openai' | 'xai' | 'gemini';
-export type ByokProviderId = Exclude<ProviderId, 'webllm'>;
+// Two generation backends:
+//   - 'webllm' — runs in the visitor's browser via WebGPU. Fully private, but
+//     needs a WebGPU-capable browser (Chrome/Edge/Safari 26+).
+//   - 'groq'   — hosted Llama on Groq, proxied server-side so it works on any
+//     browser (incl. Safari 18 / Firefox / mobile). Prompts leave the device.
+export type ProviderId = 'webllm' | 'groq';
 
 // Shape of an entry in /ai-doctor/chunks.json — written by
 // rag-pipeline/scripts/export_for_web.py. The embedding-side `text` field
@@ -61,47 +65,39 @@ export interface Manifest {
 
 export interface Settings {
 	provider: ProviderId;
-	// One model id per provider. Lets the user pick between e.g.
-	// claude-sonnet-4-6 and claude-haiku-4-5 without losing the other choice
-	// when they switch providers.
-	models: Record<ProviderId, string>;
-	// API keys for the four BYOK providers. Stored in localStorage; never
-	// leaves the browser. WebLLM doesn't have a key.
-	keys: Record<ByokProviderId, string>;
+	// Only WebLLM has a user-selectable model; the Groq model is fixed server-side.
+	models: { webllm: string };
 }
 
-// Sensible defaults — picked to match the rag-pipeline's quality bar where
-// possible. User-overridable via the settings drawer.
+// Default to the hosted Groq backend: it works on every browser, whereas WebLLM
+// needs WebGPU (and even then hits GPU limits on some Macs). Users who want
+// fully-local/private inference can switch to WebLLM in Settings. The WebLLM
+// default model is a small one that fits the 8-storage-buffer WebGPU limit
+// macOS (Metal) enforces — the larger Llama-3.2-3B lib needs 10 and fails there.
 export const DEFAULT_SETTINGS: Settings = {
-	provider: 'webllm',
+	provider: 'groq',
 	models: {
-		webllm: 'Llama-3.2-3B-Instruct-q4f16_1-MLC',
-		anthropic: 'claude-sonnet-4-6',
-		openai: 'gpt-4o',
-		xai: 'grok-2-latest',
-		gemini: 'gemini-1.5-flash-latest'
-	},
-	keys: {
-		anthropic: '',
-		openai: '',
-		xai: '',
-		gemini: ''
+		webllm: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC'
 	}
 };
 
 export const PROVIDER_LABELS: Record<ProviderId, string> = {
-	webllm: 'WebLLM (in browser)',
-	anthropic: 'Anthropic Claude',
-	openai: 'OpenAI',
-	xai: 'xAI Grok',
-	gemini: 'Google Gemini'
+	groq: 'Hosted (Groq) — fast, works on any browser',
+	webllm: 'In your browser (WebLLM) — private, needs WebGPU'
 };
 
 // WebLLM model options surfaced in the settings UI. Sizes are approximate
 // q4f16_1 download sizes; values are MLC model ids consumable by
 // CreateMLCEngine() directly.
+// Ordered smallest/most-compatible first. Models above the divider fit within
+// the 8-storage-buffer limit macOS (Metal) enforces; Llama-3.2-3B needs 10 and
+// only runs on GPUs/browsers that expose the higher limit (e.g. some Windows /
+// Linux discrete GPUs), so it's last and flagged.
 export const WEBLLM_MODELS: { id: string; label: string; sizeGB: number }[] = [
-	{ id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 3B (recommended)', sizeGB: 1.8 },
-	{ id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label: 'Qwen 2.5 1.5B (small/fast)', sizeGB: 0.95 },
-	{ id: 'Phi-3.5-mini-instruct-q4f16_1-MLC', label: 'Phi 3.5 Mini (bigger/better)', sizeGB: 2.2 }
+	{ id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label: 'Qwen 2.5 1.5B (recommended)', sizeGB: 0.95 },
+	{ id: 'Llama-3.2-1B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 1B (smallest/fastest)', sizeGB: 0.7 },
+	{ id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen 2.5 0.5B (tiny)', sizeGB: 0.5 },
+	{ id: 'gemma-2-2b-it-q4f16_1-MLC', label: 'Gemma 2 2B', sizeGB: 1.4 },
+	{ id: 'Phi-3.5-mini-instruct-q4f16_1-MLC', label: 'Phi 3.5 Mini (bigger)', sizeGB: 2.2 },
+	{ id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 3B (needs WebGPU 10-buffer support)', sizeGB: 1.8 }
 ];
