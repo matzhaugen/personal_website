@@ -28,6 +28,8 @@
 		icsa: [string, number][];
 		sp500: [string, number][];
 		indpro: [string, number][];
+		sox: [string, number][];
+		xoi: [string, number][];
 	}
 
 	interface Props {
@@ -66,7 +68,7 @@
 	// ── macro chart ────────────────────────────────────────────────────────────
 	const { nasdaq, t10y2y, unrate, fedfunds, usdyen, recession,
 	        cpi, corePce, breakeven5y, t10y3m, hySpread, realRate10y, icsa,
-	        sp500, indpro } = data.macro;
+	        sp500, indpro, sox, xoi } = data.macro;
 
 	// Gold: aggregate daily rows to monthly (last entry per month), then log-index
 	// Done first so we can use goldFirst as the shared index base for NASDAQ too.
@@ -85,6 +87,25 @@
 	const nasdaqSeries = nasdaq
 		.filter(([d]) => d >= goldStartDate)
 		.map(([date, v]) => ({ date, value: Math.log(v) - Math.log(nasRef) }));
+
+	// SOX semiconductor index (starts 1994). Log-indexed and anchored to the NASDAQ
+	// line at SOX's first date so semi-vs-broad-tech performance is directly comparable.
+	const soxStartDate = sox[0]?.[0] ?? '';
+	const soxFirst = sox[0]?.[1] ?? 1;
+	const soxAnchor = nasdaqSeries.find(d => d.date >= soxStartDate)?.value ?? 0;
+	const soxSeries = sox.map(([date, v]) => ({
+		date,
+		value: Math.log(v) - Math.log(soxFirst) + soxAnchor,
+	}));
+
+	// XOI energy index (NYSE Arca Oil, starts 1985). Same log-index + NASDAQ anchor.
+	const xoiStartDate = xoi[0]?.[0] ?? '';
+	const xoiFirst = xoi[0]?.[1] ?? 1;
+	const xoiAnchor = nasdaqSeries.find(d => d.date >= xoiStartDate)?.value ?? 0;
+	const xoiSeries = xoi.map(([date, v]) => ({
+		date,
+		value: Math.log(v) - Math.log(xoiFirst) + xoiAnchor,
+	}));
 
 	const t10y2ySeries = t10y2y.map(([date, v]) => ({ date, value: v }));
 
@@ -123,18 +144,37 @@
 	const macroMaxy = 8;
 	const macroPC = (x: number) => 100 * (x - macroMinx) / (macroMaxx - macroMinx);
 
+	// Combined point cloud of every macro line, so the hover tooltip snaps to the
+	// nearest point on ANY line (Pancake's Quadtree measures distance in screen px).
+	const allSeriesPoints = [
+		...t10y2ySeries.map(d => ({ ...d, series: 't10y2y' })),
+		...nasdaqSeries.map(d => ({ ...d, series: 'nasdaq' })),
+		...soxSeries.map(d => ({ ...d, series: 'sox' })),
+		...xoiSeries.map(d => ({ ...d, series: 'xoi' })),
+		...unrateSeries.map(d => ({ ...d, series: 'unrate' })),
+		...fedfundsSeries.map(d => ({ ...d, series: 'fedfunds' })),
+		...usdyenSeries.map(d => ({ ...d, series: 'usdyen' })),
+		...goldSeries.map(d => ({ ...d, series: 'gold' })),
+	];
+
 	// Tooltip lookup maps — keyed by YYYY-MM, values already transformed
+	const t10y2yMap   = new Map(t10y2ySeries.map(d => [d.date.slice(0, 7), d.value]));
 	const nasMap      = new Map(nasdaqSeries.map(d => [d.date.slice(0, 7), d.value]));
 	const unrateMap   = new Map(unrateSeries.map(d => [d.date.slice(0, 7), d.value]));
 	const fedfundsMap = new Map(fedfundsSeries.map(d => [d.date.slice(0, 7), d.value]));
 	const usdyenMap   = new Map(usdyenSeries.map(d => [d.date.slice(0, 7), d.value]));
 	const goldMap     = new Map(goldSeries.map(d => [d.date.slice(0, 7), d.value]));
+	const soxMap      = new Map(soxSeries.map(d => [d.date.slice(0, 7), d.value]));
+	const xoiMap      = new Map(xoiSeries.map(d => [d.date.slice(0, 7), d.value]));
 
 	function tooltipValues(date: string) {
 		const ym = date.slice(0, 7);
 		const fmt = (v: number | undefined) => v?.toFixed(2) ?? '–';
 		return {
+			t10y2y:   fmt(t10y2yMap.get(ym)),
 			nasdaq:   fmt(nasMap.get(ym)),
+			sox:      fmt(soxMap.get(ym)),
+			xoi:      fmt(xoiMap.get(ym)),
 			unrate:   fmt(unrateMap.get(ym)),
 			fedfunds: fmt(fedfundsMap.get(ym)),
 			usdyen:   fmt(usdyenMap.get(ym)),
@@ -294,11 +334,13 @@
 			const step = 252;
 			const hist = rows.slice(step).map((r, i) => ((r.gold_usd - rows[i].gold_usd) / rows[i].gold_usd) * 100).slice(-240 * 5);
 			const rpct = pctRank(hist, pct1yr);
-			return { label: 'Gold', value: `$${cur.toFixed(0)}/oz`, change: fmtPct(pct1yr), signal: sig(rpct, 'goodHigh'), note: 'XAU/USD spot price', ...makeHistBars(hist, pct1yr) };
+			return { label: 'Gold', value: `$${cur.toFixed(0)}/oz`, change: fmtPct(pct1yr), signal: sig(rpct, 'goodHigh'), note: 'Gold futures (GC=F)', ...makeHistBars(hist, pct1yr) };
 		})(),
 	];
 </script>
 
+<!-- ── Commodity charts: two-across on wide screens ─────────────────────────── -->
+<div class="chart-row">
 <!-- ── Chart 1: Oil in Gold ─────────────────────────────────────────────────── -->
 <div class="chart">
 	<Pancake.Chart x1={comMinx} x2={comMaxx} y1={0} y2={oilMaxy}>
@@ -351,7 +393,7 @@
 				<div class="label-text label-right">
 					<h2>Oil Priced in Gold</h2>
 					<p>Barrels of oil per troy oz of gold</p>
-					<p><em>Source: Stooq (XAU/USD), FRED (DCOILWTICO)</em></p>
+					<p><em>Source: Yahoo (GC=F), FRED (DCOILWTICO)</em></p>
 				</div>
 			{/snippet}
 		</Pancake.Point>
@@ -410,11 +452,13 @@
 				<div class="label-text label-right">
 					<h2>Dollar Priced in Gold</h2>
 					<p>Troy oz of gold per US dollar</p>
-					<p><em>Source: Stooq (XAU/USD)</em></p>
+					<p><em>Source: Yahoo (GC=F)</em></p>
 				</div>
 			{/snippet}
 		</Pancake.Point>
 	</Pancake.Chart>
+</div>
+
 </div>
 
 <!-- ── Chart 3: Macro-trends ────────────────────────────────────────────────── -->
@@ -454,6 +498,28 @@
 			>
 				{#snippet children({ d }: { d: string })}
 					<path class="macro-line nasdaq" {d} />
+				{/snippet}
+			</Pancake.SvgLine>
+
+			<!-- SOX semiconductors log-indexed (teal) -->
+			<Pancake.SvgLine
+				data={soxSeries}
+				x={xAcc}
+				y={yAcc}
+			>
+				{#snippet children({ d }: { d: string })}
+					<path class="macro-line sox" {d} />
+				{/snippet}
+			</Pancake.SvgLine>
+
+			<!-- XOI energy log-indexed (pink) -->
+			<Pancake.SvgLine
+				data={xoiSeries}
+				x={xAcc}
+				y={yAcc}
+			>
+				{#snippet children({ d }: { d: string })}
+					<path class="macro-line xoi" {d} />
 				{/snippet}
 			</Pancake.SvgLine>
 
@@ -513,9 +579,9 @@
 			</Pancake.SvgLine>
 		</Pancake.Svg>
 
-		<!-- Hover tooltip on T10Y2Y (most granular series) -->
+		<!-- Hover tooltip: snaps to nearest point on ANY line (combined point cloud) -->
 		<Pancake.Quadtree
-			data={t10y2ySeries}
+			data={allSeriesPoints}
 			x={(d: { date: string; value: number }) => parse(d.date)}
 			y={(d: { date: string; value: number }) => d.value}
 		>
@@ -528,12 +594,14 @@
 							<div class="macro-tooltip" style="transform: translate(-{macroPC(parse(closest.date))}%,0)">
 								<strong>{closest.date}</strong>
 								<table><tbody>
-									<tr><td class="dot t10y2y-dot">●</td><td>10y−2y</td><td>{closest.value.toFixed(2)}</td></tr>
-									<tr><td class="dot nasdaq-dot">●</td><td>NASDAQ (log)</td><td>{tv.nasdaq}</td></tr>
-									<tr><td class="dot unrate-dot">●</td><td>Unemployment</td><td>{tv.unrate}</td></tr>
-									<tr><td class="dot fedfunds-dot">●</td><td>Fed rate / 5</td><td>{tv.fedfunds}</td></tr>
-									<tr><td class="dot usdyen-dot">●</td><td>JPY/USD ×3</td><td>{tv.usdyen}</td></tr>
-									<tr><td class="dot gold-dot">●</td><td>Gold (log)</td><td>{tv.gold}</td></tr>
+									<tr class:nearest={closest.series === 't10y2y'}><td class="dot t10y2y-dot">●</td><td>10y−2y</td><td>{tv.t10y2y}</td></tr>
+									<tr class:nearest={closest.series === 'nasdaq'}><td class="dot nasdaq-dot">●</td><td>NASDAQ (log)</td><td>{tv.nasdaq}</td></tr>
+									<tr class:nearest={closest.series === 'sox'}><td class="dot sox-dot">●</td><td>SOX semis (log)</td><td>{tv.sox}</td></tr>
+									<tr class:nearest={closest.series === 'xoi'}><td class="dot xoi-dot">●</td><td>XOI energy (log)</td><td>{tv.xoi}</td></tr>
+									<tr class:nearest={closest.series === 'unrate'}><td class="dot unrate-dot">●</td><td>Unemployment</td><td>{tv.unrate}</td></tr>
+									<tr class:nearest={closest.series === 'fedfunds'}><td class="dot fedfunds-dot">●</td><td>Fed rate / 5</td><td>{tv.fedfunds}</td></tr>
+									<tr class:nearest={closest.series === 'usdyen'}><td class="dot usdyen-dot">●</td><td>JPY/USD ×3</td><td>{tv.usdyen}</td></tr>
+									<tr class:nearest={closest.series === 'gold'}><td class="dot gold-dot">●</td><td>Gold (log)</td><td>{tv.gold}</td></tr>
 								</tbody></table>
 							</div>
 						{/snippet}
@@ -547,7 +615,7 @@
 			{#snippet children()}
 				<div class="label-text label-right">
 					<h2>Macro-trends</h2>
-					<p><em>Source: FRED</em></p>
+					<p><em>Source: FRED, Yahoo (^SOX, ^XOI)</em></p>
 				</div>
 			{/snippet}
 		</Pancake.Point>
@@ -558,6 +626,8 @@
 				<div class="macro-legend">
 					<div><span class="dot t10y2y-dot">●</span> 10y−2y treasury spread</div>
 					<div><span class="dot nasdaq-dot">●</span> NASDAQ (log-indexed)</div>
+					<div><span class="dot sox-dot">●</span> SOX semiconductors (log, anchored to NASDAQ at 1994)</div>
+					<div><span class="dot xoi-dot">●</span> XOI energy sector (log, anchored to NASDAQ at 1985)</div>
 					<div><span class="dot unrate-dot">●</span> Unemployment (indexed to Jan 2020)</div>
 					<div><span class="dot fedfunds-dot">●</span> Fed funds rate ÷ 5</div>
 					<div><span class="dot usdyen-dot">●</span> JPY/USD (indexed to Jun 2025, ×3)</div>
@@ -620,7 +690,7 @@
 <style>
 	/* ── layout ──────────────────────────────────────────────────────────────── */
 	.chart {
-		height: 450px;
+		height: 315px;
 		padding: 3em 0 2em 3em;
 		margin: 0 auto 36px;
 		max-width: 80em;
@@ -629,8 +699,25 @@
 		height: 500px;
 	}
 	@media (min-width: 800px) {
-		.chart { height: 600px; }
+		.chart { height: 420px; }
 		.macro-chart { height: 650px; }
+	}
+
+	/* Commodity charts: stacked by default, two-across on wide screens */
+	.chart-row {
+		max-width: 80em;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+	.chart-row .chart {
+		max-width: none;
+		margin: 0 0 36px;
+	}
+	@media (min-width: 900px) {
+		.chart-row { grid-template-columns: 1fr 1fr; }
+		.chart-row .chart { height: 294px; margin: 0; }
 	}
 
 	/* ── grid ────────────────────────────────────────────────────────────────── */
@@ -686,6 +773,8 @@
 	}
 	path.t10y2y  { stroke: #1d4ed8; }
 	path.nasdaq  { stroke: #d97706; }
+	path.sox     { stroke: #0891b2; }
+	path.xoi     { stroke: #db2777; }
 	path.unrate  { stroke: #16a34a; }
 	path.fedfunds { stroke: #dc2626; }
 	path.usdyen  { stroke: #7c3aed; }
@@ -752,6 +841,7 @@
 	.macro-tooltip table { border-collapse: collapse; }
 	.macro-tooltip td { padding: 1px 4px; }
 	.macro-tooltip td:last-child { text-align: right; font-weight: 600; }
+	.macro-tooltip tr.nearest td { font-weight: 700; color: #000; }
 
 	.macro-legend {
 		position: absolute;
@@ -824,6 +914,8 @@
 	.dot         { font-style: normal; }
 	.t10y2y-dot  { color: #1d4ed8; }
 	.nasdaq-dot  { color: #d97706; }
+	.sox-dot     { color: #0891b2; }
+	.xoi-dot     { color: #db2777; }
 	.unrate-dot  { color: #16a34a; }
 	.fedfunds-dot { color: #dc2626; }
 	.usdyen-dot  { color: #7c3aed; }

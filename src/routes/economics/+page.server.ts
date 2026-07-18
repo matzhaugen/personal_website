@@ -19,7 +19,7 @@ export const load: PageServerLoad = async () => {
 	let macro = {
 		nasdaq: [], t10y2y: [], unrate: [], fedfunds: [], usdyen: [], recession: [],
 		cpi: [], corePce: [], breakeven5y: [], t10y3m: [], hySpread: [], realRate10y: [],
-		icsa: [], sp500: [], indpro: [],
+		icsa: [], sp500: [], indpro: [], sox: [], xoi: [],
 	};
 	try {
 		macro = JSON.parse(fs.readFileSync(path.resolve('static/data/macro.json'), 'utf8'));
