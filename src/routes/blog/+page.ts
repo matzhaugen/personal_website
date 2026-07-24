@@ -16,5 +16,12 @@ export function load({ params }) {
 
     }
 
+    // Sort by date, most recent first; posts without a valid date go last.
+    posts.sort((a, b) => {
+        const ta = a.date ? new Date(a.date).getTime() : NaN;
+        const tb = b.date ? new Date(b.date).getTime() : NaN;
+        return (isNaN(tb) ? -Infinity : tb) - (isNaN(ta) ? -Infinity : ta);
+    });
+
     return {posts}
 }
