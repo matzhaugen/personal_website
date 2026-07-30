@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Blocks a push when blog media hasn't been fully processed and uploaded.
+#
+# Catches the failure that is otherwise invisible until the site is live: a
+# figure re-exported to PDF whose SVG was never regenerated, a video that never
+# got CRF-encoded, or media that changed since the last upload to the Space —
+# so the deployed page would show the previous version, or nothing at all.
+#
+# Enabled with:  git config core.hooksPath .githooks
+# Bypass once with:  git push --no-verify
+
+if ! npm run --silent publish -- --check; then
+	echo ""
+	echo "Push aborted: blog media is out of date (see above)."
+	echo "Fix with \`npm run publish\`, commit the result, then push again."
+	echo "To push anyway: git push --no-verify"
+	exit 1
+fi

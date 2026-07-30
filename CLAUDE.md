@@ -12,6 +12,10 @@ npm run check        # Svelte type checking
 npm test             # Run Playwright e2e tests (builds first)
 npm run figures      # Convert figure PDFs in static/*/ to SVG (needs `brew install poppler`)
 npm run videos       # Faststart MP4s in static/*/; add `-- --encode` to CRF-compress (needs ffmpeg)
+npm run assets       # Upload blog media from static/*/ to the DigitalOcean Space (needs awscli + DO_* keys)
+npm run publish      # figures → videos → assets, in that order. The normal way to ship new figures.
+                     #   npm run publish -- covid-mortality   # scope to one directory
+                     #   npm run publish -- --check           # verify only; exits 1 if stale (pre-push hook)
 ```
 
 ## Architecture
@@ -33,6 +37,12 @@ Personal portfolio/blog built with **SvelteKit 2** + **Svelte 5** (rune-based re
 PDFs at the top level of `static/` (resume, article reprints) are intentionally skipped by the converter.
 
 **Video figures:** `src/components/video-figure.svelte`, same conventions (`<VideoFigure src="/covid-mortality/statewide_excess_map" n="4" loop fps={209 / 20}>`). It sets `preload="metadata"`, so nothing but the header is fetched until the reader presses play. Passing `fps` enables ←/→ single-frame stepping (Shift+← / → for ±1s); browsers don't expose the frame rate, so read it off the file with `ffprobe -show_entries stream=r_frame_rate`. The handler must capture on the wrapping `<figure>`, not bubble on the `<video>` — Chrome's built-in controls seek inside the video's shadow DOM before a bubble-phase listener runs, which would compound with our own step. After exporting a new MP4, run `npm run videos -- --encode`. It does two idempotent things: re-encodes with libx264 CRF 20 / `veryslow` (matplotlib writes a fixed high bitrate that wastes bits on a near-static image — this cut `statewide_excess_map.mp4` from 3.55 MB to 617 KB at mean VMAF 97.3), and moves the `moov` index atom ahead of the media data so playback starts without a round-trip to the end of the file. Encoded files are tagged in their container metadata and skipped on later runs, so repeated calls can't stack generational loss; `--force` overrides, `--crf N` picks a different quality. `npm run videos` with no flags only does the faststart step and needs no ffmpeg (`scripts/mp4-faststart.js` is the standalone remuxer).
+
+**Adding a figure:** export the PDF/MP4 into `static/<post-slug>/`, run `npm run publish -- <post-slug>`, then reference it with `<Figure>` / `<VideoFigure>` (extension-less `src`). The order in `publish` matters — `figures` and `videos` rewrite files in place, so uploading first would ship unprocessed assets. Uploads carry `max-age=86400`, so a figure re-exported under the same name can serve stale from the CDN for up to a day; purge in the DO panel or vary the filename.
+
+**Media manifest & push gate:** `media-manifest.json` (repo root, committed) records a SHA-256 per file: which PDF each SVG was generated from, and what was last uploaded to the Space. `npm run publish -- --check` compares those against the files on disk and exits non-zero if anything is stale, which `.githooks/pre-push` runs to block a push. Hashes rather than mtimes, deliberately — git doesn't preserve mtimes, so after a fresh clone a timestamp comparison is meaningless and would wave a stale SVG straight through. Enable the hook on a new clone with `git config core.hooksPath .githooks`; bypass once with `git push --no-verify`. `--remote` additionally HEADs every object on the CDN.
+
+**Media hosting:** Blog figures and videos are mirrored to a DigitalOcean Space (bucket `stackmap`, region `sfo3`, public-read, CDN enabled) by `npm run assets` — credentials come from `DO_ACCESS_KEY` / `DO_SECRET_KEY` in the environment, never from a file in the repo. Object keys mirror the local paths (`static/covid-mortality/x.svg` → `<cdn>/covid-mortality/x.svg`), so the only difference between local and production is an origin prefix. `figure.svelte` and `video-figure.svelte` read `import.meta.env.VITE_ASSET_BASE`, which `netlify.toml` sets for production builds and which is unset locally, falling back to `/static`. Note that older posts embed raw `<img src="/…">` tags that bypass the components and are always served by Netlify.
 
 **Authentication:** Password-protected content uses a server-side API endpoint (`/api/auth/+server.ts`) that validates against a `BLOG_PASSWORD` environment variable. Auth state lives in `src/lib/authStore.ts` (Svelte writable store with localStorage persistence under key `blog_authenticated`). The `.env` file (git-ignored) holds the actual password — see `.env.example`. The `/law` route also enforces auth via its own layout.
 

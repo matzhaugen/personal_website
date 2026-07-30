@@ -34,7 +34,10 @@
 		children
 	}: Props = $props();
 
-	let base = $derived(src.replace(/\.mp4$/i, ''));
+	// See figure.svelte — served from the Space in production, /static locally.
+	const ASSET_BASE = import.meta.env.VITE_ASSET_BASE ?? '';
+
+	let base = $derived(ASSET_BASE + src.replace(/\.mp4$/i, ''));
 	let video = $state<HTMLVideoElement | undefined>(undefined);
 
 	/**

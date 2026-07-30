@@ -13,8 +13,13 @@
 
 	let { src, alt = '', width = '650', n, pdf = true, children }: Props = $props();
 
+	// Blog media is served from the DigitalOcean Space in production (set via
+	// VITE_ASSET_BASE in netlify.toml) and from /static when it's unset, so local
+	// dev works with no credentials or network. Keys mirror the static/ paths.
+	const ASSET_BASE = import.meta.env.VITE_ASSET_BASE ?? '';
+
 	// Accept a bare base path or an explicit extension; both resolve to the same pair.
-	let base = $derived(src.replace(/\.(svg|pdf|png)$/i, ''));
+	let base = $derived(ASSET_BASE + src.replace(/\.(svg|pdf|png)$/i, ''));
 </script>
 
 <figure>

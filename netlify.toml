@@ -1,4 +1,7 @@
 [build]
   command = "npm run build"
   publish = "build"
-  environment = { NODE_VERSION = "22" }
+  # VITE_ASSET_BASE points the figure/video components at the DigitalOcean Space
+  # (bucket `stackmap`, region sfo3). Unset it — as in local dev — and they fall
+  # back to /static. Upload new media with `npm run assets`.
+  environment = { NODE_VERSION = "22", VITE_ASSET_BASE = "https://stackmap.sfo3.cdn.digitaloceanspaces.com" }

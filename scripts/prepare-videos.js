@@ -39,6 +39,10 @@ const force = args.includes('--force');
 let encode = !args.includes('--no-encode');
 const crfArg = args.indexOf('--crf');
 const crf = crfArg === -1 ? '20' : args[crfArg + 1];
+// Positional args narrow the walk to those subdirectories, matching
+// pdf-to-svg.js and upload-assets.js. The --crf value is a flag argument, not a
+// directory, so drop it.
+const subdirs = args.filter((a, i) => !a.startsWith('--') && i !== crfArg + 1);
 const TAG = `site-encode:crf${crf}-veryslow`;
 
 /** Videos live in per-post subdirectories, same convention as figure PDFs. */
@@ -79,9 +83,12 @@ function existingTag(file) {
 	return out.startsWith('site-encode:') ? out : null;
 }
 
-const videos = findVideos(STATIC_DIR, true);
+const videos = subdirs.length
+	? subdirs.flatMap((d) => findVideos(join(STATIC_DIR, d)))
+	: findVideos(STATIC_DIR, true);
+
 if (videos.length === 0) {
-	console.log('No videos found under static/*/.');
+	console.log(`No videos found under ${subdirs.length ? subdirs.join(', ') : 'static/*/'}.`);
 	process.exit(0);
 }
 

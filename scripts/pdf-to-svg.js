@@ -22,8 +22,7 @@
 import { execFileSync } from 'node:child_process';
 import { readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
-
-const STATIC_DIR = new URL('../static/', import.meta.url).pathname;
+import { sha256, loadManifest, saveManifest, STATIC_DIR } from './media-lib.js';
 
 const args = process.argv.slice(2);
 const force = args.includes('--force');
@@ -57,28 +56,42 @@ try {
 }
 
 const roots = subdirs.length ? subdirs.map((d) => join(STATIC_DIR, d)) : [STATIC_DIR];
+const manifest = loadManifest();
 let converted = 0;
 let skipped = 0;
 
 for (const root of roots) {
 	for (const pdf of findPdfs(root, root === STATIC_DIR)) {
 		const svg = pdf.replace(/\.pdf$/i, '.svg');
+		const svgKey = relative(STATIC_DIR, svg);
+		const pdfHash = sha256(pdf);
 
-		if (!force) {
-			try {
-				if (statSync(svg).mtimeMs >= statSync(pdf).mtimeMs) {
-					skipped++;
-					continue;
-				}
-			} catch {
-				// no svg yet — fall through and convert
-			}
+		// The recorded source hash is what makes staleness detectable after a
+		// clone, where mtimes are all checkout time. mtime is still consulted as
+		// a cheap first pass for the common local case.
+		const upToDate =
+			manifest.svgFromPdf[svgKey] === pdfHash ||
+			(!(svgKey in manifest.svgFromPdf) &&
+				(() => {
+					try {
+						return statSync(svg).mtimeMs >= statSync(pdf).mtimeMs;
+					} catch {
+						return false;
+					}
+				})());
+
+		if (!force && upToDate) {
+			manifest.svgFromPdf[svgKey] = pdfHash; // backfill for pre-manifest files
+			skipped++;
+			continue;
 		}
 
 		execFileSync('pdftocairo', ['-svg', pdf, svg]);
-		console.log(`  ${relative(STATIC_DIR, svg)}`);
+		manifest.svgFromPdf[svgKey] = pdfHash;
+		console.log(`  ${svgKey}`);
 		converted++;
 	}
 }
 
+saveManifest(manifest);
 console.log(`\n${converted} converted, ${skipped} already up to date.`);
