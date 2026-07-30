@@ -111,8 +111,16 @@
   {/if}
 
   <article bind:this={contentEl}>
-    <h1 class="section-header">{title}</h1>
-    <div class="metadata"><i>{authors}  – {date}</i></div>
+    <!-- Pages like /books and /law carry no frontmatter and write their own
+         heading, so don't emit an empty <h1> / byline for them. -->
+    {#if title}
+      <h1 class="section-header">{title}</h1>
+    {/if}
+    {#if authors || date}
+      <div class="metadata">
+        <i>{[authors, date].filter(Boolean).join(' – ')}</i>
+      </div>
+    {/if}
     {#if children}{@render children()}{/if}
   </article>
 {/if}

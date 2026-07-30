@@ -10,7 +10,14 @@ const config = {
 		// remarkPlugins: [[remarkFootnotes, {inlineNotes: true}]],
 		remarkPlugins: [[remarkGfm]],
 		extensions: ['.svx', '.md'],
-		layout: "./src/routes/blog/+layout.svelte",
+		// Deliberately NOT a `+layout.svelte` under src/routes: SvelteKit would then
+		// apply it as a route layout as well, wrapping every markdown page twice
+		// (two <article>s, two floating TOCs, an empty outer <h1>). mdsvex is the
+		// single source here because it hands frontmatter to the layout as props,
+		// which a route layout cannot do, and because it targets .md files rather
+		// than a route subtree — so /books, /law, /links and /pregnancy get the
+		// same treatment as /blog/* without a layout file in each directory.
+		layout: "./src/components/blog-layout.svelte",
 	}),
 		
 	kit: {
