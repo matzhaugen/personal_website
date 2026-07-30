@@ -10,3 +10,5 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .netlify
 .ipynb_checkpoints/*
+# AI Doctor retrieval index — lives in the `stackmap` Space, not in git.
+static/ai-doctor/

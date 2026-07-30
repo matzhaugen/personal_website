@@ -2,6 +2,8 @@
 // Same tokenizer (regex \b\w{2,}\b lowercased), same constants k1=1.5, b=0.75,
 // same +1 IDF variant. Reads the CSR triplet emitted by the export script.
 
+import { indexUrl } from './assets';
+
 const K1 = 1.5;
 const B = 0.75;
 
@@ -21,7 +23,7 @@ let cached: Promise<Bm25Data> | null = null;
 export function ensureBm25() {
 	if (!cached) {
 		cached = (async () => {
-			const r = await fetch('/ai-doctor/bm25.json');
+			const r = await fetch(indexUrl('bm25.json'));
 			if (!r.ok) throw new Error(`bm25.json fetch failed: ${r.status}`);
 			const j = await r.json();
 			return {

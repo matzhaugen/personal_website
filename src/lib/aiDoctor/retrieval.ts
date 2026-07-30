@@ -7,6 +7,7 @@ import type { Chunk, RetrievalResult } from './types';
 import { embedQuery } from './embedder';
 import { searchDense } from './dense';
 import { searchSparse } from './bm25';
+import { indexUrl } from './assets';
 
 const INITIAL_K = 30;       // candidates per side before RRF
 const FINAL_K = 5;          // chunks shown to the LLM after fusion
@@ -26,7 +27,7 @@ let chunksCached: Promise<Chunk[]> | null = null;
 
 export function ensureChunks() {
 	if (!chunksCached) {
-		chunksCached = fetch('/ai-doctor/chunks.json').then((r) => {
+		chunksCached = fetch(indexUrl('chunks.json')).then((r) => {
 			if (!r.ok) throw new Error(`chunks.json fetch failed: ${r.status}`);
 			return r.json();
 		});

@@ -1,4 +1,8 @@
 [build]
   command = "npm run build"
   publish = "build"
-  environment = { NODE_VERSION = "22" }
+  # VITE_ASSET_BASE points the AI Doctor retrieval index (and the blog figure
+  # components) at the DigitalOcean Space `stackmap`. The index is ~76 MB and is
+  # deliberately not committed — upload it with `npm run assets`. Unset the
+  # variable, as in local dev, and everything falls back to /static.
+  environment = { NODE_VERSION = "22", VITE_ASSET_BASE = "https://stackmap.sfo3.cdn.digitaloceanspaces.com" }

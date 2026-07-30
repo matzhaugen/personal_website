@@ -7,6 +7,7 @@
 // at this scale; the rag-pipeline uses an exact FAISS IndexFlatIP for the
 // same reason.
 import { loadManifest } from './manifest';
+import { indexUrl } from './assets';
 
 let cached: Promise<{ matrix: Float32Array; n: number; dim: number }> | null = null;
 
@@ -14,7 +15,7 @@ export function ensureDenseIndex() {
 	if (!cached) {
 		cached = (async () => {
 			const manifest = await loadManifest();
-			const r = await fetch('/ai-doctor/embeddings.bin');
+			const r = await fetch(indexUrl('embeddings.bin'));
 			if (!r.ok) throw new Error(`embeddings.bin fetch failed: ${r.status}`);
 			const buf = await r.arrayBuffer();
 			const matrix = new Float32Array(buf);
