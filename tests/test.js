@@ -56,3 +56,24 @@ test('blog TOC not shown on posts without headings', async ({ page }) => {
 	await page.goto('/blog/vax-deaths-averted');
 	await expect(page.locator('.toc-container')).not.toBeAttached();
 });
+
+// Smoke test only: it deliberately stops at the disclaimer, before the chat
+// mounts. Past that point the page pulls ~47 MB of retrieval index plus the
+// embedding model from the HuggingFace CDN, which is too slow and too
+// network-dependent to assert on here. What this does catch is the whole
+// import graph — retrieval.ts, chunks.ts, dense.ts, bm25.ts — failing to load.
+test('AI doctor page gates on the disclaimer', async ({ page }) => {
+	const errors = [];
+	page.on('pageerror', (e) => errors.push(e.message));
+
+	await page.goto('/doctor');
+	await expect(page.getByRole('heading', { name: 'Before you start' })).toBeVisible();
+
+	// Continue stays disabled until the acknowledgement is ticked.
+	const cont = page.getByRole('button', { name: 'Continue' });
+	await expect(cont).toBeDisabled();
+	await page.locator('input[type="checkbox"]').check();
+	await expect(cont).toBeEnabled();
+
+	expect(errors).toEqual([]);
+});

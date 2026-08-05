@@ -33,7 +33,24 @@ A public RAG chat over the corpus built by the separate **`rag-pipeline`** repo 
 
 - **Library code:** `src/lib/aiDoctor/` — `embedder.ts` (transformers.js runs `nomic-embed-text-v1.5` in ONNX for the query embedding, must match rag-pipeline's `search_query:` prefix + L2 norm), `dense.ts` + `bm25.ts` + `retrieval.ts` (hybrid RRF over the exported assets), `prompt.ts`, `postprocess.ts` (citation renumbering), `settingsStore.ts`, `manifest.ts`, `types.ts`, and `llm/` (`index.ts` dispatch, `webllm.ts`, `groq.ts`).
 - **Components:** `src/components/AiDoctor{Chat,Settings,Sources,Disclaimer}.svelte`.
-- **Static assets:** `static/ai-doctor/{embeddings.bin,chunks.json,bm25.json,manifest.json}` — produced by `rag-pipeline/scripts/export_for_web.py`. **Re-run that export whenever the rag-pipeline index is rebuilt** (e.g. after ingesting new papers) or the chat serves a stale corpus. These files are large (tens–hundreds of MB) and are the browser's full first-load download.
+- **Static assets** (schema_version 2) — produced by `rag-pipeline/scripts/export_for_web.py`, gitignored, and served from the DigitalOcean Space `stackmap` via `VITE_ASSET_BASE`. Upload with **`npm run assets`** (`scripts/upload-assets.js`, needs `DO_ACCESS_KEY`/`DO_SECRET_KEY`). **Re-run the export + upload whenever the rag-pipeline index is rebuilt**, or the chat serves a stale corpus.
+
+  | File | Role | Raw | On the wire |
+  |---|---|---|---|
+  | `embeddings.i8` | float32 scales, then int8 vectors | 39.7 MB | 33.6 MB |
+  | `bm25.bin` | term-major inverted index, delta-coded doc ids, uint8 tf | 41.7 MB | 10.0 MB |
+  | `bm25-vocab.json` | term → column | 4.3 MB | 1.7 MB |
+  | `chunks-meta.json` | doc metadata (deduped) + per-chunk byte offsets | 7.3 MB | 0.7 MB |
+  | `manifest.json` | schema/shape; **version-checked before any binary is parsed** | — | — |
+  | `chunks-text.bin` | chunk bodies | 84.3 MB | **0** — HTTP Range per query |
+
+  Full corpus (51,486 chunks / 3,379 docs) is **~46 MB on first load**; a naive float32 + JSON export is ~220 MB.
+
+  **Two upload invariants, both silent-corruption hazards** (enforced in `scripts/upload-assets.js`):
+  1. **`chunks-text.bin` must never be gzipped.** A gzip-encoded object serves Range requests over the *compressed* representation, so every byte offset would point somewhere wrong and `chunks.ts` would decode garbage rather than error. Everything else is pre-gzipped with `Content-Encoding: gzip` — DO's CDN auto-compresses text types on the fly but leaves `application/octet-stream` alone, so without this `bm25.bin` ships at 41.7 MB instead of 10.0 MB.
+  2. **`manifest.json` uploads last.** The browser version-checks it before parsing any binary, so publishing it first hands anyone loading mid-upload a new manifest describing old-layout data — which parses cleanly and scores nonsense.
+
+- **Paper citation metadata depends on ingest order.** `parsing.py` applies `data/papers/papers_metadata.json` (DOI/authors/year/journal, and a real title in place of the PDF's publisher banner) only at ingest time, and the junk title is embedded into the vector. If `export_for_web.py` warns that papers lack DOIs, re-run `uv run rag ingest` before exporting — otherwise citations are unusable *and* retrieval is degraded.
 - **Two generation backends** (chosen in the ⚙ Settings drawer; default is Groq):
   - **`groq`** (default) — hosted Llama via `src/routes/api/doctor-chat/+server.ts`, a SvelteKit server endpoint (deploys as a Netlify function) that holds the key **server-side** and streams the answer back as plain text. Works on **any** browser. Prompts leave the device (disclaimer says so).
   - **`webllm`** — runs the model fully in-browser via WebGPU (`@mlc-ai/web-llm`). Private, but WebGPU-gated (see below).

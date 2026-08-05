@@ -32,8 +32,9 @@
 	);
 
 	onMount(() => {
-		// Pre-warm the chunks.json fetch (25 MB) so the first query feels faster.
-		import('$lib/aiDoctor/retrieval').then((m) => m.ensureChunks?.());
+		// Pre-warm the chunk metadata fetch so the first query feels faster. The
+		// bodies are not fetched here — they're pulled per query by byte range.
+		import('$lib/aiDoctor/retrieval').then((m) => m.ensureChunkMeta?.());
 		scrollToBottom();
 	});
 

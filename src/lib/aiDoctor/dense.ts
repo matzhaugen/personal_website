@@ -1,31 +1,62 @@
 // Dense retrieval: cosine similarity over a precomputed (n_chunks, dim) matrix
-// of L2-normalized nomic embeddings. Both the corpus vectors and the query
-// vector are L2-normalized, so dot product == cosine similarity.
+// of L2-normalized nomic embeddings, stored int8-quantized.
 //
-// At ~11k chunks × 768 dims, scanning the full matrix per query is ~8.5M
-// multiply-adds — comfortably under 20 ms in V8. No need for ANN structures
-// at this scale; the rag-pipeline uses an exact FAISS IndexFlatIP for the
-// same reason.
+// Float32 vectors are incompressible, so at full-corpus size they dominate the
+// browser's first load (51,486 x 768 x 4 = 158 MB). The export quantizes each
+// vector symmetrically to int8 with its own scale — 4x smaller, ~1% recall cost
+// because the vectors are unit-norm and so have a tight, uniform value range.
+//
+// The scale factors out of the dot product entirely:
+//     dot(v_i, q) = dot(q_i * s_i, q) = s_i * dot(q_i, q)
+// so the inner loop stays integer-by-float and each vector is rescaled exactly
+// once, at the end. The query is left in float32 — quantizing it too would
+// compound the error for no bandwidth gain, since it never leaves the browser.
+//
+// At ~51k chunks x 768 dims that is ~40M multiply-adds per query, tens of
+// milliseconds in V8. No ANN structure needed; the rag-pipeline uses an exact
+// FAISS IndexFlatIP for the same reason.
 import { loadManifest } from './manifest';
 import { indexUrl } from './assets';
 
-let cached: Promise<{ matrix: Float32Array; n: number; dim: number }> | null = null;
+interface DenseIndex {
+	/** n_chunks * dim quantized values, row-major. */
+	values: Int8Array;
+	/** Per-vector dequantization scale, n_chunks long. */
+	scales: Float32Array;
+	n: number;
+	dim: number;
+}
 
-export function ensureDenseIndex() {
+let cached: Promise<DenseIndex> | null = null;
+
+export function ensureDenseIndex(): Promise<DenseIndex> {
 	if (!cached) {
 		cached = (async () => {
 			const manifest = await loadManifest();
-			const r = await fetch(indexUrl('embeddings.bin'));
-			if (!r.ok) throw new Error(`embeddings.bin fetch failed: ${r.status}`);
+			const { n_chunks: n, dim } = manifest;
+			if (manifest.quant !== 'int8') {
+				throw new Error(`unsupported embedding quantization: ${manifest.quant}`);
+			}
+
+			const r = await fetch(indexUrl('embeddings.i8'));
+			if (!r.ok) throw new Error(`embeddings.i8 fetch failed: ${r.status}`);
 			const buf = await r.arrayBuffer();
-			const matrix = new Float32Array(buf);
-			const expected = manifest.n_chunks * manifest.dim;
-			if (matrix.length !== expected) {
+
+			// Scales are written first precisely so this Float32Array view starts
+			// at offset 0 and is aligned whatever n*dim happens to be.
+			const expected = n * 4 + n * dim;
+			if (buf.byteLength !== expected) {
 				throw new Error(
-					`embeddings.bin length ${matrix.length} != n_chunks*dim ${expected}`
+					`embeddings.i8 is ${buf.byteLength} bytes, expected ${expected} ` +
+						`(n_chunks=${n}, dim=${dim})`
 				);
 			}
-			return { matrix, n: manifest.n_chunks, dim: manifest.dim };
+			return {
+				scales: new Float32Array(buf, 0, n),
+				values: new Int8Array(buf, n * 4, n * dim),
+				n,
+				dim
+			};
 		})();
 	}
 	return cached;
@@ -35,7 +66,7 @@ export async function searchDense(
 	queryVec: Float32Array,
 	k: number
 ): Promise<{ idx: number; score: number }[]> {
-	const { matrix, n, dim } = await ensureDenseIndex();
+	const { values, scales, n, dim } = await ensureDenseIndex();
 	if (queryVec.length !== dim) {
 		throw new Error(`query dim ${queryVec.length} != index dim ${dim}`);
 	}
@@ -44,8 +75,8 @@ export async function searchDense(
 	for (let i = 0; i < n; i++) {
 		const off = i * dim;
 		let s = 0;
-		for (let d = 0; d < dim; d++) s += matrix[off + d] * queryVec[d];
-		scores[i] = s;
+		for (let d = 0; d < dim; d++) s += values[off + d] * queryVec[d];
+		scores[i] = s * scales[i];
 	}
 
 	return topK(scores, k);

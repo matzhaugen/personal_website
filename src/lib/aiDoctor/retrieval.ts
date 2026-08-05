@@ -1,39 +1,52 @@
 // Top-level retrieval orchestrator. Mirrors vectorstore.search_hybrid plus
 // the per-doc cap that the Python pipeline applies in the reranker.
 // The reranker itself (bge-reranker-v2-m3, 568 MB) is dropped — too large
-// for browsers — so we widen the candidate pool and lean on RRF + per-doc
-// cap to compensate.
+// for browsers — so we lean on RRF + the per-doc cap to compensate.
+//
+// Ranking runs over chunk *metadata* only; the bodies of the FINAL_K survivors
+// are fetched at the end (see chunks.ts), which is why nothing here touches
+// raw_text until the last step.
 import type { Chunk, RetrievalResult } from './types';
 import { embedQuery } from './embedder';
 import { searchDense } from './dense';
 import { searchSparse } from './bm25';
-import { indexUrl } from './assets';
+import { ensureChunkMeta, hydrate } from './chunks';
 
-const INITIAL_K = 30;       // candidates per side before RRF
+// Matches retrieval.initial_k in rag-pipeline's config.yaml. The browser has no
+// reranker to salvage a bad pool, so it should not search a narrower one than
+// the CLI does — especially at full-corpus size, where 30 candidates over 51k
+// chunks is a much thinner slice than it was over the 11k posts-only index.
+const INITIAL_K = 50;       // candidates per side before RRF
 const FINAL_K = 5;          // chunks shown to the LLM after fusion
 const MAX_PER_DOC = 3;      // cap so one paper doesn't dominate
 const HYBRID_WEIGHT = 0.7;  // dense weight; sparse gets 1 - this
 const K_RRF = 60;           // canonical RRF constant
 
-// If even the top-scoring fused chunk doesn't clear this floor, the index
-// has nothing relevant — return [] so prompt.ts's sources.length===0 branch
-// fires and the LLM answers purely from general knowledge ([GK]). RRF
-// scores are bounded (best possible ≈ 1/K_RRF = 0.0167 when a chunk is
-// rank-0 in both lists); start permissive and tighten if off-topic answers
-// still get retrieved chunks.
-const GK_FALLBACK_RRF = 0.01;
+// Relevance floor: below this, treat retrieval as empty so prompt.ts's
+// sources.length===0 branch fires and the model says the library doesn't cover
+// the question.
+//
+// This gates on the top *cosine* similarity, not on the fused RRF score. RRF
+// scores are derived from rank alone, so whatever ranks first always earns
+// ~HYBRID_WEIGHT/K_RRF ≈ 0.0117 no matter how irrelevant it is — the old 0.01
+// RRF floor was structurally incapable of rejecting anything, and at
+// full-corpus size it let plainly off-topic questions through with five
+// confident-looking sources.
+//
+// Measured over the 51,486-chunk index (6 on-corpus vs 6 off-corpus queries):
+//     on-corpus  top cosine  0.713 – 0.772
+//     off-corpus top cosine  0.545 – 0.601
+// 0.65 sits in that gap, biased slightly low: a weak-but-real answer is a
+// better failure than wrongly refusing a question the library does cover, and
+// the grounded prompt already makes the model state what isn't covered.
+//
+// BM25 was measured too and is NOT usable for this — its on/off-corpus ranges
+// overlap (15.8–27.3 vs 11.8–15.9), since a rare token can score high in any
+// document. Small sample; widen it before trusting the exact boundary.
+const MIN_TOP_COSINE = 0.65;
 
-let chunksCached: Promise<Chunk[]> | null = null;
-
-export function ensureChunks() {
-	if (!chunksCached) {
-		chunksCached = fetch(indexUrl('chunks.json')).then((r) => {
-			if (!r.ok) throw new Error(`chunks.json fetch failed: ${r.status}`);
-			return r.json();
-		});
-	}
-	return chunksCached;
-}
+/** Warm the metadata fetch before the user submits. Re-exported for the UI. */
+export { ensureChunkMeta };
 
 export type RetrievalProgress = (loaded: number, total: number, phase: string) => void;
 
@@ -41,13 +54,24 @@ export async function retrieve(
 	query: string,
 	onProgress?: RetrievalProgress
 ): Promise<RetrievalResult[]> {
-	const chunks = await ensureChunks();
+	const { chunks } = await ensureChunkMeta();
 	const qVec = await embedQuery(query, onProgress);
 
 	const [dense, sparse] = await Promise.all([
 		searchDense(qVec, INITIAL_K),
 		searchSparse(query, INITIAL_K)
 	]);
+
+	// Bail before fusing: nothing in the library is semantically close enough.
+	const topCosine = dense[0]?.score ?? 0;
+	if (topCosine < MIN_TOP_COSINE) {
+		if (typeof console !== 'undefined') {
+			console.debug(
+				`[aiDoctor] top cosine ${topCosine.toFixed(4)} < ${MIN_TOP_COSINE}; not in the library`
+			);
+		}
+		return [];
+	}
 
 	// Reciprocal Rank Fusion — combines lists by rank, not raw score, so it
 	// is robust to scale mismatch between bounded cosine and unbounded BM25.
@@ -68,7 +92,7 @@ export async function retrieve(
 	const perDoc = new Map<string, number>();
 	const picked: { idx: number; score: number }[] = [];
 	for (const r of ranked) {
-		const docId = chunks[r.idx].doc_id;
+		const docId = chunks[r.idx].doc;
 		const cur = perDoc.get(docId) ?? 0;
 		if (cur < MAX_PER_DOC) {
 			picked.push(r);
@@ -88,16 +112,9 @@ export async function retrieve(
 		}
 	}
 
-	// GK fallback: if the best fused score is too weak, treat retrieval as
-	// empty so the prompt switches to the GK-only path.
-	if (picked.length === 0 || picked[0].score < GK_FALLBACK_RRF) {
-		if (picked.length > 0 && typeof console !== 'undefined') {
-			console.debug(
-				`[aiDoctor] top RRF score ${picked[0].score.toFixed(4)} < ${GK_FALLBACK_RRF}; answering from GK only`
-			);
-		}
-		return [];
-	}
+	if (picked.length === 0) return [];
 
-	return picked.map((p) => ({ chunk: chunks[p.idx], score: p.score }));
+	// Only now do the bodies get fetched — one Range request per contiguous run.
+	const hydrated: Chunk[] = await hydrate(picked.map((p) => p.idx));
+	return hydrated.map((chunk, i) => ({ chunk, score: picked[i].score }));
 }

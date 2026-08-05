@@ -9,10 +9,45 @@
 //     browser (incl. Safari 18 / Firefox / mobile). Prompts leave the device.
 export type ProviderId = 'webllm' | 'groq';
 
-// Shape of an entry in /ai-doctor/chunks.json — written by
-// rag-pipeline/scripts/export_for_web.py. The embedding-side `text` field
-// (with the metadata header that nomic ingests) is dropped on export; only
-// `raw_text` is kept since that's what the LLM sees in the prompt.
+// Per-document metadata, stored once in chunks-meta.json rather than repeated
+// across each document's ~15 chunks. `doi`/`authors`/`year`/`journal` come from
+// rag-pipeline's papers_metadata.json sidecar and are absent on posts (and on
+// papers ingested before that sidecar existed), so treat them as optional.
+export interface DocMeta {
+	title: string;
+	type: 'paper' | 'post';
+	url?: string | null;
+	author?: string | null;
+	published_at?: string | null;
+	doi?: string | null;
+	authors?: string[] | null;
+	year?: number | null;
+	journal?: string | null;
+}
+
+// Per-chunk record in chunks-meta.json. Deliberately small: it exists 51k times
+// over, and the body it points at lives in chunks-text.bin, fetched by Range
+// request only for the handful of chunks a query actually selects.
+export interface ChunkMeta {
+	id: string;
+	/** Key into the `docs` map. */
+	doc: string;
+	/** Section heading. */
+	sec: string;
+	/** Byte offset into chunks-text.bin. */
+	off: number;
+	/** Byte length of the UTF-8 body. */
+	len: number;
+}
+
+export interface ChunkIndex {
+	docs: Record<string, DocMeta>;
+	chunks: ChunkMeta[];
+}
+
+// A chunk joined with its document metadata and its body — what the prompt and
+// the UI actually consume. Built by chunks.ts:hydrate() for the final few
+// chunks only, so `raw_text` is always populated here.
 export interface Chunk {
 	id: string;
 	doc_id: string;
@@ -23,6 +58,10 @@ export interface Chunk {
 	url: string | null;
 	author?: string | null;
 	published_at?: string | null;
+	doi?: string | null;
+	authors?: string[] | null;
+	year?: number | null;
+	journal?: string | null;
 }
 
 export interface RetrievalResult {
@@ -55,10 +94,24 @@ export interface LLMAdapter {
 	stream(opts: LLMAdapterStreamOpts): AsyncIterable<string>;
 }
 
+// Written by rag-pipeline/scripts/export_for_web.py. `schema_version` is
+// checked before any binary asset is parsed — a mismatched export must fail
+// loudly rather than reinterpret bytes under the wrong layout.
+export const SCHEMA_VERSION = 2;
+
 export interface Manifest {
 	schema_version: number;
 	n_chunks: number;
 	dim: number;
+	/** Quantization of embeddings.i8. Only 'int8' exists today. */
+	quant: 'int8';
+	n_docs: number;
+	/** BM25 vocabulary size = number of columns in the inverted index. */
+	n_terms: number;
+	/** Total BM25 postings (nonzeros), needed to size the typed-array views. */
+	bm25_nnz: number;
+	/** Mean document length, for the BM25 length normalization. */
+	avg_dl: number;
 	embed_model: string;
 	build_timestamp: number;
 }

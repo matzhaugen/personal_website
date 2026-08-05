@@ -11,4 +11,9 @@ vite.config.ts.timestamp-*
 .netlify
 .ipynb_checkpoints/*
 # AI Doctor retrieval index — lives in the `stackmap` Space, not in git.
+# Upload with `npm run assets` after `export_for_web.py` writes it.
 static/ai-doctor/
+# Playwright run output (screenshots/videos/traces on failure).
+test-results/
+# LaTeX build artifacts from the resume source.
+resume/*.fls
