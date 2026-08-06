@@ -4,9 +4,9 @@
 	}
 	let { children }: Props = $props();
 
-	// Public route — no auth gate. The AI doctor runs entirely in the
-	// visitor's browser (WebLLM + client-side retrieval), so there's nothing
-	// server-side to protect.
+	// Public route — no auth gate. Retrieval runs in the visitor's browser and
+	// the one server endpoint (/api/doctor-chat) keeps the Groq key on the
+	// server behind its own daily cap, so there's nothing here to protect.
 </script>
 
 <div class="doctor-root">

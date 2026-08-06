@@ -43,7 +43,22 @@ const STATIC_DIR = path.join(REPO_ROOT, 'static');
 const BUCKET = 'stackmap';
 const REGION = 'sfo3';
 const ENDPOINT = 'https://sfo3.digitaloceanspaces.com';
+// Everything but the manifest is requested with `?v=<build_timestamp>` (see
+// src/lib/aiDoctor/assets.ts), so a rebuilt index lands on fresh URLs and a long
+// TTL is free. The manifest is the pointer that carries that timestamp, so it
+// can't be versioned that way and must expire quickly instead.
+//
+// This is not hypothetical: on 2026-08-06 all five binaries refreshed while the
+// edge kept serving a nine-month-old manifest (schema_version 1) for another 16
+// hours, because re-uploading an object does NOT evict a cached edge copy that
+// is still inside its TTL. The client version-check turned that into a hard
+// error rather than corruption, but /doctor was down until it was worked around.
 const CACHE_CONTROL = 'public, max-age=86400';
+const CACHE_CONTROL_MANIFEST = 'public, max-age=60';
+
+function cacheControlFor(file) {
+	return path.basename(file) === 'manifest.json' ? CACHE_CONTROL_MANIFEST : CACHE_CONTROL;
+}
 
 const DEFAULT_DIRS = ['static/ai-doctor'];
 
@@ -231,7 +246,7 @@ async function main() {
 					// Browsers decode this transparently in fetch(); the byte
 					// offsets chunks.ts uses are why chunks-text.bin is exempt.
 					...(gzipped ? { ContentEncoding: 'gzip' } : {}),
-					CacheControl: CACHE_CONTROL,
+					CacheControl: cacheControlFor(file),
 					ACL: 'public-read'
 				})
 			);

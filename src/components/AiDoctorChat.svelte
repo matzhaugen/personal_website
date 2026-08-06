@@ -6,30 +6,19 @@
 		updateLastAssistant,
 		clearChat
 	} from '$lib/aiDoctor/chatStore';
-	import { settings } from '$lib/aiDoctor/settingsStore';
-	import { retrieve } from '$lib/aiDoctor/retrieval';
+	import { retrieve, type RetrievalDiagnostics } from '$lib/aiDoctor/retrieval';
 	import { buildUserPrompt, SYSTEM_PROMPT } from '$lib/aiDoctor/prompt';
-	import { getAdapter, GroqUnavailableError } from '$lib/aiDoctor/llm';
+	import { getAdapter, HostedModelError } from '$lib/aiDoctor/llm';
 	import { renumberCitations } from '$lib/aiDoctor/postprocess';
-	import AiDoctorSettings from './AiDoctorSettings.svelte';
 	import type { ChatMessage } from '$lib/aiDoctor/types';
 
 	let input = $state('');
 	let streaming = $state(false);
-	let settingsOpen = $state(false);
 	let errorMsg = $state<string | null>(null);
 	let chatEl: HTMLDivElement | undefined = $state();
 	let nearBottom = $state(true);
 
 	let abortController: AbortController | null = null;
-
-	// WebGPU is required for the WebLLM path; show a friendly notice if absent.
-	const webgpuSupported = $derived(
-		typeof navigator !== 'undefined' && 'gpu' in navigator
-	);
-	const showWebgpuWarning = $derived(
-		$settings.provider === 'webllm' && !webgpuSupported
-	);
 
 	onMount(() => {
 		// Pre-warm the chunk metadata fetch so the first query feels faster. The
@@ -65,13 +54,22 @@
 			/\[([^\]]+?)\]\((https?:\/\/[^\s)]+)\)/g,
 			'<a href="$2" target="_blank" rel="noopener">$1</a>'
 		);
-		// bare URL fallback: http(s):// not already inside an href.
-		// Use a lookahead to avoid double-linking ones we just wrapped above.
-		s = s.replace(
-			/(^|[\s(])((https?:\/\/[^\s<)"']+?))(?=[)\s.,;:!?]|$)/g,
-			(_m, lead, url) =>
-				`${lead}<a href="${url}" target="_blank" rel="noopener">${url}</a>`
-		);
+		// bare URL fallback. What stops this re-linking the URLs already wrapped
+		// above is the required leading (^|[\s(]): inside <a href="…"> the
+		// character before the URL is a quote, and before the anchor text it is
+		// '>', so neither position matches.
+		//
+		// Match greedily, then strip trailing punctuation. A lazy match with a
+		// lookahead cannot work here — the lookahead set has to contain '.' to
+		// handle a URL ending a sentence, but then the first dot of the hostname
+		// satisfies it and every reference renders as the link "https://www".
+		s = s.replace(/(^|[\s(])(https?:\/\/[^\s<>"']+)/g, (_m, lead, url) => {
+			// Trailing '.' / ')' etc. are almost always sentence punctuation or a
+			// closing wrapper, not part of the URL.
+			const trailing = url.match(/[.,;:!?)\]]+$/)?.[0] ?? '';
+			const href = trailing ? url.slice(0, -trailing.length) : url;
+			return `${lead}<a href="${href}" target="_blank" rel="noopener">${href}</a>${trailing}`;
+		});
 		// paragraphs: blank line breaks; single \n becomes <br>
 		return s
 			.split(/\n{2,}/)
@@ -80,17 +78,11 @@
 	}
 
 	// Grab the most recent substantive assistant answer (skipping transient
-	// placeholders like "Searching the index…" or "Error: …"). Used to enrich
-	// the retrieval query so anaphoric follow-ups ("why was it banned?") still
-	// hit topically-relevant chunks instead of going off-corpus.
+	// placeholders like "Searching the index…" or "Error: …"). Offered to
+	// retrieval as optional context for anaphoric follow-ups ("why was it
+	// banned?"); retrieval uses it only when the question can't stand alone.
 	function getLastAssistantAnswer(): string | null {
-		const transient = [
-			'Searching the index…',
-			'Generating…',
-			'Fetching weights',
-			'No API key set',
-			'Error:'
-		];
+		const transient = ['Searching the index…', 'Generating…', 'Error:'];
 		for (let i = $messages.length - 1; i >= 0; i--) {
 			const m = $messages[i];
 			if (m.role !== 'assistant') continue;
@@ -99,6 +91,31 @@
 			return c || null;
 		}
 		return null;
+	}
+
+	// Retrieval tuning log — DEV ONLY, and deliberately so: the disclaimer tells
+	// visitors nothing they type is stored, and this is how that stays true.
+	// import.meta.env.DEV is a compile-time constant, so in a production build
+	// this whole call is dropped by dead-code elimination and the endpoint 404s
+	// besides. Records land in ./doctor-queries.jsonl (gitignored).
+	function logRetrieval(d: RetrievalDiagnostics) {
+		if (!import.meta.env.DEV) return;
+		fetch('/api/doctor-log', {
+			method: 'POST',
+			headers: { 'content-type': 'application/json' },
+			body: JSON.stringify(d)
+		}).catch(() => {
+			/* logging must never break a chat turn */
+		});
+	}
+
+	// Which vendor served the answer. Dev-only for the same reason as above, and
+	// worth recording separately: the two backends run genuinely different models
+	// (gpt-oss-120b vs llama-3.1-8b-instant), so "this answer was bad" is only
+	// actionable if you know which one wrote it.
+	function logProvider(id: string) {
+		if (!import.meta.env.DEV) return;
+		console.info('[aiDoctor] answered by:', id);
 	}
 
 	function handleScroll() {
@@ -149,15 +166,14 @@
 		});
 
 		try {
-			// 1. Retrieve. For follow-ups, prepend a truncated snippet of the
-			//    prior assistant answer so the embedder/BM25 see the topical
-			//    anchors that bare follow-up text usually lacks. retrieve()
-			//    returns [] when the top RRF score < threshold, which makes
-			//    buildUserPrompt take the GK-only branch.
-			const retrievalQuery = priorAnswer
-				? `Recent assistant answer: ${priorAnswer.slice(0, 1500)}\n\nLatest question: ${query}`
-				: query;
-			const sources = await retrieve(retrievalQuery);
+			// 1. Retrieve. The prior answer is handed over as context rather than
+			//    pre-glued to the query: retrieval decides per question whether it
+			//    needs it, because prepending it unconditionally makes a
+			//    self-contained question retrieve the PREVIOUS topic (see
+			//    SELF_CONTAINED_COSINE in retrieval.ts). retrieve() returns [] when
+			//    nothing clears the relevance floor, which makes buildUserPrompt
+			//    take the "not in the library" branch.
+			const sources = await retrieve(query, { priorAnswer, onDiagnostics: logRetrieval });
 
 			// 2. Build messages for the LLM. Prior turns flow through verbatim;
 			//    the current user turn's content is swapped for the
@@ -174,31 +190,22 @@
 				content: buildUserPrompt(query, sources)
 			};
 
-			// 3. Adapter — WebLLM (in-browser). May throw WebGpuUnsupportedError.
-			const adapter = getAdapter($settings);
+			// 3. Adapter — hosted model via /api/doctor-chat, which picks the vendor
+			//    (Cerebras, then Groq) server-side. May throw HostedModelError
+			//    (not configured / daily cap / rate limit) once ALL of them fail.
+			const adapter = getAdapter();
 
 			// 4. Stream.
 			abortController = new AbortController();
 			updateLastAssistant('Generating…');
 
 			let accumulated = '';
-			let started = false;
 			for await (const delta of adapter.stream({
 				system: SYSTEM_PROMPT,
 				messages: history,
 				abortSignal: abortController.signal,
-				onProgress: (loaded, total, phase) => {
-					if (!started) {
-						const pct =
-							total > 0 ? ` ${Math.round((loaded / total) * 100)}%` : '';
-						updateLastAssistant(`${phase}${pct}`);
-					}
-				}
+				onProvider: logProvider
 			})) {
-				if (!started) {
-					started = true;
-					accumulated = '';
-				}
 				accumulated += delta;
 				updateLastAssistant(accumulated);
 			}
@@ -226,20 +233,9 @@
 			const m = (err as Error)?.message ?? String(err);
 			if ((err as Error)?.name === 'AbortError') {
 				// user clicked Stop — leave whatever's accumulated as-is
-			} else if (err instanceof GroqUnavailableError) {
-				// message is already user-friendly; nudge to Settings when the fix is
-				// to switch providers (not configured / daily free-tier cap reached)
+			} else if (err instanceof HostedModelError) {
+				// message is already user-friendly — show it in place of the answer
 				updateLastAssistant(m);
-				if (err.code === 'not_configured' || err.code === 'daily_cap') settingsOpen = true;
-			} else if (/maxStorageBuffersPerShaderStage|storage buffer|exceeds limit/i.test(m)) {
-				// The selected model's shaders need more WebGPU storage buffers than
-				// this GPU exposes (common on macOS, limit 8). Steer to a smaller model.
-				updateLastAssistant(
-					"This model needs more GPU resources than your browser exposes " +
-						"(a known WebGPU limit, common on Macs). Open ⚙ Settings and pick a " +
-						"smaller model — Qwen 2.5 1.5B, Llama 3.2 1B, or Qwen 2.5 0.5B — which fit the limit."
-				);
-				settingsOpen = true;
 			} else {
 				errorMsg = m;
 				updateLastAssistant(`Error: ${m}`);
@@ -269,17 +265,8 @@
 		<h1>The AI doctor</h1>
 		<div class="header-buttons">
 			<button class="ghost" onclick={() => clearChat()}>Clear chat</button>
-			<button class="ghost" onclick={() => (settingsOpen = true)}>⚙ Settings</button>
 		</div>
 	</header>
-
-	{#if showWebgpuWarning}
-		<div class="banner warn">
-			WebGPU isn't available in this browser. The AI doctor runs its model
-			locally via WebGPU — open this page in Chrome, Edge, or Safari 26+
-			(macOS Tahoe / iOS 26) to use it.
-		</div>
-	{/if}
 
 	<div
 		class="messages"
@@ -324,8 +311,6 @@
 	{#if errorMsg}
 		<div class="banner error">{errorMsg}</div>
 	{/if}
-
-	<AiDoctorSettings open={settingsOpen} onClose={() => (settingsOpen = false)} />
 </div>
 
 <style>
@@ -373,11 +358,6 @@
 		margin: 0.6rem 0;
 		border-radius: 4px;
 		font-size: 0.9rem;
-	}
-	.warn {
-		background: #fff7ed;
-		color: #9a3412;
-		border: 1px solid #fed7aa;
 	}
 	.error {
 		background: #fef2f2;

@@ -40,8 +40,8 @@ export function ensureBm25(): Promise<Bm25Data> {
 			const { n_chunks: nDocs, n_terms: nTerms, bm25_nnz: nnz, avg_dl: avgDl } = manifest;
 
 			const [binRes, vocabRes] = await Promise.all([
-				fetch(indexUrl('bm25.bin')),
-				fetch(indexUrl('bm25-vocab.json'))
+				fetch(indexUrl('bm25.bin', manifest.build_timestamp)),
+				fetch(indexUrl('bm25-vocab.json', manifest.build_timestamp))
 			]);
 			if (!binRes.ok) throw new Error(`bm25.bin fetch failed: ${binRes.status}`);
 			if (!vocabRes.ok) throw new Error(`bm25-vocab.json fetch failed: ${vocabRes.status}`);

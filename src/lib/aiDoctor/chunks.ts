@@ -10,6 +10,7 @@
 //     offset, and is read with HTTP Range requests for the selected chunks only.
 import type { Chunk, ChunkIndex, ChunkMeta, DocMeta } from './types';
 import { indexUrl } from './assets';
+import { loadManifest } from './manifest';
 
 // Adjacent requests are coalesced when the gap between them is smaller than
 // this — pulling a few spare kilobytes beats paying for another round trip.
@@ -26,10 +27,17 @@ let wholeFile: ArrayBuffer | null = null;
 
 export function ensureChunkMeta(): Promise<ChunkIndex> {
 	if (!metaCached) {
-		metaCached = fetch(indexUrl('chunks-meta.json')).then((r) => {
-			if (!r.ok) throw new Error(`chunks-meta.json fetch failed: ${r.status}`);
-			return r.json();
-		});
+		// Versioned against the manifest. This pair is the one place a stale edge
+		// copy would fail SILENTLY rather than loudly: the offsets in
+		// chunks-meta.json address chunks-text.bin byte-for-byte, so mixing a
+		// rebuilt index with a cached old one decodes real text at wrong
+		// boundaries — plausible-looking garbage attributed to real sources.
+		metaCached = loadManifest().then((m) =>
+			fetch(indexUrl('chunks-meta.json', m.build_timestamp)).then((r) => {
+				if (!r.ok) throw new Error(`chunks-meta.json fetch failed: ${r.status}`);
+				return r.json();
+			})
+		);
 	}
 	return metaCached;
 }
@@ -71,6 +79,9 @@ export async function hydrate(indices: number[]): Promise<Chunk[]> {
 
 async function fetchBodies(indices: number[], chunks: ChunkMeta[]): Promise<void> {
 	const decoder = new TextDecoder();
+	// Same version as the offsets we are about to address it with — see the note
+	// in ensureChunkMeta about why a mismatch here is silent rather than loud.
+	const { build_timestamp } = await loadManifest();
 
 	// If a previous request revealed that Range isn't honored, slice locally.
 	if (wholeFile) {
@@ -98,7 +109,7 @@ async function fetchBodies(indices: number[], chunks: ChunkMeta[]): Promise<void
 	await Promise.all(
 		spans.map(async (span) => {
 			// HTTP byte ranges are inclusive on both ends.
-			const res = await fetch(indexUrl('chunks-text.bin'), {
+			const res = await fetch(indexUrl('chunks-text.bin', build_timestamp), {
 				headers: { Range: `bytes=${span.start}-${span.end - 1}` }
 			});
 			if (!res.ok) throw new Error(`chunks-text.bin fetch failed: ${res.status}`);

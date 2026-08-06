@@ -1,12 +1,11 @@
-// Adapter dispatch. Two backends: in-browser WebLLM (WebGPU) or hosted Groq
-// (proxied through /api/doctor-chat with the key server-side).
-import type { LLMAdapter, Settings } from '../types';
-import { makeWebllmAdapter } from './webllm';
-import { makeGroqAdapter } from './groq';
+// Adapter entry point. One client-side backend: the hosted models proxied
+// through /api/doctor-chat, which holds the keys server-side and rotates
+// between providers (Cerebras, then Groq) on rate limits.
+import type { LLMAdapter } from '../types';
+import { makeHostedAdapter } from './hosted';
 
-export function getAdapter(s: Settings): LLMAdapter {
-	if (s.provider === 'groq') return makeGroqAdapter();
-	return makeWebllmAdapter(s.models.webllm);
+export function getAdapter(): LLMAdapter {
+	return makeHostedAdapter();
 }
 
-export { GroqUnavailableError } from './groq';
+export { HostedModelError } from './hosted';

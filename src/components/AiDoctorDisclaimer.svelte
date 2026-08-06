@@ -18,12 +18,11 @@
 			advice.</strong> Consult a qualified healthcare professional for medical decisions.
 		</p>
 		<p>
-			The search over the library always runs in your browser. For the answer, the
-			default is a hosted model (Groq): your question and the retrieved passages are
-			sent to Groq to generate the reply — they are not stored on my servers, but they
-			do leave your device. Prefer full privacy? Switch to the in-browser model
-			(WebLLM) in Settings — it runs entirely on your device via WebGPU (Chrome / Edge
-			/ Safari 26+), with nothing sent anywhere.
+			The search over the library runs entirely in your browser — the index is
+			downloaded once and queried on your device. Writing the answer does not:
+			your question and the passages it retrieved are sent to a hosted model
+			(currently gpt-oss on Cerebras, or Llama on Groq) to generate the reply.
+			They aren't stored on my servers, but they do leave your machine.
 		</p>
 		<label>
 			<input type="checkbox" bind:checked={agreed} />

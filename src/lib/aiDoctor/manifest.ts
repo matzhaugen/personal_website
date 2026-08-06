@@ -6,9 +6,21 @@ import { indexUrl } from './assets';
 
 let cached: Promise<Manifest> | null = null;
 
+// The manifest is the version pointer for every other asset, so it is the one
+// file that must never be served stale — and it is the one file that cannot be
+// versioned by build_timestamp, because reading it is how we learn that value.
+//
+// Bucketing by the minute gives it a URL that changes on its own: staleness is
+// capped at 60s no matter what TTL the CDN applies, while all requests inside
+// the same minute still share one cached entry rather than each hitting origin.
+// At 144 bytes gzipped the worst case is negligible.
+function manifestCacheBust(): number {
+	return Math.floor(Date.now() / 60_000);
+}
+
 export function loadManifest(): Promise<Manifest> {
 	if (!cached) {
-		cached = fetch(indexUrl('manifest.json'))
+		cached = fetch(indexUrl('manifest.json', manifestCacheBust()))
 			.then((r) => {
 				if (!r.ok) throw new Error(`manifest fetch failed: ${r.status}`);
 				return r.json();

@@ -38,7 +38,7 @@ export function ensureDenseIndex(): Promise<DenseIndex> {
 				throw new Error(`unsupported embedding quantization: ${manifest.quant}`);
 			}
 
-			const r = await fetch(indexUrl('embeddings.i8'));
+			const r = await fetch(indexUrl('embeddings.i8', manifest.build_timestamp));
 			if (!r.ok) throw new Error(`embeddings.i8 fetch failed: ${r.status}`);
 			const buf = await r.arrayBuffer();
 

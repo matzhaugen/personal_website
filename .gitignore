@@ -17,3 +17,5 @@ static/ai-doctor/
 test-results/
 # LaTeX build artifacts from the resume source.
 resume/*.fls
+# Dev-only AI Doctor retrieval log (see src/routes/api/doctor-log). Never shipped.
+doctor-queries.jsonl
