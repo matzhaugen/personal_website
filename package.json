@@ -16,8 +16,7 @@
 		"index": "node scripts/upload-index.js",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-		"test": "playwright test",
-		"assets": "node scripts/upload-assets.js"
+		"test": "playwright test"
 	},
 	"devDependencies": {
 		"@aws-sdk/client-s3": "^3.1104.0",
