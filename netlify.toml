@@ -1,7 +1,8 @@
 [build]
   command = "npm run build"
   publish = "build"
-  # VITE_ASSET_BASE points the figure/video components at the DigitalOcean Space
-  # (bucket `stackmap`, region sfo3). Unset it — as in local dev — and they fall
-  # back to /static. Upload new media with `npm run assets`.
+  # VITE_ASSET_BASE points the AI Doctor retrieval index (and the blog figure
+  # components) at the DigitalOcean Space `stackmap`. The index is ~76 MB and is
+  # deliberately not committed — upload it with `npm run assets`. Unset the
+  # variable, as in local dev, and everything falls back to /static.
   environment = { NODE_VERSION = "22", VITE_ASSET_BASE = "https://stackmap.sfo3.cdn.digitaloceanspaces.com" }

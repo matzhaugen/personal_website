@@ -17,6 +17,12 @@ Sriver, Elisabeth J. Moyer.
 		<li>
 			<a href="/satellites">Low-Earth Orbit Satellite Launches 2019-2022</a>
 		</li>
+		<li>
+			<a href="/doctor">AI doctor</a>: A RAG chat over a personal library of
+			medical papers and blog posts. The search index is downloaded once and queried
+			entirely in your browser; the answer is written by a hosted open-weights
+			model, with citations back to the sources. Works in any modern browser.
+		</li>
 		<!-- <li>
 			<a href="">Concord-MAF Stock Picker</a>: Choose some stocks and build your own portfolio. the work is based on <a href="https://arxiv.org/abs/1307.5381">this paper</a> (will most certainly break if you use it too much, and even if it doesn't aws will probably complain about CPU usage).
 		</li> -->
