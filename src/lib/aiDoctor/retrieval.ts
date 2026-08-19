@@ -6,7 +6,7 @@
 // Ranking runs over chunk *metadata* only; the bodies of the FINAL_K survivors
 // are fetched at the end (see chunks.ts), which is why nothing here touches
 // raw_text until the last step.
-import type { Chunk, RetrievalResult } from './types';
+import type { Chunk, DocMeta, RetrievalResult } from './types';
 import { embedQuery } from './embedder';
 import { searchDense } from './dense';
 import { searchSparse } from './bm25';
@@ -28,18 +28,42 @@ const K_RRF = 60;           // canonical RRF constant
 // returned three chunks from a single section of a single post, and one about
 // chlorine dioxide returned four from one article, which reads as four
 // independent corroborations when it is one author making one argument once.
-const MAX_PER_WORK = 2;     // was 3, keyed on doc id; see WORK note below
-const MAX_PER_SECTION = 1;  // new — the real fix for "four sources, one section"
+// …but that argument is about OPINION, and it does not transfer to a primary
+// source. Asking "what serious adverse events were reported for Daptacel?"
+// should be answered from the Daptacel package insert — several passages of it
+// — not one passage each from five different vaccines' inserts. Two slices of
+// one blog post really are one author saying one thing twice; two passages of a
+// clinical trials table are two facts.
+//
+// Measured 2026-08-06, and this was not hypothetical. The FDA package inserts
+// section-split badly (parse_pdf's academic-heading matcher is tuned for
+// journals, so Daptacel's 33 chunks carry exactly two headings: 4 "Preamble"
+// and 29 "References"). Under a flat 2/1 the whole 33-chunk document could
+// contribute at most TWO chunks, so the sentence actually answering the
+// question — "Within 30 days following any dose of DAPTACEL, 57 (3.9%) subjects
+// reported at least one serious adverse event", dense rank #4 — was structurally
+// unreachable, and three of the five slots went to Adacel and Menactra instead.
+//
+// So the caps key on document type. Papers keep a cap (an uncapped top-5 is
+// still five near-identical slices), just a looser one.
+const CAPS: Record<DocMeta['type'], { work: number; section: number }> = {
+	post: { work: 2, section: 1 },
+	paper: { work: 4, section: 3 }
+};
 
 // Relaxation ladder for the fill. The old code capped, then topped up ignoring
 // caps entirely, which handed the freed slots straight back to the document
 // that had just been capped. Now the caps loosen in stages, so a thin corpus
 // still reaches FINAL_K but only concedes as much concentration as it must.
-const CAP_LADDER: [number, number][] = [
-	[MAX_PER_WORK, MAX_PER_SECTION],
-	[MAX_PER_WORK + 1, MAX_PER_SECTION + 1],
-	[Infinity, Infinity]
-];
+//
+// Expressed as an offset added to whichever base cap applies, so the two types
+// loosen in step rather than needing a ladder each.
+const CAP_LADDER: (number | typeof Infinity)[] = [0, 1, Infinity];
+
+/** Base caps for the document a chunk belongs to; posts are the tighter case. */
+function capsFor(type: DocMeta['type'] | undefined) {
+	return CAPS[type ?? 'post'] ?? CAPS.post;
+}
 
 // WORK, not document: the cap keys on the normalized title rather than doc id.
 // Substack mints a new slug when a post is republished, so the corpus holds 25
@@ -277,15 +301,20 @@ export async function retrieve(
 	const perWork = new Map<string, number>();
 	const perSection = new Map<string, number>();
 
-	function tryTake(idx: number, score: number, maxWork: number, maxSection: number): boolean {
+	function tryTake(idx: number, score: number, slack: number): boolean {
 		if (picked.length >= FINAL_K || seen.has(idx)) return false;
 		const meta = chunks[idx];
-		const wk = workKey(docs[meta.doc]?.title, meta.doc);
+		const doc = docs[meta.doc];
+		const wk = workKey(doc?.title, meta.doc);
 		// NUL-joined: workKey emits only [a-z0-9 ] and a heading cannot
 		// contain a NUL, so the composite cannot collide across works.
 		const sk = `${wk}\u0000${meta.sec}`;
-		if ((perWork.get(wk) ?? 0) >= maxWork) return false;
-		if ((perSection.get(sk) ?? 0) >= maxSection) return false;
+		// Caps are per document TYPE, and `slack` is the ladder's current
+		// loosening. Infinity + n is Infinity, so the last rung still disables
+		// both caps for either type without a special case.
+		const base = capsFor(doc?.type);
+		if ((perWork.get(wk) ?? 0) >= base.work + slack) return false;
+		if ((perSection.get(sk) ?? 0) >= base.section + slack) return false;
 		picked.push({ idx, score });
 		seen.add(idx);
 		perWork.set(wk, (perWork.get(wk) ?? 0) + 1);
@@ -303,16 +332,16 @@ export async function retrieve(
 			// (~0.69) in with RRF scores (~0.012) would make `score` meaningless to
 			// every caller, and these are ordered ahead of the fused picks anyway.
 			const rrfEquivalent = HYBRID_WEIGHT / (K_RRF + rank);
-			if (tryTake(bareDense[rank].idx, rrfEquivalent, MAX_PER_WORK, MAX_PER_SECTION)) {
+			if (tryTake(bareDense[rank].idx, rrfEquivalent, 0)) {
 				reservedBare++;
 			}
 		}
 	}
 
-	for (const [maxWork, maxSection] of CAP_LADDER) {
+	for (const slack of CAP_LADDER) {
 		for (const r of ranked) {
 			if (picked.length >= FINAL_K) break;
-			tryTake(r.idx, r.score, maxWork, maxSection);
+			tryTake(r.idx, r.score, slack);
 		}
 		if (picked.length >= FINAL_K) break;
 	}
