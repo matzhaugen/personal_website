@@ -4,7 +4,7 @@ description: A brief introduction to vaccination
 date: 'July 26, 2026'
 authors: Matz Haugen
 language: English
-hidden: false
+hidden: true
 ---
 
 The vaccination debate is mired in controversy, and without getting too bogged down in the details, which have been covered at length by the references given below, I'll present a few introductory observations for someone new to the field.
