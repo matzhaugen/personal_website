@@ -9,7 +9,15 @@
 - Lysander Spooner on legislation -- [A letter to congressman Thomas F. Bayard](https://shorturl.at/EPsdO): challenging his right -- and that of all the other so-called Senators and Representatives in Congress -- to exercise any Legislative Power Whatever Over the People of the United States
 - [All the works](https://www.lysanderspooner.org/works) of Lysander Spooner
 
-## Money
+
+
+## Homeschooling
+- [The well-trained mind](https://welltrainedmind.com/) - Very good classical curriculum in letters
+- [The MCT language program](https://www.rfwp.com/mct-language-arts/) - Also good for letters
+- [Art of Problem solving - math](https://aopsacademy.org/courses/subject/math) - Good for numbers
+- [RightMath](https://rightstartmath.com) - Math with pictures 
+- [Outschool](https://outschool.com) - Homeschooling pay-as-you-go
+
 
 
 ## Statistics 
